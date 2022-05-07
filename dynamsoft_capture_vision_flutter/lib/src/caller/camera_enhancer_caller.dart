@@ -1,0 +1,35 @@
+import '../utility/dce/camera_enhancer_scan_region.dart';
+import '../utility/common.dart';
+
+class CameraEnhanderCaller {
+  static CameraEnhanderCaller _instance = CameraEnhanderCaller();
+  static CameraEnhanderCaller get instance => _instance;
+
+  Future<void> dispose() async {
+    return await methodChannel.invokeMethod('cameraEnhancer_dispose');
+  }
+
+  Future<void> setScanRegion({required Region? region}) async {
+    try {
+      return await methodChannel.invokeMethod(
+        'cameraEnhancer_setScanRegion', {'scanRegion': region?.toJson()});
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> setScanRegionVisible({required bool isVisible}) async {
+    return await methodChannel.invokeMethod(
+        'cameraEnhancer_setScanRegionVisible', {'isVisible': isVisible});
+  }
+
+  Future<bool> isScanRegionVisible() async {
+    return await methodChannel
+        .invokeMethod('cameraEnhancer_isScanRegionVisible');
+  }
+
+  Future<void> setOverlayVisible({required bool isVisible}) async {
+     return await methodChannel.invokeMethod(
+        'cameraEnhancer_setOverlayVisible', {'isVisible': isVisible});
+  }
+}
