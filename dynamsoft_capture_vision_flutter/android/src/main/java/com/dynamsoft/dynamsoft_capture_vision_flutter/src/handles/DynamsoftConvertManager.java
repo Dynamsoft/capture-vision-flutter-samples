@@ -15,7 +15,7 @@ import com.dynamsoft.dbr.TextResult;
 public class DynamsoftConvertManager {
 
     private volatile  static DynamsoftConvertManager manager;
-    private DynamsoftConvertManager() {};
+    private DynamsoftConvertManager() {}
 
     public  static DynamsoftConvertManager manager() {
         if (manager == null) {

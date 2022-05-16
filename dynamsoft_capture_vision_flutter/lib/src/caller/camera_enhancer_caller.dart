@@ -1,9 +1,9 @@
 import '../utility/dce/camera_enhancer_scan_region.dart';
 import '../utility/common.dart';
 
-class CameraEnhanderCaller {
-  static CameraEnhanderCaller _instance = CameraEnhanderCaller();
-  static CameraEnhanderCaller get instance => _instance;
+class CameraEnhancerCaller {
+  static CameraEnhancerCaller _instance = CameraEnhancerCaller();
+  static CameraEnhancerCaller get instance => _instance;
 
   Future<void> dispose() async {
     return await methodChannel.invokeMethod('cameraEnhancer_dispose');

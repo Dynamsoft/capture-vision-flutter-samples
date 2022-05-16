@@ -2,7 +2,9 @@ package com.dynamsoft.dynamsoft_capture_vision_flutter.src;
 
 import android.content.Context;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import java.util.Map;
 import java.util.function.Function;
 
@@ -37,307 +39,330 @@ import com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles.DynamsoftConve
 import com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles.DynamsoftSDKManager;
 import com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles.DynamsoftToolsManager;
 
-public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implements MethodCallHandler, StreamHandler{
+public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implements MethodCallHandler, StreamHandler {
 
-    /** MethodChannel */
-    private MethodChannel methodChannel;
+	/**
+	 * MethodChannel
+	 */
+	private MethodChannel methodChannel;
 
-    /** BarcodeResultEventChannel */
-    private EventChannel barcodeResultEventChannel;
+	/**
+	 * BarcodeResultEventChannel
+	 */
+	private EventChannel barcodeResultEventChannel;
 
-    private Result resultMethod;
+	private EventChannel.EventSink textResultStream;
 
-    private EventChannel.EventSink textResultStream;
+	private BarcodeScanningCaptureView captureView;
 
-    private BarcodeScanningCaptureView captureView;
+	public DynamsoftCaptureVisionFactory(MessageCodec<Object> createArgsCodec, FlutterPlugin.FlutterPluginBinding flutterPluginBinding) {
+		super(createArgsCodec);
 
-    public DynamsoftCaptureVisionFactory(MessageCodec<Object> createArgsCodec, FlutterPlugin.FlutterPluginBinding flutterPluginBinding ) {
-        super(createArgsCodec);
+		methodChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), Common.methodChannel_Identifier);
+		methodChannel.setMethodCallHandler(this);
 
-        methodChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), Common.methodChannel_Identifier);
-        methodChannel.setMethodCallHandler(this);
+		barcodeResultEventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), Common.barcodeResult_EventChannel_Identifier);
+		barcodeResultEventChannel.setStreamHandler(this);
+	}
 
-        barcodeResultEventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), Common.barcodeResult_EventChannel_Identifier);
-        barcodeResultEventChannel.setStreamHandler(this);
-    }
+	@Override
+	public PlatformView create(Context context, int viewId, Object args) {
+		if (Common.pluginActivity != null) {
+			captureView = new BarcodeScanningCaptureView(Common.pluginActivity);
+		}
+		return captureView;
 
-    @Override
-    public PlatformView create(Context context, int viewId, Object args) {
+	}
 
-        captureView = new BarcodeScanningCaptureView(DynamsoftToolsManager.manager().getActivity());
-        return captureView;
+	/**
+	 * Please invoke this method when plugin is detached.
+	 */
+	public void dipose() {
+		methodChannel.setMethodCallHandler(null);
+	}
 
-    }
+	/**
+	 * EventChannel
+	 */
+	@Override
+	public void onListen(Object arguments, EventChannel.EventSink events) {
 
-    /** Please invoke this method when plugin is detached. */
-    public void dipose() {
-        methodChannel.setMethodCallHandler(null);
-    }
+		String streamName = ((Map) arguments).get("streamName").toString();
+		if (streamName.equals(Common.barcodeReader_addResultlistener)) {
+			textResultStream = events;
+			DynamsoftSDKManager.manager().textResultCallBack(textResultStream);
+		}
 
-    /** EventChannel */
-    @Override
-    public void onListen(Object arguments, EventChannel.EventSink events) {
+	}
 
-        String streamName = ((Map)arguments).get("streamName").toString();
-        if (streamName.equals(Common.barcodeReader_addResultlistener)) {
-            textResultStream = events;
-            DynamsoftSDKManager.manager().textResultCallBack(textResultStream);
-        }
+	@Override
+	public void onCancel(Object arguments) {
 
-    }
+	}
 
-    @Override
-    public void onCancel(Object arguments) {
+	/**
+	 * MethodChannel
+	 */
+	@Override
+	public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
 
-    }
-
-    /** MethodChannel */
-    @Override
-    public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-
-        resultMethod = result;
-        switch(call.method) {
-            /// DBR
-            case Common.barcodeReader_initLicense:
-                barcodeReaderInitLicense(call.arguments);
-                break;
-            case Common.barcodeReader_createInstance:
-                barcodeReaderCreateInstance(call.arguments);
-                break;
-            case Common.barcodeReader_getVersion:
-                barcodeReaderGetVersion(call.arguments);
-                break;
-            case Common.barcodeReader_startScanning:
-                barcodeReaderStartScanning(call.arguments);
-                break;
-            case Common.barcodeReader_stopScanning:
-                barcodeReaderStopScanning(call.arguments);
-                break;
-            case Common.barcodeReader_updateRuntimeSettings:
-                barcodeReaderUpdateRuntimeSettings(call.arguments);
-                break;
-            case Common.barcodeReader_getRuntimeSettings:
-                barcodeReaderGetRuntimeSettings(call.arguments);
-                break;
-            case Common.barcodeReader_updateRuntimeSettingsFromTemplate:
-                barcodeReaderUpdateRuntimeSettingsFromTemplate(call.arguments);
-                break;
-            case Common.barcodeReader_updateRuntimeSettingsFromJson:
-                barcodeReaderUpdateRuntimeSettingsFromJson(call.arguments);
-                break;
-            case Common.barcodeReader_resetRuntimeSettings:
-                barcodeReaderResetRuntimeSettings(call.arguments);
-                break;
-            case Common.barcodeReader_outputRuntimeSettingsToString:
-                barcodeReaderOutputRuntimeSettingsToString(call.arguments);
-                break;
-
-
-            /// DCE
-            case Common.cameraEnhancer_dispose:
-                cameraEnhancerDispose(call.arguments);
-                break;
-            case Common.cameraEnhancer_setScanRegion:
-                cameraEnhancerSetScanRegion(call.arguments);
-                break;
-            case Common.cameraEnhancer_setScanRegionVisible:
-                cameraEnhancerSetScanRegionVisible(call.arguments);
-                break;
-            case Common.cameraEnhancer_setOverlayVisible:
-                cameraEnhancerSetOverlayVisible(call.arguments);
-                break;
-
-            /// Navigation and lifecycle methods
-            case Common.navigation_didPushNext:
-                navigationDidPushNext();
-                break;
-            case Common.navigation_didPopNext:
-                navigationDidPopNext();
-                break;
-            case Common.appState_becomeResumed:
-                appStateBecomeResumed();
-                break;
-            case Common.appState_becomeInactive:
-                appStateBecomeInactive();
-                break;
-
-            default:
-                result.notImplemented();
-        }
-
-    }
+		switch (call.method) {
+			/// DBR
+			case Common.barcodeReader_initLicense:
+				barcodeReaderInitLicense(call.arguments, result);
+				break;
+			case Common.barcodeReader_createInstance:
+				barcodeReaderCreateInstance(call.arguments, result);
+				break;
+			case Common.barcodeReader_getVersion:
+				barcodeReaderGetVersion(call.arguments, result);
+				break;
+			case Common.barcodeReader_startScanning:
+				barcodeReaderStartScanning(call.arguments, result);
+				break;
+			case Common.barcodeReader_stopScanning:
+				barcodeReaderStopScanning(call.arguments, result);
+				break;
+			case Common.barcodeReader_updateRuntimeSettings:
+				barcodeReaderUpdateRuntimeSettings(call.arguments, result);
+				break;
+			case Common.barcodeReader_getRuntimeSettings:
+				barcodeReaderGetRuntimeSettings(call.arguments, result);
+				break;
+			case Common.barcodeReader_updateRuntimeSettingsFromTemplate:
+				barcodeReaderUpdateRuntimeSettingsFromTemplate(call.arguments, result);
+				break;
+			case Common.barcodeReader_updateRuntimeSettingsFromJson:
+				barcodeReaderUpdateRuntimeSettingsFromJson(call.arguments, result);
+				break;
+			case Common.barcodeReader_resetRuntimeSettings:
+				barcodeReaderResetRuntimeSettings(call.arguments, result);
+				break;
+			case Common.barcodeReader_outputRuntimeSettingsToString:
+				barcodeReaderOutputRuntimeSettingsToString(call.arguments, result);
+				break;
 
 
-    /// DBR methods
-    private void barcodeReaderInitLicense(Object arguments) {
-        DynamsoftSDKManager.manager().barcodeReaderInitLicense(arguments, resultMethod);
-    }
+			/// DCE
+			case Common.cameraEnhancer_dispose:
+				cameraEnhancerDispose(call.arguments, result);
+				break;
+			case Common.cameraEnhancer_setScanRegion:
+				cameraEnhancerSetScanRegion(call.arguments, result);
+				break;
+			case Common.cameraEnhancer_setScanRegionVisible:
+				cameraEnhancerSetScanRegionVisible(call.arguments, result);
+				break;
+			case Common.cameraEnhancer_setOverlayVisible:
+				cameraEnhancerSetOverlayVisible(call.arguments, result);
+				break;
 
-    private void barcodeReaderCreateInstance(Object arguments) {
-        DynamsoftSDKManager.manager().barcodeReaderCreateInstance(arguments, resultMethod);
-    }
+			/// Navigation and lifecycle methods
+			case Common.navigation_didPushNext:
+				navigationDidPushNext(result);
+				break;
+			case Common.navigation_didPopNext:
+				navigationDidPopNext(result);
+				break;
+			case Common.appState_becomeResumed:
+				appStateBecomeResumed(result);
+				break;
+			case Common.appState_becomeInactive:
+				appStateBecomeInactive(result);
+				break;
 
-    private void barcodeReaderGetVersion(Object arguments) {
-        resultMethod.success(DynamsoftSDKManager.manager().barcodeReader.getVersion());
-    }
+			default:
+				result.notImplemented();
+		}
 
-    private void barcodeReaderStartScanning(Object arguments) {
+	}
 
-        if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == false) {
-            DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished = true;
-            DynamsoftSDKManager.manager().barcodeReader.setCameraEnhancer(DynamsoftSDKManager.manager().cameraEnhancer);
-        }
-        DynamsoftSDKManager.manager().barcodeReader.startScanning();
 
-        resultMethod.success(null);
-    }
+	/// DBR methods
+	private void barcodeReaderInitLicense(Object arguments, Result result) {
+		DynamsoftSDKManager.manager().barcodeReaderInitLicense(arguments, result);
+	}
 
-    private void barcodeReaderStopScanning(Object arguments) {
-        DynamsoftSDKManager.manager().barcodeReader.stopScanning();
-        resultMethod.success(null);
-    }
+	private void barcodeReaderCreateInstance(Object arguments, Result result) {
+		DynamsoftSDKManager.manager().barcodeReaderCreateInstance(arguments, result);
+	}
 
-    private void barcodeReaderUpdateRuntimeSettings(Object arguments) {
+	private void barcodeReaderGetVersion(Object arguments, Result result) {
+		result.success(DynamsoftSDKManager.manager().barcodeReader.getVersion());
+	}
 
-        try {
-            PublicRuntimeSettings runtimeSettings = DynamsoftConvertManager.manager().aynlyzeRuntimeSettingsFromJson(arguments);
-            DynamsoftSDKManager.manager().barcodeReader.updateRuntimeSettings(runtimeSettings);
-            resultMethod.success(null);
-        } catch (BarcodeReaderException e) {
+	private void barcodeReaderStartScanning(Object arguments, Result result) {
 
-            resultMethod.error(Common.exceptionTip, e.getMessage(), null);
-        }
-    }
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == false) {
+			DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished = true;
+			DynamsoftSDKManager.manager().barcodeReader.setCameraEnhancer(DynamsoftSDKManager.manager().cameraEnhancer);
+		}
+		DynamsoftSDKManager.manager().barcodeReader.startScanning();
 
-    private void barcodeReaderGetRuntimeSettings(Object arguments) {
-        try {
-            PublicRuntimeSettings runtimeSettings = DynamsoftSDKManager.manager().barcodeReader.getRuntimeSettings();
-            resultMethod.success(DynamsoftConvertManager.manager().wrapRuntimeSettingsToJson(runtimeSettings));
-        } catch (BarcodeReaderException e) {
-            resultMethod.error(Common.exceptionTip, e.getMessage(), null);
-        }
+		result.success(null);
+	}
 
-    }
+	private void barcodeReaderStopScanning(Object arguments, Result result) {
+		DynamsoftSDKManager.manager().barcodeReader.stopScanning();
+		result.success(null);
+	}
 
-    private void barcodeReaderUpdateRuntimeSettingsFromTemplate(Object arguments) {
-        EnumPresetTemplate presetTemplate = DynamsoftConvertManager.manager().aynlyzePresetTemplateFromJson(arguments);
-        DynamsoftSDKManager.manager().barcodeReader.updateRuntimeSettings(presetTemplate);
+	private void barcodeReaderUpdateRuntimeSettings(Object arguments, Result result) {
 
-        resultMethod.success(null);
-    }
+		try {
+			PublicRuntimeSettings runtimeSettings = DynamsoftConvertManager.manager().aynlyzeRuntimeSettingsFromJson(arguments);
+			DynamsoftSDKManager.manager().barcodeReader.updateRuntimeSettings(runtimeSettings);
+			result.success(null);
+		} catch (BarcodeReaderException e) {
 
-    private void barcodeReaderUpdateRuntimeSettingsFromJson(Object arguments) {
-        String jsonString = (String)((Map)arguments).get("jsonString");
-        try {
-            DynamsoftSDKManager.manager().barcodeReader.initRuntimeSettingsWithString(jsonString
-                    , EnumConflictMode.CM_OVERWRITE);
-            resultMethod.success(null);
-        } catch (BarcodeReaderException e) {
-            resultMethod.error(Common.exceptionTip, e.getMessage(), null);
-        }
-    }
+			result.error(Common.exceptionTip, e.getMessage(), null);
+		}
+	}
 
-    private void barcodeReaderResetRuntimeSettings(Object arguments) {
-        try {
-            DynamsoftSDKManager.manager().barcodeReader.resetRuntimeSettings();
-            resultMethod.success(null);
-        } catch (BarcodeReaderException e) {
-            resultMethod.error(Common.exceptionTip, e.getMessage(), null);
-        }
-    }
+	private void barcodeReaderGetRuntimeSettings(Object arguments, Result result) {
+		try {
+			PublicRuntimeSettings runtimeSettings = DynamsoftSDKManager.manager().barcodeReader.getRuntimeSettings();
+			result.success(DynamsoftConvertManager.manager().wrapRuntimeSettingsToJson(runtimeSettings));
+		} catch (BarcodeReaderException e) {
+			result.error(Common.exceptionTip, e.getMessage(), null);
+		}
 
-    private void barcodeReaderOutputRuntimeSettingsToString(Object arguments) {
+	}
 
-        try {
-            String settingsString = DynamsoftSDKManager.manager().barcodeReader.outputSettingsToString("");
-            resultMethod.success(settingsString);
-        } catch (BarcodeReaderException e) {
-            resultMethod.error(Common.exceptionTip, e.getMessage(), null);
-        }
-    }
+	private void barcodeReaderUpdateRuntimeSettingsFromTemplate(Object arguments, Result result) {
+		EnumPresetTemplate presetTemplate = DynamsoftConvertManager.manager().aynlyzePresetTemplateFromJson(arguments);
+		DynamsoftSDKManager.manager().barcodeReader.updateRuntimeSettings(presetTemplate);
 
-    /// DCE methods
+		result.success(null);
+	}
 
-    private void cameraEnhancerDispose(Object arguments) {
-        DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished = false;
-        if (DynamsoftSDKManager.manager().barcodeReader != null) {
-            DynamsoftSDKManager.manager().barcodeReader.stopScanning();
-        }
+	private void barcodeReaderUpdateRuntimeSettingsFromJson(Object arguments, Result result) {
+		String jsonString = (String) ((Map) arguments).get("jsonString");
+		try {
+			DynamsoftSDKManager.manager().barcodeReader.initRuntimeSettingsWithString(jsonString
+					, EnumConflictMode.CM_OVERWRITE);
+			result.success(null);
+		} catch (BarcodeReaderException e) {
+			result.error(Common.exceptionTip, e.getMessage(), null);
+		}
+	}
 
-        try {
-            DynamsoftSDKManager.manager().cameraEnhancer.close();
-        } catch (CameraEnhancerException e) {
-            e.printStackTrace();
-        }
-        DynamsoftSDKManager.manager().cameraEnhancer = null;
+	private void barcodeReaderResetRuntimeSettings(Object arguments, Result result) {
+		try {
+			DynamsoftSDKManager.manager().barcodeReader.resetRuntimeSettings();
+			result.success(null);
+		} catch (BarcodeReaderException e) {
+			result.error(Common.exceptionTip, e.getMessage(), null);
+		}
+	}
 
-        resultMethod.success(null);
-    }
+	private void barcodeReaderOutputRuntimeSettingsToString(Object arguments, Result result) {
 
-    private void cameraEnhancerSetScanRegion(Object arguments) {
-        RegionDefinition regionDefinition = ((Map)arguments).get("scanRegion") == null ? null : DynamsoftConvertManager.manager().aynlyzeiRegionDefinitionFromJson(arguments);
+		try {
+			String settingsString = DynamsoftSDKManager.manager().barcodeReader.outputSettingsToString("");
+			result.success(settingsString);
+		} catch (BarcodeReaderException e) {
+			result.error(Common.exceptionTip, e.getMessage(), null);
+		}
+	}
 
-        try {
-            DynamsoftSDKManager.manager().cameraEnhancer.setScanRegion(regionDefinition);
-            resultMethod.success(null);
-        } catch (CameraEnhancerException e) {
-            resultMethod.error(Common.exceptionTip, e.getMessage(), null);
-        }
-    }
+	/// DCE methods
 
-    private void cameraEnhancerSetScanRegionVisible(Object arguments) {
+	private void cameraEnhancerDispose(Object arguments, Result result) {
+		DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished = false;
+		if (DynamsoftSDKManager.manager().barcodeReader != null) {
+			DynamsoftSDKManager.manager().barcodeReader.stopScanning();
+		}
 
-        boolean scanRegionVisible = (boolean)((Map)arguments).get("isVisible");
-        DynamsoftSDKManager.manager().cameraEnhancer.setScanRegionVisible(scanRegionVisible);
-        resultMethod.success(null);
-    }
+		try {
+			DynamsoftSDKManager.manager().cameraEnhancer.close();
+		} catch (CameraEnhancerException e) {
+			e.printStackTrace();
+		}
+		DynamsoftSDKManager.manager().cameraEnhancer = null;
 
-    private void cameraEnhancerSetOverlayVisible(Object arguments) {
-        boolean overlayVisible = (boolean)((Map)arguments).get("isVisible");
-        captureView.cameraView.setOverlayVisible(overlayVisible);
-        resultMethod.success(null);
-    }
+		result.success(null);
+	}
 
-    /// Navigation and lifecycle methods
-    private void navigationDidPopNext() {
-        if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
-            try {
-                DynamsoftSDKManager.manager().cameraEnhancer.open();
-            } catch (CameraEnhancerException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	private void cameraEnhancerSetScanRegion(Object arguments, Result result) {
+		RegionDefinition regionDefinition = ((Map) arguments).get("scanRegion") == null ? null : DynamsoftConvertManager.manager().aynlyzeiRegionDefinitionFromJson(arguments);
 
-    private void navigationDidPushNext() {
-        if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
-            try {
-                DynamsoftSDKManager.manager().cameraEnhancer.close();
-            } catch (CameraEnhancerException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+		try {
+			DynamsoftSDKManager.manager().cameraEnhancer.setScanRegion(regionDefinition);
+			result.success(null);
+		} catch (CameraEnhancerException e) {
+			result.error(Common.exceptionTip, e.getMessage(), null);
+		}
+	}
 
-    private void appStateBecomeResumed() {
-        if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
-            try {
-                DynamsoftSDKManager.manager().cameraEnhancer.open();
-            } catch (CameraEnhancerException e) {
-                e.printStackTrace();
-            }
-        }
+	private void cameraEnhancerSetScanRegionVisible(Object arguments, Result result) {
 
-    }
+		boolean scanRegionVisible = (boolean) ((Map) arguments).get("isVisible");
+		DynamsoftSDKManager.manager().cameraEnhancer.setScanRegionVisible(scanRegionVisible);
+		result.success(null);
+	}
 
-    private void appStateBecomeInactive() {
-        if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
-            try {
-                DynamsoftSDKManager.manager().cameraEnhancer.close();
-            } catch (CameraEnhancerException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	private void cameraEnhancerSetOverlayVisible(Object arguments, Result result) {
+		boolean overlayVisible = (boolean) ((Map) arguments).get("isVisible");
+		captureView.cameraView.setOverlayVisible(overlayVisible);
+		result.success(null);
+	}
+
+	/// Navigation and lifecycle methods
+	private void navigationDidPopNext(Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+			try {
+				DynamsoftSDKManager.manager().cameraEnhancer.open();
+				result.success(null);
+			} catch (CameraEnhancerException e) {
+				e.printStackTrace();
+				result.error(Common.exceptionTip, e.getMessage(), null);
+
+			}
+		}
+	}
+
+	private void navigationDidPushNext(Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+			try {
+				DynamsoftSDKManager.manager().cameraEnhancer.close();
+				result.success(null);
+
+			} catch (CameraEnhancerException e) {
+				e.printStackTrace();
+				result.error(Common.exceptionTip, e.getMessage(), null);
+
+			}
+		}
+	}
+
+	private void appStateBecomeResumed(Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
+			try {
+				DynamsoftSDKManager.manager().cameraEnhancer.open();
+				result.success(null);
+
+			} catch (CameraEnhancerException e) {
+				e.printStackTrace();
+				result.error(Common.exceptionTip, e.getMessage(), null);
+
+			}
+		}
+
+	}
+
+	private void appStateBecomeInactive(Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
+			try {
+				DynamsoftSDKManager.manager().cameraEnhancer.close();
+				result.success(null);
+
+			} catch (CameraEnhancerException e) {
+				e.printStackTrace();
+				result.error(Common.exceptionTip, e.getMessage(), null);
+
+			}
+		}
+	}
 
 }

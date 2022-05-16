@@ -10,47 +10,49 @@ import io.flutter.plugin.common.StandardMessageCodec;
 import com.dynamsoft.dynamsoft_capture_vision_flutter.src.Common;
 import com.dynamsoft.dynamsoft_capture_vision_flutter.src.DynamsoftCaptureVisionFactory;
 
-/** DynamsoftCaptureVisionFlutterPlugin */
+/**
+ * DynamsoftCaptureVisionFlutterPlugin
+ */
 public class DynamsoftCaptureVisionFlutterPlugin implements FlutterPlugin, ActivityAware {
-  private DynamsoftCaptureVisionFactory barcodeFactory;
+	private DynamsoftCaptureVisionFactory barcodeFactory;
 
-  /**
-   * FlutterPlugin
-   */
-  @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+	/**
+	 * FlutterPlugin
+	 */
+	@Override
+	public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
 
-    barcodeFactory = new DynamsoftCaptureVisionFactory(new StandardMessageCodec(), flutterPluginBinding);
+		barcodeFactory = new DynamsoftCaptureVisionFactory(new StandardMessageCodec(), flutterPluginBinding);
 
-    flutterPluginBinding.getPlatformViewRegistry().registerViewFactory(Common.platformFactory_identifier, barcodeFactory);
-  }
+		flutterPluginBinding.getPlatformViewRegistry().registerViewFactory(Common.platformFactory_identifier, barcodeFactory);
+	}
 
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    barcodeFactory.dipose();
-  }
+	@Override
+	public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+		barcodeFactory.dipose();
+	}
 
-  /**
-   * ActivityAware
-   */
-  @Override
-  public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+	/**
+	 * ActivityAware
+	 */
+	@Override
+	public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
 
-    Common.pluginActivity = binding.getActivity();
-  }
+		Common.pluginActivity = binding.getActivity();
+	}
 
-  @Override
-  public void onDetachedFromActivityForConfigChanges() {
+	@Override
+	public void onDetachedFromActivityForConfigChanges() {
 
-  }
+	}
 
-  @Override
-  public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+	@Override
+	public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
 
-  }
+	}
 
-  @Override
-  public void onDetachedFromActivity() {
-
-  }
+	@Override
+	public void onDetachedFromActivity() {
+		Common.pluginActivity = null;
+	}
 }

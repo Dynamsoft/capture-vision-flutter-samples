@@ -43,9 +43,9 @@ public class DynamsoftSDKManager {
             @Override
             public void textResultCallback(int i, ImageData imageData, TextResult[] textResults) {
 
-                if (DynamsoftToolsManager.manager().getActivity() != null) {
+                if (Common.pluginActivity != null) {
 
-                    DynamsoftToolsManager.manager().getActivity().runOnUiThread(new Runnable() {
+                    Common.pluginActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
 

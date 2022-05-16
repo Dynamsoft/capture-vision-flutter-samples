@@ -10,8 +10,8 @@ import 'utility/dce/camera_enhancer_scan_region.dart';
 import 'utility/common.dart';
 
 class DynamsoftCameraView extends StatefulWidget {
-  static CameraEnhanderCaller get _cameraEnhancerCaller =>
-      CameraEnhanderCaller.instance;
+  static CameraEnhancerCaller get _cameraEnhancerCaller =>
+      CameraEnhancerCaller.instance;
   static AppLifecycleCaller get _appLifecycleCaller =>
       AppLifecycleCaller.instance;
 
