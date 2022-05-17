@@ -54,7 +54,7 @@ class DynamsoftBarcodeReader {
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
   /// String dbrVersion = await _barcodeReader.getVersion();
   /// ```
-  Future<String> getVersion() {
+  Future<String?> getVersion() {
     return _barcodeReaderCaller.getVersion();
   }
 
@@ -201,7 +201,7 @@ class DynamsoftBarcodeReader {
   ///   print('error = $e');
   /// }
   /// ``` 
-  Future<String> outputRuntimeSettingsToString() {
+  Future<String?> outputRuntimeSettingsToString() {
     return _barcodeReaderCaller.outputRuntimeSettingsToString();
   }
 

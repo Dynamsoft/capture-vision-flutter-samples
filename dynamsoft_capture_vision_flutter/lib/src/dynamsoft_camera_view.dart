@@ -30,7 +30,7 @@ class DynamsoftCameraView extends StatefulWidget {
   /// _cameraView.scanRegion = scanRegion;
   /// ```
   set scanRegion(Region? region) =>
-      _cameraEnhancerCaller.setScanRegion(region: region ?? null);
+      _cameraEnhancerCaller.setScanRegion(region: region);
 
   /// Set the camera whether to display the scan region on the UI.
   ///
