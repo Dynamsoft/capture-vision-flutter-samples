@@ -1,4 +1,4 @@
-package com.dynamsoft.dynamsoft_capture_vision_flutter.src.capture_view;
+package com.dynamsoft.dcv.flutter.capture_view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +10,7 @@ import com.dynamsoft.dce.DCECameraView;
 
 import io.flutter.plugin.platform.PlatformView;
 
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles.DynamsoftSDKManager;
+import com.dynamsoft.dcv.flutter.handles.DynamsoftSDKManager;
 
 public class BarcodeScanningCaptureView implements PlatformView {
 

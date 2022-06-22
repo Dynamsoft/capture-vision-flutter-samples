@@ -1,4 +1,4 @@
-package com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles;
+package com.dynamsoft.dcv.flutter.handles;
 
 public class DynamsoftToolsManager {
 

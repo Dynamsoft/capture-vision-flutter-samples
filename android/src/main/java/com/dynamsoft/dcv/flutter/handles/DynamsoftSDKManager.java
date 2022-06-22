@@ -1,4 +1,4 @@
-package com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles;
+package com.dynamsoft.dcv.flutter.handles;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import com.dynamsoft.dbr.ImageData;
 import com.dynamsoft.dbr.TextResult;
 import com.dynamsoft.dbr.TextResultListener;
 import com.dynamsoft.dce.CameraEnhancer;
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.Common;
+import com.dynamsoft.dcv.flutter.Common;
 
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodChannel;

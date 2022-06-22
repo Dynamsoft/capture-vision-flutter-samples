@@ -1,4 +1,4 @@
-package com.dynamsoft.dynamsoft_capture_vision_flutter.src;
+package com.dynamsoft.dcv.flutter;
 
 import android.app.Activity;
 

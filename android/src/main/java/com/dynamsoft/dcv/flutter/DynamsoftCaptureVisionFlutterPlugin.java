@@ -1,4 +1,4 @@
-package com.dynamsoft.dynamsoft_capture_vision_flutter;
+package com.dynamsoft.dcv.flutter;
 
 import androidx.annotation.NonNull;
 
@@ -7,8 +7,8 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.StandardMessageCodec;
 
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.Common;
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.DynamsoftCaptureVisionFactory;
+import com.dynamsoft.dcv.flutter.Common;
+import com.dynamsoft.dcv.flutter.DynamsoftCaptureVisionFactory;
 
 /**
  * DynamsoftCaptureVisionFlutterPlugin

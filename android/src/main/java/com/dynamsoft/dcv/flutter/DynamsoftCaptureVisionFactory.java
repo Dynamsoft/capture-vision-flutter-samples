@@ -1,4 +1,4 @@
-package com.dynamsoft.dynamsoft_capture_vision_flutter.src;
+package com.dynamsoft.dcv.flutter;
 
 import android.content.Context;
 import android.util.Log;
@@ -32,12 +32,12 @@ import com.dynamsoft.dce.RegionDefinition;
 import com.dynamsoft.dce.CameraEnhancerException;
 
 /// View
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.capture_view.BarcodeScanningCaptureView;
+import com.dynamsoft.dcv.flutter.capture_view.BarcodeScanningCaptureView;
 
 /// Handles
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles.DynamsoftConvertManager;
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles.DynamsoftSDKManager;
-import com.dynamsoft.dynamsoft_capture_vision_flutter.src.handles.DynamsoftToolsManager;
+import com.dynamsoft.dcv.flutter.handles.DynamsoftConvertManager;
+import com.dynamsoft.dcv.flutter.handles.DynamsoftSDKManager;
+import com.dynamsoft.dcv.flutter.handles.DynamsoftToolsManager;
 
 public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implements MethodCallHandler, StreamHandler {
 
