@@ -9,7 +9,6 @@ class BarcodeReaderCaller {
   static BarcodeReaderCaller get instance => _instance;
 
   Future<bool> initLicense({required String license}) async {
-    assert(license != null && license.length > 0);
     return await methodChannel
         .invokeMethod('barcodeReader_initLicense', {'license': license});
   }

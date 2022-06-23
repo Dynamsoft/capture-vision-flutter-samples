@@ -8,7 +8,7 @@ class AppRouteObserver {
   static final AppRouteObserver _appRouteObserver =
       AppRouteObserver._internal();
 
-  AppRouteObserver._internal() {}
+  AppRouteObserver._internal();
 
   RouteObserver<ModalRoute<void>> get routeObserver {
     return _routeObserver;

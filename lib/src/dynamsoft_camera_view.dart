@@ -1,17 +1,18 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/scheduler.dart';
 
-import 'caller/camera_enhancer_caller.dart';
 import 'caller/app_life_cycle_caller.dart';
 import 'caller/app_route_observer.dart';
-import 'utility/dce/camera_enhancer_scan_region.dart';
+import 'caller/camera_enhancer_caller.dart';
 import 'utility/common.dart';
+import 'utility/dce/camera_enhancer_scan_region.dart';
 
 class DynamsoftCameraView extends StatefulWidget {
   static CameraEnhancerCaller get _cameraEnhancerCaller =>
       CameraEnhancerCaller.instance;
+
   static AppLifecycleCaller get _appLifecycleCaller =>
       AppLifecycleCaller.instance;
 
@@ -46,7 +47,6 @@ class DynamsoftCameraView extends StatefulWidget {
   set isOverlayVisible(bool isVisible) =>
       _cameraEnhancerCaller.setOverlayVisible(isVisible: isVisible);
 
-
   @override
   State<DynamsoftCameraView> createState() => _DynamsoftCameraViewState();
 }
@@ -66,9 +66,9 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    
+
     WidgetsBinding.instance!.addObserver(this);
   }
 
@@ -124,6 +124,7 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
         creationParamsCodec: const StandardMessageCodec(),
       );
     }
+    return null;
   }
 
   @override
