@@ -37,14 +37,14 @@ class DynamsoftCameraView extends StatefulWidget {
   ///
   /// The [isVisible] = `true`, the scan region will be displayed on the UI.
   /// The [isVisible] = `false`, the scan region will not be displayed.
-  set isScanRegionVisible(bool isVisible) =>
+  set scanRegionVisible(bool isVisible) =>
       _cameraEnhancerCaller.setScanRegionVisible(isVisible: isVisible);
 
   /// OverlayVisible is the property that controls whether highlighted overlays will be displayed on decoded barcodes.
   ///
   /// The [isVisible] = `true`, the overlays will be displayed.
   /// The [isVisible] = `false`, the overlays will not be displayed.
-  set isOverlayVisible(bool isVisible) =>
+  set overlayVisible(bool isVisible) =>
       _cameraEnhancerCaller.setOverlayVisible(isVisible: isVisible);
 
   @override
@@ -58,7 +58,7 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     AppRouteObserver().routeObserver.unsubscribe(this);
     DynamsoftCameraView._cameraEnhancerCaller.dispose();
 
@@ -69,7 +69,7 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override

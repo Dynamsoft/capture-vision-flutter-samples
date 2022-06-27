@@ -152,7 +152,8 @@
 
 - (void)barcodeReaderGetVersion:(id)arguments
 {
-    self.resultMethod([[DynamsoftSDKManager manager].barcodeReader getVersion]);
+    
+    self.resultMethod([DynamsoftBarcodeReader getVersion]);
 }
 
 - (void)barcodeReaderStartScanning:(id)arguments
