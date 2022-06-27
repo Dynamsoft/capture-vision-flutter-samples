@@ -137,10 +137,8 @@ class DynamsoftBarcodeReader {
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
   /// await _barcodeReader.updateRuntimeSettingsFromTemplate(template: EnumDBRPresetTemplate.DEFAULT);
   /// ```
-  Future<void> updateRuntimeSettingsFromTemplate(
-      {required EnumDBRPresetTemplate template}) {
-    return _barcodeReaderCaller.updateRuntimeSettingsFromTemplate(
-        template: template);
+  Future<void> updateRuntimeSettingsFromTemplate({required EnumDBRPresetTemplate template}) {
+    return _barcodeReaderCaller.updateRuntimeSettingsFromTemplate(template: template);
   }
 
   /// Update runtime settings with the given JSON string.
@@ -161,8 +159,7 @@ class DynamsoftBarcodeReader {
   /// }
   /// ```
   Future<void> updateRuntimeSettingsFromJson({required String jsonString}) {
-    return _barcodeReaderCaller.updateRuntimeSettingsFromJson(
-        jsonString: jsonString);
+    return _barcodeReaderCaller.updateRuntimeSettingsFromJson(jsonString: jsonString);
   }
 
   /// Resets all parameters to default values.
