@@ -6,4 +6,4 @@ export 'src/utility/dbr/barcode_formats.dart';
 export 'src/utility/dbr/dbr_runtime_settings.dart';
 export 'src/utility/dce/camera_enhancer_scan_region.dart';
 export 'src/utility/general_enums.dart' show EnumDBRPresetTemplate;
-export 'src/utility/dbr/barcode_result.dart';
+export 'src/utility/dbr/barcode_result.dart' hide BarcodeUtilityTool;
