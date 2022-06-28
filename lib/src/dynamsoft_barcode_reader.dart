@@ -204,16 +204,16 @@ class DynamsoftBarcodeReader {
   ///
   /// You can use this method to listen all the barcode results of the camera's capture.
   ///
-  /// You can use [receiveBarcodeResultStream] like this:
+  /// You can use [receiveResultStream] like this:
   ///
   /// ```
   /// late final DynamsoftBarcodeReader _barcodeReader;
   /// await DynamsoftBarcodeReader.initLicense(license: '**********');
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
   /// _barcodeReader.startScanning();
-  /// _barcodeReader.receiveBarcodeResultStream().listen((List<TextResult> res) {});
+  /// _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {});
   /// ```
-  Stream<List<BarcodeResult>> receiveBarcodeResultStream() {
-    return _barcodeReaderCaller.receiveBarcodeResultStream();
+  Stream<List<BarcodeResult>> receiveResultStream() {
+    return _barcodeReaderCaller.receiveResultStream();
   }
 }

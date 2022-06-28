@@ -47,7 +47,7 @@ class Point {
 }
 
 class BarcodeUtilityTool {
-  static List<BarcodeResult> convertToTextResults(List<Map<dynamic, dynamic>> res) {
+  static List<BarcodeResult> convertToBarcodeResults(List<Map<dynamic, dynamic>> res) {
     return res.map((e) => BarcodeResult.fromJson(e)).toList();
   }
 
