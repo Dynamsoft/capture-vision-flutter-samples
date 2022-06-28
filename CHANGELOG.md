@@ -6,3 +6,7 @@
 
 * Fix bug.
 
+## 0.0.3
+
+* Update DBR to v9.0.2
+* Update DCE to v2.1.4
