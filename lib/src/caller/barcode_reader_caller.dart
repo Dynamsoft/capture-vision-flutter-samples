@@ -9,8 +9,7 @@ class BarcodeReaderCaller {
   static BarcodeReaderCaller get instance => _instance;
 
   Future<bool> initLicense({required String license}) async {
-    return await methodChannel
-        .invokeMethod('barcodeReader_initLicense', {'license': license});
+    return await methodChannel.invokeMethod('barcodeReader_initLicense', {'license': license});
   }
 
   Future<void> createInstance() {
@@ -30,27 +29,20 @@ class BarcodeReaderCaller {
   }
 
   Future<void> updateRuntimeSettings({required DBRRuntimeSettings settings}) {
-    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettings',
-        {'runtimeSettings': settings.toJson()});
+    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettings',{'runtimeSettings': settings.toJson()});
   }
 
   Future<DBRRuntimeSettings> getRuntimeSettings() async {
-    final jsonMap =
-        await methodChannel.invokeMethod('barcodeReader_getRuntimeSettings');
+    final jsonMap = await methodChannel.invokeMethod('barcodeReader_getRuntimeSettings');
     return DBRRuntimeSettings.fromJson(jsonMap);
   }
 
-  Future<void> updateRuntimeSettingsFromTemplate(
-      {required EnumDBRPresetTemplate template}) {
-    return methodChannel.invokeMethod(
-        'barcodeReader_updateRuntimeSettingsFromTemplate',
-        {'presetTemplate': template.jsonValue});
+  Future<void> updateRuntimeSettingsFromTemplate({required EnumDBRPresetTemplate template}) {
+    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettingsFromTemplate',{'presetTemplate': template.jsonValue});
   }
 
   Future<void> updateRuntimeSettingsFromJson({required String jsonString}) {
-    return methodChannel.invokeMethod(
-        'barcodeReader_updateRuntimeSettingsFromJson',
-        {'jsonString': jsonString});
+    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettingsFromJson', {'jsonString': jsonString});
   }
 
   Future<void> resetRuntimeSettings() {
@@ -58,14 +50,12 @@ class BarcodeReaderCaller {
   }
 
   Future<String?> outputRuntimeSettingsToString() {
-    return methodChannel
-        .invokeMethod<String>('barcodeReader_outputRuntimeSettingsToString');
+    return methodChannel.invokeMethod<String>('barcodeReader_outputRuntimeSettingsToString');
   }
 
   Stream<List<BarcodeResult>> addResultlistener() {
-    return barcodeResultEventChannel.receiveBroadcastStream(
-        {'streamName': 'barcodeReader_addResultlistener'}).map((event) {
-      return convertToTextResults(List<Map<dynamic, dynamic>>.from(event));
+    return barcodeResultEventChannel.receiveBroadcastStream({'streamName': 'barcodeReader_addResultlistener'}).map((event) {
+      return BarcodeUtilityTool.convertToTextResults(List<Map<dynamic, dynamic>>.from(event));
     });
   }
 }

@@ -4,18 +4,17 @@ import '../common.dart';
 ///
 /// When [regionMeasuredByPercentage] set to true, the values of Top, Left, Right, Bottom indicate the percentage (from 0 to 100); otherwise, they refer to the coordinates.
 class Region extends Serializer {
-  final int regionTop;
-  final int regionBottom;
-  final int regionLeft;
-  final int regionRight;
-  final bool regionMeasuredByPercentage;
+  int regionTop;
+  int regionBottom;
+  int regionLeft;
+  int regionRight;
+  bool regionMeasuredByPercentage;
 
-  Region(
-      {required this.regionTop,
-      required this.regionBottom,
-      required this.regionLeft,
-      required this.regionRight,
-      required this.regionMeasuredByPercentage})
+  Region({required this.regionTop,
+          required this.regionBottom,
+          required this.regionLeft,
+          required this.regionRight,
+          required this.regionMeasuredByPercentage})
       : assert(regionTop > 0 && regionTop < 100),
         assert(regionBottom > 0 && regionBottom < 100),
         assert(regionLeft > 0 && regionLeft < 100),

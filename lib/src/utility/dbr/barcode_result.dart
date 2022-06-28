@@ -11,15 +11,10 @@ class BarcodeResult {
   /// The corresponding localization result.
   final BarcodeLocationResult barcodeLocation;
 
-  BarcodeResult.fromJson(Map<dynamic, dynamic>json): 
-    this.barcodeText = json['barcodeText'],
-    this.barcodeFormatString = json['barcodeFormatString'],
-    this.barcodeLocation = BarcodeLocationResult.fromJson(json['barcodeLocation']);
-
-}
-
-List<BarcodeResult> convertToTextResults(List<Map<dynamic, dynamic>> res) {
-  return res.map((e) => BarcodeResult.fromJson(e)).toList();
+  BarcodeResult.fromJson(Map<dynamic, dynamic> json)
+      : this.barcodeText = json['barcodeText'],
+        this.barcodeFormatString = json['barcodeFormatString'],
+        this.barcodeLocation = BarcodeLocationResult.fromJson(json['barcodeLocation']);
 }
 
 @immutable
@@ -30,31 +25,33 @@ class BarcodeLocationResult {
   /// The coordinates of the quadrilateral points.
   final Quadrilateral location;
 
-  BarcodeLocationResult.fromJson(Map<dynamic, dynamic>json):
-  this.angle = json['angle'],
-  this.location = Quadrilateral.fromJson(json['location']);
+  BarcodeLocationResult.fromJson(Map<dynamic, dynamic> json)
+      : this.angle = json['angle'],
+        this.location = Quadrilateral.fromJson(json['location']);
 }
 
-@immutable
 class Quadrilateral {
-  final List<Point> points;
+  List<Point> points;
 
-  Quadrilateral.fromJson(Map<dynamic, dynamic>json) :
-  this.points = convertToPointsList(List<Map<dynamic, dynamic>>.from(json['pointsList']));
+  Quadrilateral.fromJson(Map<dynamic, dynamic> json)
+      : this.points = BarcodeUtilityTool.convertToPointsList(List<Map<dynamic, dynamic>>.from(json['pointsList']));
 }
 
-@immutable
 class Point {
-  final int x;
-  final int y;
-  
-  Point.fromJson(Map<dynamic, dynamic>json):
-  this.x = json['x'],
-  this.y = json['y'];
+  int x;
+  int y;
+
+  Point.fromJson(Map<dynamic, dynamic> json)
+      : this.x = json['x'],
+        this.y = json['y'];
 }
 
-List<Point> convertToPointsList(List<Map<dynamic, dynamic>> points) {
-  return points.map((e) => Point.fromJson(e)).toList();
+class BarcodeUtilityTool {
+  static List<BarcodeResult> convertToTextResults(List<Map<dynamic, dynamic>> res) {
+    return res.map((e) => BarcodeResult.fromJson(e)).toList();
+  }
+
+  static List<Point> convertToPointsList(List<Map<dynamic, dynamic>> points) {
+    return points.map((e) => Point.fromJson(e)).toList();
+  }
 }
-
-
