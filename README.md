@@ -7,8 +7,8 @@ A lightweight Flutter barcode scanner plugin implemented with [Dynamsoft Camera 
 - **iOS**
 
 ## Mobile Camera and Barcode SDK Version
-- Dynamsoft Camera Enhancer 2.1.3
-- Dynamsoft Barcode Reader 9.0.0
+- Dynamsoft Camera Enhancer 2.1.4
+- Dynamsoft Barcode Reader 9.0.2
 
 ## Build Configuration
 
