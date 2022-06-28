@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:henry_capture_vision_flutter/henry_capture_vision_flutter.dart';
 
 void main() async {
-  final String licenseKey = 'DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9';
+  // Put your license here.
+  final String licenseKey = '';
   
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
