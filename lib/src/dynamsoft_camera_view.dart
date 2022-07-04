@@ -58,7 +58,7 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     AppRouteObserver().routeObserver.unsubscribe(this);
     DynamsoftCameraView._cameraEnhancerCaller.dispose();
 
@@ -69,7 +69,7 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override

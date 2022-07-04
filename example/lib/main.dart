@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:henry_capture_vision_flutter/henry_capture_vision_flutter.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   // Put your license here.
   final String licenseKey = '';
   
