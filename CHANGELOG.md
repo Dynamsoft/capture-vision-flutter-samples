@@ -10,3 +10,8 @@
 
 * Update DBR to v9.0.2
 * Update DCE to v2.1.4
+
+## 1.0.0-beta.1
+
+* Update DBR to v9.2.10
+* Update DCE to v2.3.0
