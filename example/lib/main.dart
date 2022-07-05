@@ -8,7 +8,6 @@ void main() async {
   final String licenseKey = '';
   
   // Initialize the license so that you can use full feature of the Barcode Reader module.
-  WidgetsFlutterBinding.ensureInitialized();
   try {
     await DynamsoftBarcodeReader.initLicense(license: licenseKey);
   } catch (e) {
