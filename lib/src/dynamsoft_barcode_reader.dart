@@ -139,7 +139,7 @@ class DynamsoftBarcodeReader {
   /// ```
   /// late final DynamsoftBarcodeReader _barcodeReader;
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
-  /// await _barcodeReader.updateRuntimeSettingsFromTemplate(template: EnumDBRPresetTemplate.DEFAULT);
+  /// await _barcodeReader.updateRuntimeSettingsFromTemplate(template: EnumDBRPresetTemplate.videoDefault);
   /// ```
   Future<void> updateRuntimeSettingsFromTemplate({required EnumDBRPresetTemplate template}) {
     return _barcodeReaderCaller.updateRuntimeSettingsFromTemplate(template: template);
