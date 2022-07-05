@@ -42,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   void _startScanning() {
     Navigator.push(context,
-        new MaterialPageRoute(builder: (context) => new BarcodeScanner()));
+        MaterialPageRoute(builder: (context) => BarcodeScanner()));
   }
 
   @override
@@ -116,7 +116,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
       if (mounted) {
         setState(() {
-          this.decodeRes = res;
+          decodeRes = res;
         });
       }
     });
@@ -129,7 +129,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
 
   /// Get listItem
   Widget listItem(BuildContext context, int index) {
-    BarcodeResult res = this.decodeRes[index];
+    BarcodeResult res = decodeRes[index];
 
     return ListTileTheme(
         textColor: Colors.white,
@@ -154,8 +154,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
             Container(
               height: 600,
               child: ListView.builder(
-                itemBuilder: this.listItem,
-                itemCount: this.decodeRes.length,
+                itemBuilder: listItem,
+                itemCount: decodeRes.length,
               ),
             ),
           ],

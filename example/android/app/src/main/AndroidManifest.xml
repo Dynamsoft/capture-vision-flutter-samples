@@ -2,7 +2,6 @@
     package="com.example.barcode_reader_simple_sample">
    <application
         android:label="barcode_reader_simple_sample"
-        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
