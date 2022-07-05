@@ -195,7 +195,7 @@ class DynamsoftBarcodeReader {
   /// late final DynamsoftBarcodeReader _barcodeReader;
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
   /// try {
-  ///   String settingString = await _barcodeReader.outputRuntimeSettingsToString();
+  ///   String? settingString = await _barcodeReader.outputRuntimeSettingsToString();
   /// } catch (e) {
   ///   print('error = $e');
   /// }
