@@ -136,8 +136,6 @@
 - (void)barcodeReaderInitLicense:(id)arguments
 {
     NSString *license = [arguments valueForKey:@"license"];
-    [[DynamsoftSDKManager manager] barcodeReaderInitLicense:license];
-    
     [DynamsoftSDKManager manager].dbrLicenseVerificationCallback = ^(bool isSuccess, NSError * _Nonnull error) {
         NSString *errorString = @"";
         if (!isSuccess && error != nil) {
@@ -148,6 +146,7 @@
         };
         self.resultMethod(responseDic);
     };
+    [[DynamsoftSDKManager manager] barcodeReaderInitLicense:license];
 }
 
 - (void)barcodeReaderCreateInstance:(id)arguments
