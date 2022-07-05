@@ -1,15 +1,23 @@
+import 'package:flutter/material.dart';
+
 import '../utility/common.dart';
 import '../utility/dbr/barcode_result.dart';
 import '../utility/dbr/dbr_runtime_settings.dart';
 import '../utility/general_enums.dart';
 
 class BarcodeReaderCaller {
-  static BarcodeReaderCaller _instance = BarcodeReaderCaller();
+  static final BarcodeReaderCaller _instance = BarcodeReaderCaller();
 
   static BarcodeReaderCaller get instance => _instance;
 
   Future<bool> initLicense({required String license}) async {
-    return await methodChannel.invokeMethod('barcodeReader_initLicense', {'license': license});
+   
+    final Map jsonMap = await methodChannel.invokeMethod('barcodeReader_initLicense', {'license': license});
+    
+    if (jsonMap["isSuccess"] == false) {
+      throw FlutterError(jsonMap["errorString"]);
+    }
+    return jsonMap["isSuccess"];
   }
 
   Future<void> createInstance() {

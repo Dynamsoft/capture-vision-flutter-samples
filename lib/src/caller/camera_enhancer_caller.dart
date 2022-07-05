@@ -2,7 +2,7 @@ import '../utility/dce/camera_enhancer_scan_region.dart';
 import '../utility/common.dart';
 
 class CameraEnhancerCaller {
-  static CameraEnhancerCaller _instance = CameraEnhancerCaller();
+  static final CameraEnhancerCaller _instance = CameraEnhancerCaller();
   static CameraEnhancerCaller get instance => _instance;
 
   Future<void> dispose() async {

@@ -49,17 +49,14 @@
 
 //MARK: DBRLicenseVerificationListener
 - (void)DBRLicenseVerificationCallback:(bool)isSuccess error:(NSError *)error{
-
     if (self.dbrLicenseVerificationCallback) {
-        self.dbrLicenseVerificationCallback(isSuccess);
+        self.dbrLicenseVerificationCallback(isSuccess, error);
     }
-    
 }
 
 //MARK: DBRTextResultListener
 - (void)textResultCallback:(NSInteger)frameId imageData:(iImageData *)imageData results:(NSArray<iTextResult *> *)results
 {
-
     if (results.count > 0) {
         
         if (self.barcodeTextResultCallBack) {
@@ -67,7 +64,6 @@
         }
 
     }
-
 }
 
 @end

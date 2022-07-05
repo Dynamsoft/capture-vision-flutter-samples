@@ -1,6 +1,6 @@
 import '../utility/common.dart';
 class AppLifecycleCaller {
-  static AppLifecycleCaller _instance = AppLifecycleCaller();
+  static final AppLifecycleCaller _instance = AppLifecycleCaller();
   static AppLifecycleCaller get instance => _instance;
 
   /// View did load.

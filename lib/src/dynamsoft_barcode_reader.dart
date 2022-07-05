@@ -14,7 +14,7 @@ class DynamsoftBarcodeReader {
   static BarcodeReaderCaller get _barcodeReaderCaller =>
       BarcodeReaderCaller.instance;
 
-  static DynamsoftBarcodeReader _barcodeReader = DynamsoftBarcodeReader._();
+  static final DynamsoftBarcodeReader _barcodeReader = DynamsoftBarcodeReader._();
 
   /// Initializes the barcode reader license and connects to the specified server for online verification.
   ///
@@ -25,7 +25,11 @@ class DynamsoftBarcodeReader {
   /// You can use [initLicense] like this:
   ///
   /// ```
-  /// await DynamsoftBarcodeReader.initLicense(license: '*********');
+  /// try {
+  ///     await DynamsoftBarcodeReader.initLicense(license: '*********');
+  /// } catch (e) {
+  ///     print('license error = $e');
+  /// }
   /// ```
   static Future<bool> initLicense({required String license}) {
     return _barcodeReaderCaller.initLicense(license: license);

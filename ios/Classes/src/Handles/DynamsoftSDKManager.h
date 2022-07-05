@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void(^barcodeTextResultCallBack)(NSArray<iTextResult *> *results);
 
 /// DBRLicenseVerificationCallback
-@property (nonatomic, copy) void(^dbrLicenseVerificationCallback)(bool isSuccess);
+@property (nonatomic, copy) void(^dbrLicenseVerificationCallback)(bool isSuccess, NSError *error);
 
 @end
 

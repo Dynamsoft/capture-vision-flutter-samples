@@ -109,8 +109,8 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
       return UiKitView(
         viewType: dynamsoftFactory,
         creationParams: {
-          'cameraWidth': this.width,
-          'cameraHeight': this.height
+          'cameraWidth': width,
+          'cameraHeight': height
         },
         creationParamsCodec: const StandardMessageCodec(),
       );
@@ -118,8 +118,8 @@ class _DynamsoftCameraViewState extends State<DynamsoftCameraView>
       return AndroidView(
         viewType: dynamsoftFactory,
         creationParams: {
-          'cameraWidth': this.width,
-          'cameraHeight': this.height
+          'cameraWidth': width,
+          'cameraHeight': height
         },
         creationParamsCodec: const StandardMessageCodec(),
       );
