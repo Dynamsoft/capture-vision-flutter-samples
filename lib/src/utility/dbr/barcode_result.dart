@@ -12,9 +12,9 @@ class BarcodeResult {
   final BarcodeLocationResult barcodeLocation;
 
   BarcodeResult.fromJson(Map<dynamic, dynamic> json)
-      : this.barcodeText = json['barcodeText'],
-        this.barcodeFormatString = json['barcodeFormatString'],
-        this.barcodeLocation = BarcodeLocationResult.fromJson(json['barcodeLocation']);
+      : barcodeText = json['barcodeText'],
+        barcodeFormatString = json['barcodeFormatString'],
+        barcodeLocation = BarcodeLocationResult.fromJson(json['barcodeLocation']);
 }
 
 @immutable
@@ -26,15 +26,15 @@ class BarcodeLocationResult {
   final Quadrilateral location;
 
   BarcodeLocationResult.fromJson(Map<dynamic, dynamic> json)
-      : this.angle = json['angle'],
-        this.location = Quadrilateral.fromJson(json['location']);
+      : angle = json['angle'],
+        location = Quadrilateral.fromJson(json['location']);
 }
 
 class Quadrilateral {
   List<Point> points;
 
   Quadrilateral.fromJson(Map<dynamic, dynamic> json)
-      : this.points = BarcodeUtilityTool.convertToPointsList(List<Map<dynamic, dynamic>>.from(json['pointsList']));
+      : points = BarcodeUtilityTool.convertToPointsList(List<Map<dynamic, dynamic>>.from(json['pointsList']));
 }
 
 class Point {
@@ -42,8 +42,8 @@ class Point {
   int y;
 
   Point.fromJson(Map<dynamic, dynamic> json)
-      : this.x = json['x'],
-        this.y = json['y'];
+      : x = json['x'],
+        y = json['y'];
 }
 
 class BarcodeUtilityTool {

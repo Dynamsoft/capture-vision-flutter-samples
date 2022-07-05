@@ -9,18 +9,18 @@ class DBRRuntimeSettings extends Serializer {
   DBRRuntimeSettings._();
 
   DBRRuntimeSettings.fromJson(Map<dynamic, dynamic> json)
-      : this.barcodeFormatIds = json['barcodeFormatIds'],
-        this.barcodeFormatIds_2 = json['barcodeFormatIds_2'],
-        this.expectedBarcodeCount = json['expectedBarcodeCount'],
-        this.timeout = json['timeout'];
+      : barcodeFormatIds = json['barcodeFormatIds'],
+        barcodeFormatIds_2 = json['barcodeFormatIds_2'],
+        expectedBarcodeCount = json['expectedBarcodeCount'],
+        timeout = json['timeout'];
 
   @override
   Map<String, dynamic> toJson() {
     return {
-      'barcodeFormatIds': this.barcodeFormatIds,
-      'barcodeFormatIds_2': this.barcodeFormatIds_2,
-      'expectedBarcodeCount': this.expectedBarcodeCount,
-      'timeout': this.timeout
+      'barcodeFormatIds': barcodeFormatIds,
+      'barcodeFormatIds_2': barcodeFormatIds_2,
+      'expectedBarcodeCount': expectedBarcodeCount,
+      'timeout': timeout
     };
   }
 }
