@@ -1,5 +1,6 @@
 package com.dynamsoft.dcv.flutter.handles;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.dynamsoft.dbr.BarcodeReader;
