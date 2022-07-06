@@ -77,6 +77,7 @@ public class DynamsoftSDKManager {
                     errorMsg = e.getMessage();
                 }
 
+                @SuppressWarnings("unchecked")
                 Map<String, Object> licenseDic = new HashMap<String, Object>();
                 licenseDic.put("isSuccess", b);
                 licenseDic.put("errorString", errorMsg);
