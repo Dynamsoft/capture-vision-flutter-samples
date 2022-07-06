@@ -77,7 +77,7 @@ public class DynamsoftSDKManager {
                     errorMsg = e.getMessage();
                 }
 
-                Map<String, Object> licenseDic = new HashMap<>();
+                Map<String, Object> licenseDic = new HashMap<String, Object>();
                 licenseDic.put("isSuccess", b);
                 licenseDic.put("errorString", errorMsg);
 
