@@ -91,10 +91,10 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     DBRRuntimeSettings currentSettings =
         await _barcodeReader.getRuntimeSettings();
     // Set the barcode format to read.
-    currentSettings.barcodeFormatIds = EnumBarcodeFormat.oneD |
-        EnumBarcodeFormat.qrCode |
-        EnumBarcodeFormat.pdf417|
-        EnumBarcodeFormat.dataMatrix;
+    currentSettings.barcodeFormatIds = EnumBarcodeFormat.BF_ONED |
+        EnumBarcodeFormat.BF_QR_CODE |
+        EnumBarcodeFormat.BF_PDF417|
+        EnumBarcodeFormat.BF_DATAMATRIX;
     // Set the expected barcode count to 0 when you are not sure how many barcodes you are scanning.
     // Set the expected barcode count to 1 can maximize the barcode decoding speed.
     currentSettings.expectedBarcodeCount = 0;

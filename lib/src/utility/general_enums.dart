@@ -1,31 +1,31 @@
 /// Describes the PresetTemplate.
 enum EnumDBRPresetTemplate {
-  videoDefault,
-  videoSingleBarcode,
-  videoSpeedFirst,
-  videoReadRateFirst,
-  imageSpeedFirst,
-  imageReadRateFirst,
-  imageDefault
+  DEFAULT,
+  VIDEO_SINGLE_BARCODE,
+  VIDEO_SPEED_FIRST,
+  VIDEO_READ_RATE_FIRST,
+  IMAGE_SPEED_FIRST,
+  IMAGE_READ_RATE_FIRST,
+  IMAGE_DEFAULT
 }
 
 extension PresetTemplateSerializer on EnumDBRPresetTemplate {
   EnumDBRPresetTemplate fromJson(String? jsonValue) {
     switch (jsonValue) {
       case 'default':
-        return EnumDBRPresetTemplate.videoDefault;
+        return EnumDBRPresetTemplate.DEFAULT;
       case 'videoSingleBarcode':
-        return EnumDBRPresetTemplate.videoSingleBarcode;
+        return EnumDBRPresetTemplate.VIDEO_SINGLE_BARCODE;
       case 'videoSpeedFirst':
-        return EnumDBRPresetTemplate.videoSpeedFirst;
+        return EnumDBRPresetTemplate.VIDEO_SPEED_FIRST;
       case 'videoReadRateFirst':
-        return EnumDBRPresetTemplate.videoReadRateFirst;
+        return EnumDBRPresetTemplate.VIDEO_READ_RATE_FIRST;
       case 'imageSpeedFirst':
-        return EnumDBRPresetTemplate.imageSpeedFirst;
+        return EnumDBRPresetTemplate.IMAGE_SPEED_FIRST;
       case 'imageReadRateFirst':
-        return EnumDBRPresetTemplate.imageReadRateFirst;
+        return EnumDBRPresetTemplate.IMAGE_READ_RATE_FIRST;
       case 'imageDefault':
-        return EnumDBRPresetTemplate.imageDefault;
+        return EnumDBRPresetTemplate.IMAGE_DEFAULT;  
       default:
         throw Exception("Missing PresetTemplate for '$jsonValue'");
     }
@@ -34,19 +34,19 @@ extension PresetTemplateSerializer on EnumDBRPresetTemplate {
   String get jsonValue => _jsonValue();
   String _jsonValue() {
     switch (this) {
-      case EnumDBRPresetTemplate.videoDefault:
+      case EnumDBRPresetTemplate.DEFAULT:
         return 'default';
-      case EnumDBRPresetTemplate.videoSingleBarcode:
+      case EnumDBRPresetTemplate.VIDEO_SINGLE_BARCODE:
         return 'videoSingleBarcode';
-      case EnumDBRPresetTemplate.videoSpeedFirst:
+      case EnumDBRPresetTemplate.VIDEO_SPEED_FIRST:
         return 'videoSpeedFirst';
-      case EnumDBRPresetTemplate.videoReadRateFirst:
+      case EnumDBRPresetTemplate.VIDEO_READ_RATE_FIRST:
         return 'videoReadRateFirst';
-      case EnumDBRPresetTemplate.imageSpeedFirst:
+      case EnumDBRPresetTemplate.IMAGE_SPEED_FIRST:
         return 'imageSpeedFirst';
-      case EnumDBRPresetTemplate.imageReadRateFirst:
+      case EnumDBRPresetTemplate.IMAGE_READ_RATE_FIRST:
         return 'imageReadRateFirst';
-      case EnumDBRPresetTemplate.imageDefault:
+      case EnumDBRPresetTemplate.IMAGE_DEFAULT:
         return 'imageDefault';  
       default:
         throw Exception("Missing Json Value for '$this' PresetTemplate");
