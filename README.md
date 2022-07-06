@@ -22,11 +22,10 @@
   - [Build the Widget](#build-the-widget)
   - [Configure Camera Permissions](#configure-camera-permissions)
   - [Run the Project](#run-the-project)
-- [Customizing the Barcode Reader](#customizing-the-barcode-reader)
-  - [Using the Settings Templates](#using-the-settings-templates)
-  - [Using the DBRRuntimeSettings Interface](#using-the-dbrruntimesettings-interface)
-  - [Customizing the Scan Region](#customizing-the-scan-region)
-- [Licensing](#licensing)
+- [Samples](#samples)
+- [API References](#api-references)
+- [License](#license)
+- [Contact](#contact)
 
 ## System Requirements
 
