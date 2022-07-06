@@ -72,19 +72,23 @@ public class DynamsoftSDKManager {
         BarcodeReader.initLicense(license, new DBRLicenseVerificationListener() {
             @Override
             public void DBRLicenseVerificationCallback(boolean b, Exception e) {
+                String errorMsg = "";
                 if (!b) {
-                    e.printStackTrace();
+                    errorMsg = e.getMessage();
                 }
+
+                Map<String, Object> licenseDic = new HashMap<>();
+                licenseDic.put("isSuccess", b);
+                licenseDic.put("errorString", errorMsg);
+
                 Common.pluginActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        resultMethod.success(b);
+                        resultMethod.success(licenseDic);
                     }
                 });
-
             }
         });
-
     }
 
     /**
