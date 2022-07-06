@@ -14,16 +14,19 @@
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
 - [Build Your Barcode Scanner App](#build-your-barcode-scanner-app)
+  - [Set up Development Environment](#set-up-development-environment)
   - [Initialize the Project](#initialize-the-project)
   - [Include the Library](#include-the-library)
+  - [License Activation](#license-activation)
   - [Configure the Barcode Reader](#configure-the-barcode-reader)
-  - [Rendering the UI](#rendering-the-ui)
+  - [Build the Widget](#build-the-widget)
   - [Configure Camera Permissions](#configure-camera-permissions)
   - [Run the Project](#run-the-project)
-- [Samples](#samples)
-- [API References](#api-references)
-- [License](#license)
-- [Contact](#contact)
+- [Customizing the Barcode Reader](#customizing-the-barcode-reader)
+  - [Using the Settings Templates](#using-the-settings-templates)
+  - [Using the DBRRuntimeSettings Interface](#using-the-dbrruntimesettings-interface)
+  - [Customizing the Scan Region](#customizing-the-scan-region)
+- [Licensing](#licensing)
 
 ## System Requirements
 
@@ -64,6 +67,10 @@ dependencies:
 
 Now you will learn how to create a simple barcode scanner using Dynamsoft Capture Vision Flutter SDK.
 
+### Set up Development Environment
+
+If you are a beginner with Flutter, please follow the guide on the <a href="https://docs.flutter.dev/get-started/install" target="_blank">Flutter official website</a> to set up the development environment.
+
 ### Initialize the Project
 
 Create a new Flutter project
@@ -87,8 +94,8 @@ The barcode reading module of Dynamsoft Capture Vision needs a valid license to 
 ```dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Put your license here.
-  final String licenseKey = '';
+  // Put your Dynamsoft Barcode Reader license here.
+  const String licenseKey = '';
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
     await DynamsoftBarcodeReader.initLicense(license: licenseKey);
@@ -104,22 +111,25 @@ void main() async {
 
 In this section, we are going to work on the **_MyHomePageState** class in the newly created project to add the barcode decoding feature.
 
-Define the following attributes:
-
-```dart
-late final DynamsoftBarcodeReader _barcodeReader;
-final DynamsoftCameraView _cameraView = DynamsoftCameraView();
-List<BarcodeResult> decodeRes = [];
-```
-
-- `barcodeReader`: The object that implements barcode decoding feature. Users can configure barcode decoding settings via this object.
-- `cameraView`: The camera view that displays the video streaming.
-- `decodeResults`: An object that will be used to receive and stores barcode decoding result.
-
-Add in the **initState** add an **async** method to initialize the barcode reader.
+Add the following instance variables:
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
+  late final DynamsoftBarcodeReader _barcodeReader;
+  final DynamsoftCameraView _cameraView = DynamsoftCameraView();
+  List<BarcodeResult> decodeResults = [];
+}
+```
+
+- `barcodeReader`: The object that implements the barcode decoding feature. Users can configure barcode decoding settings via this object.
+- `cameraView`: The camera view that displays the video streaming.
+- `decodeResults`: An object that will be used to receive and stores barcode decoding result.
+
+Add **_configDBR** method to initialize the barcode reader:
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  ...
   @override
   void initState() {
     super.initState();
@@ -148,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-Add configurations to parse and display the barcode decoding results.
+Add configurations to parse and display the barcode decoding results:
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
@@ -201,23 +211,57 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ### Configure Camera Permissions
 
-Before you run the project on iOS devices, you have to add the camera permission first. You can use the following steps to add the camera permission.
+Before you run the project on iOS devices, you have to add the camera permission first.
 
-1. In the **ios** folder of your project, find **Runner.xcworkspace**. Open it.
-2. In the **info.plist** of the project, add **Privacy - Camera Usage Description**.
+In the project folder, go to file **ios/Runner/info.plist**, add the following code for requesting camera permission.
+
+```xml
+<plist version="1.0">
+<dict>
+  ...
+  <key>NSCameraUsageDescription</key>
+  <string>Request your authorization.</string>
+  ...
+</dict>
+```
 
 ### Run the Project
 
-In terminal, go to the project folder and run the following command:
+#### Run Android on Windows
+
+Go to the file **build.gradle(app)**, update the `minSdkVersion` to 21.
+
+```gradle 
+
+```java
+android {
+   defaultConfig {
+      ...
+      minSdkVersion 21
+      ...
+   }
+}
+```
+
+In the root of your project run the following command to build and install the app:
 
 ```bash
 flutter run
 ```
 
-> Notes:
->
-> - When running Android, you might have to add `minSdkVersion 21` in your build.gradle(app) before running the project on Android devices.
-> - When running iOS, you might have to open the Xcode and go to the **Deployment Info** section of the project to switch the iOS version to 10.0+.
+#### Run iOS on macOS
+
+Go to the **podfile** in **ios** folder and add the following code at the top of the file:
+
+```objc
+platform:ios, '10.0'
+```
+
+In the root of your project run the following command to build and install the app:
+
+```bash
+flutter run
+```
 
 ## Samples
 
