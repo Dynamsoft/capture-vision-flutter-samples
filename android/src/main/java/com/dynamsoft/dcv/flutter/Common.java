@@ -38,6 +38,8 @@ public class Common {
     public static final String cameraEnhancer_setScanRegion = "cameraEnhancer_setScanRegion";
     public static final String cameraEnhancer_setScanRegionVisible = "cameraEnhancer_setScanRegionVisible";
     public static final String cameraEnhancer_setOverlayVisible = "cameraEnhancer_setOverlayVisible";
+    public static final String cameraEnhancer_openCamera = "cameraEnhancer_openCamera";
+    public static final String cameraEnhancer_closeCamera = "cameraEnhancer_closeCamera";
 
     /// Navigation and lifecycle methods
     public static final String navigation_didPopNext = "navigation_didPopNext";

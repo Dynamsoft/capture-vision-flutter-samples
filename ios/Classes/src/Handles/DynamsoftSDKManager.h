@@ -11,6 +11,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, DynamsoftBarcodeReaderState) {
+    DynamsoftBarcodeReaderStateStartScanning,
+    DynamsoftBarcodeReaderStateStopScanning
+};
+
+typedef NS_ENUM(NSInteger, DynamsoftCameraEnhancerState) {
+    DynamsoftCameraEnhancerStateOpen,
+    DynamsoftCameraEnhancerStateClose
+};
+
 @interface DynamsoftSDKManager : NSObject<NSCopying, NSMutableCopying, DBRTextResultListener>
 
 + (DynamsoftSDKManager *)manager;
@@ -21,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) DynamsoftCameraEnhancer *cameraEnhancer;
 
 @property (nonatomic, assign) BOOL barcodeReaderLinkCameraEnhancerIsFinished;
+
+@property (nonatomic, assign) DynamsoftBarcodeReaderState dynamsoftBarcodeReaderState;
+
+@property (nonatomic, assign) DynamsoftCameraEnhancerState dynamsoftCameraEnhancerState;
 
 /// DBR set license
 - (void)barcodeReaderInitLicense:(NSString *)license;

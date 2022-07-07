@@ -36,6 +36,8 @@ static NSString *const cameraEnhancer_dispose = @"cameraEnhancer_dispose";
 static NSString *const cameraEnhancer_setScanRegion = @"cameraEnhancer_setScanRegion";
 static NSString *const cameraEnhancer_setScanRegionVisible = @"cameraEnhancer_setScanRegionVisible";
 static NSString *const cameraEnhancer_setOverlayVisible = @"cameraEnhancer_setOverlayVisible";
+static NSString *const cameraEnhancer_openCamera = @"cameraEnhancer_openCamera";
+static NSString *const cameraEnhancer_closeCamera = @"cameraEnhancer_closeCamera";
 
 /// Navigation methods
 static NSString *const navigation_didPopNext = @"navigation_didPopNext";

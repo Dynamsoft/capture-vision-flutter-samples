@@ -113,11 +113,15 @@
     else if ([cameraEnhancer_dispose isEqualToString:call.method]) {
         [self cameraEnhancerDispose:call.arguments];
     } else if ([cameraEnhancer_setScanRegion isEqualToString:call.method]) {
-        [self cameraEnhancerSetScanRegion:call.arguments];
+        [self cameraEnhancer_setScanRegion:call.arguments];
     } else if ([cameraEnhancer_setScanRegionVisible isEqualToString:call.method]) {
-        [self cameraEnhancerSetScanRegionVisible:call.arguments];
+        [self cameraEnhancer_setScanRegionVisible:call.arguments];
     } else if ([cameraEnhancer_setOverlayVisible isEqualToString:call.method]) {
         [self cameraEnhancer_setOverlayVisible:call.arguments];
+    } else if ([cameraEnhancer_openCamera isEqualToString:call.method]) {
+        [self cameraEnhancer_openCamera:call.method];
+    } else if ([cameraEnhancer_closeCamera isEqualToString:call.method]) {
+        [self cameraEnhancer_closeCamera:call.method];
     }
     
     // Navigation methods
@@ -266,7 +270,7 @@
     self.resultMethod(nil);
 }
 
-- (void)cameraEnhancerSetScanRegion:(id)arguments
+- (void)cameraEnhancer_setScanRegion:(id)arguments
 {
 
     id scanRegion = [arguments valueForKey:@"scanRegion"] == [NSNull null] ? nil : [[DynamsoftConvertManager manager] aynlyzeiRegionDefinitionFromJson:arguments];
@@ -281,7 +285,7 @@
     }
 }
 
-- (void)cameraEnhancerSetScanRegionVisible:(id)arguments
+- (void)cameraEnhancer_setScanRegionVisible:(id)arguments
 {
     BOOL isVisible = [[arguments valueForKey:@"isVisible"] boolValue];
     [[DynamsoftSDKManager manager].cameraEnhancer setScanRegionVisible:isVisible];
@@ -297,6 +301,19 @@
     self.resultMethod(nil);
 }
 
+- (void)cameraEnhancer_openCamera:(id)arguments {
+    if ([DynamsoftSDKManager manager].cameraEnhancer != nil && [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished == true) {
+        [[DynamsoftSDKManager manager].cameraEnhancer open];
+    }
+    self.resultMethod(nil);
+}
+
+- (void)cameraEnhancer_closeCamera:(id)arguments {
+    if ([DynamsoftSDKManager manager].cameraEnhancer != nil && [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished == true) {
+        [[DynamsoftSDKManager manager].cameraEnhancer close];
+    }
+    self.resultMethod(nil);
+}
 
 //MARK: Application lifecycle
 - (void)navigationDidPopNext

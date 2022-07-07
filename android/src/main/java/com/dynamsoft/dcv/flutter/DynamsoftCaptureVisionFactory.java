@@ -156,6 +156,12 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 			case Common.cameraEnhancer_setOverlayVisible:
 				cameraEnhancerSetOverlayVisible(call.arguments, result);
 				break;
+			case Common.cameraEnhancer_openCamera:
+				cameraEnhancerOpenCamera(call.arguments, result);
+				break;
+			case Common.cameraEnhancer_closeCamera:
+				cameraEnhancerCloseCamera(call.arguments, result);
+				break;
 
 			/// Navigation and lifecycle methods
 			case Common.navigation_didPushNext:
@@ -308,6 +314,28 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 		result.success(null);
 	}
 
+	private void cameraEnhancerOpenCamera(Object arguments, Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+			try {
+				DynamsoftSDKManager.manager().cameraEnhancer.open();
+				result.success(null);
+			} catch (CameraEnhancerException e) {
+				result.success(null);
+			}
+		}
+	}
+
+	private void cameraEnhancerCloseCamera(Object arguments, Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+			try {
+				DynamsoftSDKManager.manager().cameraEnhancer.close();
+				result.success(null);
+			} catch (CameraEnhancerException e) {
+				result.success(null);
+			}
+		}
+	}
+
 	/// Navigation and lifecycle methods
 	private void navigationDidPopNext(Result result) {
 		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
@@ -315,9 +343,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				DynamsoftSDKManager.manager().cameraEnhancer.open();
 				result.success(null);
 			} catch (CameraEnhancerException e) {
-				e.printStackTrace();
 				result.error(Common.exceptionTip, e.getMessage(), null);
-
 			}
 		}
 	}
@@ -327,11 +353,8 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 			try {
 				DynamsoftSDKManager.manager().cameraEnhancer.close();
 				result.success(null);
-
 			} catch (CameraEnhancerException e) {
-				e.printStackTrace();
 				result.error(Common.exceptionTip, e.getMessage(), null);
-
 			}
 		}
 	}
@@ -343,9 +366,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				result.success(null);
 
 			} catch (CameraEnhancerException e) {
-				e.printStackTrace();
 				result.error(Common.exceptionTip, e.getMessage(), null);
-
 			}
 		}
 
@@ -356,11 +377,8 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 			try {
 				DynamsoftSDKManager.manager().cameraEnhancer.close();
 				result.success(null);
-
 			} catch (CameraEnhancerException e) {
-				e.printStackTrace();
 				result.error(Common.exceptionTip, e.getMessage(), null);
-
 			}
 		}
 	}

@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,11 +11,9 @@ import 'misc/dcv_channel_common.dart';
 import 'common/basic_structures.dart';
 
 class DynamsoftCameraView extends StatefulWidget {
-  static CameraEnhancerCaller get _cameraEnhancerCaller =>
-      CameraEnhancerCaller.instance;
+  static CameraEnhancerCaller get _cameraEnhancerCaller => CameraEnhancerCaller.instance;
 
-  static AppLifecycleCaller get _appLifecycleCaller =>
-      AppLifecycleCaller.instance;
+  static AppLifecycleCaller get _appLifecycleCaller => AppLifecycleCaller.instance;
 
   DynamsoftCameraView({Key? key}) : super(key: key);
 
@@ -30,15 +29,13 @@ class DynamsoftCameraView extends StatefulWidget {
   /// Region scanRegion = Region(regionTop: 20, regionBottom: 80, regionLeft: 20, regionRight: 80, regionMeasuredByPercentage: true);
   /// _cameraView.scanRegion = scanRegion;
   /// ```
-  set scanRegion(Region? region) =>
-      _cameraEnhancerCaller.setScanRegion(region: region);
+  set scanRegion(Region? region) => _cameraEnhancerCaller.setScanRegion(region: region);
 
   /// Set the camera whether to display the scan region on the UI.
   ///
   /// The [isVisible] = `true`, the scan region will be displayed on the UI.
   /// The [isVisible] = `false`, the scan region will not be displayed.
-  set scanRegionVisible(bool isVisible) =>
-      _cameraEnhancerCaller.setScanRegionVisible(isVisible: isVisible);
+  set scanRegionVisible(bool isVisible) => _cameraEnhancerCaller.setScanRegionVisible(isVisible: isVisible);
 
   /// OverlayVisible is the property that controls whether highlighted overlays will be displayed on decoded barcodes.
   ///
@@ -46,6 +43,12 @@ class DynamsoftCameraView extends StatefulWidget {
   /// The [isVisible] = `false`, the overlays will not be displayed.
   set overlayVisible(bool isVisible) =>
       _cameraEnhancerCaller.setOverlayVisible(isVisible: isVisible);
+
+  /// Open the camera.
+  Future<void> openCamera() => _cameraEnhancerCaller.openCamera();
+
+  /// Close the camera.
+  Future<void> closeCamera() => _cameraEnhancerCaller.closeCamera();
 
   @override
   State<DynamsoftCameraView> createState() => _DynamsoftCameraViewState();
