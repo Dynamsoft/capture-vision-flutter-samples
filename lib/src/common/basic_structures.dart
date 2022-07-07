@@ -1,4 +1,5 @@
-import '../common.dart';
+import '../misc/dcv_utility.dart';
+import '../misc/dcv_serializer.dart';
 
 /// Describes the scan region of the camera.
 ///
@@ -30,4 +31,21 @@ class Region extends Serializer {
       'regionMeasuredByPercentage': regionMeasuredByPercentage
     };
   }
+}
+
+
+class Quadrilateral {
+  List<Point> points;
+
+  Quadrilateral.fromJson(Map<dynamic, dynamic> json)
+      : points = BarcodeUtilityTool.convertToPointsList(List<Map<dynamic, dynamic>>.from(json['pointsList']));
+}
+
+class Point {
+  int x;
+  int y;
+
+  Point.fromJson(Map<dynamic, dynamic> json)
+      : x = json['x'],
+        y = json['y'];
 }

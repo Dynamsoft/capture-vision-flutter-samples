@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../utility/common.dart';
-import '../utility/dbr/barcode_result.dart';
-import '../utility/dbr/dbr_runtime_settings.dart';
-import '../utility/general_enums.dart';
+
+import '../dbr/barcode_result.dart';
+import '../dbr/dbr_runtime_settings.dart';
+import '../dbr/general_enums.dart';
+import '../misc/dcv_utility.dart';
+import '../misc/dcv_channel_common.dart';
 
 class BarcodeReaderCaller {
   static final BarcodeReaderCaller _instance = BarcodeReaderCaller();

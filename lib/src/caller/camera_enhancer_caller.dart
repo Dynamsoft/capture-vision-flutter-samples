@@ -1,5 +1,5 @@
-import '../utility/dce/camera_enhancer_scan_region.dart';
-import '../utility/common.dart';
+import '../common/basic_structures.dart';
+import '../misc/dcv_channel_common.dart';
 
 class CameraEnhancerCaller {
   static final CameraEnhancerCaller _instance = CameraEnhancerCaller();

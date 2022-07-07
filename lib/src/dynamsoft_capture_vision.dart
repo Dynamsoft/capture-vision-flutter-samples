@@ -1,12 +1,7 @@
 import 'caller/app_route_observer.dart';
 import 'package:flutter/material.dart';
 
-class DynamsoftCaptureVisionFlutter {
-  /// Return the version of Dynamsoft plugin.
-  static String get getVersion {
-    return '0.0.1';
-  }
-
+class DynamsoftCaptureVision {
   /// Add an observer for Dynamsoft plugin.
   /// Please register this method in your App.
   ///

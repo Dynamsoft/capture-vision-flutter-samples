@@ -1,4 +1,4 @@
-import '../common.dart';
+import '../misc/dcv_serializer.dart';
 
 class DBRRuntimeSettings extends Serializer {
   int? barcodeFormatIds;

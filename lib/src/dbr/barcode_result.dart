@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../common/basic_structures.dart';
 
 @immutable
 class BarcodeResult {
@@ -28,30 +29,4 @@ class BarcodeLocationResult {
   BarcodeLocationResult.fromJson(Map<dynamic, dynamic> json)
       : angle = json['angle'],
         location = Quadrilateral.fromJson(json['location']);
-}
-
-class Quadrilateral {
-  List<Point> points;
-
-  Quadrilateral.fromJson(Map<dynamic, dynamic> json)
-      : points = BarcodeUtilityTool.convertToPointsList(List<Map<dynamic, dynamic>>.from(json['pointsList']));
-}
-
-class Point {
-  int x;
-  int y;
-
-  Point.fromJson(Map<dynamic, dynamic> json)
-      : x = json['x'],
-        y = json['y'];
-}
-
-class BarcodeUtilityTool {
-  static List<BarcodeResult> convertToBarcodeResults(List<Map<dynamic, dynamic>> res) {
-    return res.map((e) => BarcodeResult.fromJson(e)).toList();
-  }
-
-  static List<Point> convertToPointsList(List<Map<dynamic, dynamic>> points) {
-    return points.map((e) => Point.fromJson(e)).toList();
-  }
 }

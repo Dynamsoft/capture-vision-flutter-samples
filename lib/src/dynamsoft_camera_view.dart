@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'caller/app_life_cycle_caller.dart';
 import 'caller/app_route_observer.dart';
 import 'caller/camera_enhancer_caller.dart';
-import 'utility/common.dart';
-import 'utility/dce/camera_enhancer_scan_region.dart';
+import 'misc/dcv_channel_common.dart';
+import 'common/basic_structures.dart';
 
 class DynamsoftCameraView extends StatefulWidget {
   static CameraEnhancerCaller get _cameraEnhancerCaller =>

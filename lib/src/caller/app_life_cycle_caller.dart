@@ -1,4 +1,5 @@
-import '../utility/common.dart';
+import '../misc/dcv_channel_common.dart';
+
 class AppLifecycleCaller {
   static final AppLifecycleCaller _instance = AppLifecycleCaller();
   static AppLifecycleCaller get instance => _instance;

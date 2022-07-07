@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 
 import 'caller/barcode_reader_caller.dart';
-import 'utility/dbr/dbr_runtime_settings.dart';
-import 'utility/general_enums.dart';
-import 'utility/dbr/barcode_result.dart';
+import 'dbr/dbr_runtime_settings.dart';
+import 'dbr/general_enums.dart';
+import 'dbr/barcode_result.dart';
 
 /// Defines a class that provides functions for working with extracting barcode data.
 ///
