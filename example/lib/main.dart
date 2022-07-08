@@ -3,10 +3,10 @@ import 'package:henry_capture_vision_flutter/henry_capture_vision_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Put your license here.
-  final String licenseKey = '';
-  
+
+  // Put your Dynamsoft Barcode Reader license here.
+  const String licenseKey = '';
+
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
     await DynamsoftBarcodeReader.initLicense(license: licenseKey);
@@ -41,8 +41,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _startScanning() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => BarcodeScanner()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => BarcodeScanner()));
   }
 
   @override
@@ -56,12 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: _startScanning,
           child: Text('Start Scanning'),
           style: TextButton.styleFrom(
-            primary: Colors.white,
-            backgroundColor: Colors.blue
-            ),
-          ),
+              primary: Colors.white, backgroundColor: Colors.blue),
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -93,7 +91,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     // Set the barcode format to read.
     currentSettings.barcodeFormatIds = EnumBarcodeFormat.BF_ONED |
         EnumBarcodeFormat.BF_QR_CODE |
-        EnumBarcodeFormat.BF_PDF417|
+        EnumBarcodeFormat.BF_PDF417 |
         EnumBarcodeFormat.BF_DATAMATRIX;
     // Set the expected barcode count to 0 when you are not sure how many barcodes you are scanning.
     // Set the expected barcode count to 1 can maximize the barcode decoding speed.
@@ -112,7 +110,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
 
-    // Stream listener to handle callback when barcode result is returned. 
+    // Stream listener to handle callback when barcode result is returned.
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
       if (mounted) {
         setState(() {
