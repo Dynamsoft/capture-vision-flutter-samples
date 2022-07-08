@@ -19,6 +19,10 @@
 
 * Fix bug.
 
+## 0.0.6
+
+* Fix bug.
+
 ## 1.0.0-beta.1
 
 * Update DBR to v9.2.10
