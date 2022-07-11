@@ -16,10 +16,10 @@ class Region extends Serializer {
           required this.regionLeft,
           required this.regionRight,
           required this.regionMeasuredByPercentage})
-      : assert(regionTop > 0 && regionTop < 100),
-        assert(regionBottom > 0 && regionBottom < 100),
-        assert(regionLeft > 0 && regionLeft < 100),
-        assert(regionRight > 0 && regionRight < 100);
+      : assert(regionTop >= 0 && regionTop <= 100),
+        assert(regionBottom >= 0 && regionBottom <= 100),
+        assert(regionLeft >= 0 && regionLeft <= 100),
+        assert(regionRight >= 0 && regionRight <= 100);
 
   @override
   Map<String, dynamic> toJson() {
