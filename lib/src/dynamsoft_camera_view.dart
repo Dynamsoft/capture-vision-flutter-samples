@@ -1,14 +1,14 @@
-import 'dart:ffi';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'dart:io';
 
 import 'caller/app_life_cycle_caller.dart';
 import 'caller/app_route_observer.dart';
 import 'caller/camera_enhancer_caller.dart';
-import 'misc/dcv_channel_common.dart';
 import 'common/basic_structures.dart';
+import 'misc/dcv_channel_common.dart';
+
 
 class DynamsoftCameraView extends StatefulWidget {
   static CameraEnhancerCaller get _cameraEnhancerCaller => CameraEnhancerCaller.instance;

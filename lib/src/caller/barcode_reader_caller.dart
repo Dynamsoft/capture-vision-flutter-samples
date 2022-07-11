@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../dbr/barcode_result.dart';
 import '../dbr/dbr_runtime_settings.dart';
 import '../dbr/general_enums.dart';
