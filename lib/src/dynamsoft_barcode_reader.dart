@@ -115,13 +115,11 @@ class DynamsoftBarcodeReader {
   /// ```
   /// late final DynamsoftBarcodeReader _barcodeReader;
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
-  /// DBRRuntimeSettings settings = DBRRuntimeSettings();
-  /// settings.barcodeFormatIds = EnumBarcodeFormat.BF_ALL;
-  /// settings.barcodeFormatIds_2 = EnumBarcodeFormat_2.BF2_NULL;
-  /// settings.expectedBarcodeCount = 0;
-  ///  settings.timeout = 5000;
   /// try {
-  ///   await _barcodeReader.updateRuntimeSettings(settings: settings);
+  ///   DBRRuntimeSettings settings = await _barcodeReader.getRuntimeSettings();
+  ///   settings.barcodeFormatIds = EnumBarcodeFormat.BF_ALL;
+  ///   settings.barcodeFormatIds_2 = EnumBarcodeFormat2.BF2_NULL;
+  ///   _barcodeReader.updateRuntimeSettings(settings: currentSettings);
   /// } catch (e) {
   ///   print('error = $e');
   /// }
