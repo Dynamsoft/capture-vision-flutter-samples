@@ -231,8 +231,6 @@ In the project folder, go to file **ios/Runner/info.plist**, add the following c
 Go to the file **build.gradle(app)**, update the `minSdkVersion` to 21.
 
 ```gradle 
-
-```java
 android {
    defaultConfig {
       ...
