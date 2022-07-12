@@ -26,7 +26,7 @@ This repository contains multiple samples that demonstrate how to use the [Dynam
 
 | Sample Name | Description |
 | ----------- | ----------- |
-| `BarcodeReaderSimpleSample` | This is a sample that illustrates the simplest way to recognize barcodes from video streaming with Dynamsoft Capture Vision Flutter SDK. |
+| `barcode_reader_simple_sample` | This is a sample that illustrates the simplest way to recognize barcodes from video streaming with Dynamsoft Capture Vision Flutter SDK. |
 
 ### Install the Dependencies
 
