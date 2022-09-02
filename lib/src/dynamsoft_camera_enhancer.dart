@@ -22,8 +22,8 @@ class DCVCameraEnhancer {
     return _cameraEnhancerCaller.closeCamera();
   }
 
-  Future selectCamera(EnumCameraPosition postion){
-    return _cameraEnhancerCaller.selectCamera(postion);
+  Future selectCamera(EnumCameraPosition position){
+    return _cameraEnhancerCaller.selectCamera(position);
   }
 
   Future turnOnTorch(){
