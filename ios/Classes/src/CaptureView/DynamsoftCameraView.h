@@ -1,9 +1,3 @@
-//
-//  DynamsoftCameraView.h
-//  dynamsoft_capture_vision
-//
-//  Created by dynamsoft on 2022/3/29.
-//
 
 #import <UIKit/UIKit.h>
 #import <Flutter/Flutter.h>

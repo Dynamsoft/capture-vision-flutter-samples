@@ -1,9 +1,3 @@
-//
-//  BarcodeScanningCaptureView.h
-//  dynamsoft_capture_vision
-//
-//  Created by dynamsoft on 2022/3/28.
-//
 
 #import <Foundation/Foundation.h>
 #import <Flutter/Flutter.h>

@@ -11,7 +11,7 @@ class BarcodeReaderCaller {
 
   static BarcodeReaderCaller get instance => _instance;
 
-  Future<bool> initLicense({required String license}) async {
+  Future<bool> initLicense(String license) async {
    
     final Map jsonMap = await methodChannel.invokeMethod('barcodeReader_initLicense', {'license': license});
     
@@ -37,7 +37,7 @@ class BarcodeReaderCaller {
     return methodChannel.invokeMethod('barcodeReader_stopScanning');
   }
 
-  Future<void> updateRuntimeSettings({required DBRRuntimeSettings settings}) {
+  Future<void> updateRuntimeSettings(DBRRuntimeSettings settings) {
     return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettings',{'runtimeSettings': settings.toJson()});
   }
 
@@ -46,11 +46,11 @@ class BarcodeReaderCaller {
     return DBRRuntimeSettings.fromJson(jsonMap);
   }
 
-  Future<void> updateRuntimeSettingsFromTemplate({required EnumDBRPresetTemplate template}) {
+  Future<void> updateRuntimeSettingsFromTemplate(EnumDBRPresetTemplate template) {
     return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettingsFromTemplate',{'presetTemplate': template.jsonValue});
   }
 
-  Future<void> updateRuntimeSettingsFromJson({required String jsonString}) {
+  Future<void> updateRuntimeSettingsFromJson(String jsonString) {
     return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettingsFromJson', {'jsonString': jsonString});
   }
 
@@ -67,4 +67,14 @@ class BarcodeReaderCaller {
       return BarcodeUtilityTool.convertToBarcodeResults(List<Map<dynamic, dynamic>>.from(event));
     });
   }
+
+  Future<List<BarcodeResult>> decodeFile(String path) async {
+    final list = List<Map<dynamic, dynamic>>.from(await methodChannel.invokeMethod('barcodeReader_decodeFile', {'flutterAssetsPath': path}));
+    return BarcodeUtilityTool.convertToBarcodeResults(list);
+  }
+
+  Future enableResultVerification(bool isEnable) async {
+    return methodChannel.invokeMethod('barcodeReader_enableResultVerification', isEnable);
+  }
+
 }

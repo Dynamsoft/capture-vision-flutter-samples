@@ -1,33 +1,9 @@
-## 0.0.1
+## 1.0.0
 
-* A lightweight Flutter widget for barcode scanning.
+* Dynamsoft Capture Vision is an aggregating SDK of a series of specific functional products. In 1.0 version, The following products are included:
+  * Dynamsoft Camera Enhancer: Provides camera enhancements and UI configuration APIs.
+  * Dynamsoft Barcode Reader: Provides barcode decoding algorithm and APIs.
 
-## 0.0.2
+## 1.0.1
 
-* Fix bug.
-
-## 0.0.3
-
-* Update DBR to v9.0.2
-* Update DCE to v2.1.4
-
-## 0.0.4
-
-* Fix bug.
-
-## 0.0.5
-
-* Fix bug.
-
-## 0.0.6
-
-* Fix bug.
-
-## 0.0.7
-
-* Fix bug.
-
-## 1.0.0-beta.1
-
-* Update DBR to v9.2.10
-* Update DCE to v2.3.0
+* Fixed a bug.

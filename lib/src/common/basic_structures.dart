@@ -45,3 +45,55 @@ class Point {
       : x = json['x'],
         y = json['y'];
 }
+
+class TorchButton {
+  Rect? rect;
+  bool? visible;
+  String? torchOnImage;
+  String? torchOffImage;
+
+  TorchButton({this.rect, this.visible, this.torchOnImage, this.torchOffImage});
+
+  TorchButton.fromJson(Map<String, dynamic> json) {
+    rect = json['rect'] != null ? new Rect.fromJson(json['rect']) : null;
+    visible = json['visible'];
+    torchOnImage = json['torchOnImage'];
+    torchOffImage = json['torchOffImage'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.rect != null) {
+      data['rect'] = this.rect!.toJson();
+    }
+    data['visible'] = this.visible;
+    data['torchOnImage'] = this.torchOnImage;
+    data['torchOffImage'] = this.torchOffImage;
+    return data;
+  }
+}
+
+class Rect {
+  int? x;
+  int? y;
+  int? width;
+  int? height;
+
+  Rect({this.x, this.y, this.width, this.height});
+
+  Rect.fromJson(Map<String, dynamic> json) {
+    x = json['x'];
+    y = json['y'];
+    width = json['width'];
+    height = json['height'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['x'] = this.x;
+    data['y'] = this.y;
+    data['width'] = this.width;
+    data['height'] = this.height;
+    return data;
+  }
+}

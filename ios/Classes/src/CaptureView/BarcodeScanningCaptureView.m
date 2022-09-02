@@ -1,9 +1,3 @@
-//
-//  BarcodeScanningCaptureView.m
-//  dynamsoft_capture_vision
-//
-//  Created by dynamsoft on 2022/3/28.
-//
 
 #import "BarcodeScanningCaptureView.h"
 

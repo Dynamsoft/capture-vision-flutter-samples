@@ -1,9 +1,3 @@
-//
-//  DynamsoftConvertManager.h
-//  dynamsoft_flutter_barcode
-//
-//  Created by dynamsoft on 2022/3/7.
-//
 
 #import <Foundation/Foundation.h>
 #import <DynamsoftBarcodeReader/DynamsoftBarcodeReader.h>
@@ -18,23 +12,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 //MARK: FromJson
 
-/// Convert json to iPublicRuntimeSettings
+/// Convert json to iPublicRuntimeSettings.
 - (iPublicRuntimeSettings *)aynlyzeRuntimeSettingsFromJson:(id)jsonData;
 
-/// Convert json to EnumPresetTemplate
+/// Convert json to EnumPresetTemplate.
 - (EnumPresetTemplate)aynlyzePresetTemplateFromJson:(id)jsonData;
 
-/// Convert json to iRegionDefinition
+/// Convert json to iRegionDefinition.
 - (iRegionDefinition *)aynlyzeiRegionDefinitionFromJson:(id)jsonData;
+
+/// Convert json to custom torch button frame.
+- (CGRect)aynlyzeCustomTorchButtonFrameFromJson:(id)jsonData
+                               torchDefaultRect:(CGRect)torchDefaultRect;
 
 //MARK: ToJson
 
-/// Wrap textResults to Json
+/// Wrap textResults to Json.
 - (NSArray *)wrapResultsToJson:(NSArray<iTextResult *> *)results;
 
-/// Wrap iPublicRuntimeSettings to Json
+/// Wrap iPublicRuntimeSettings to Json.
 - (NSDictionary *)wrapRuntimeSettingsToJson:(iPublicRuntimeSettings *)runtimeSettings;
-
 
 @end
 

@@ -1,9 +1,3 @@
-//
-//  DynamsoftCaptureVisionFactory.m
-//  dynamsoft_capture_vision
-//
-//  Created by dynamsoft on 2022/3/28.
-//
 
 #import "DynamsoftCaptureVisionFactory.h"
 #import "CaptureView/BarcodeScanningCaptureView.h"
@@ -21,7 +15,6 @@
 @property (nonatomic, copy) FlutterResult resultMethod;
 
 @property (nonatomic, copy) FlutterEventSink textResultStream;
-
 
 @property (nonatomic, strong) BarcodeScanningCaptureView *captureView;
 
@@ -107,10 +100,16 @@
         [self barcodeReaderResetRuntimeSettings:call.arguments];
     } else if ([barcodeReader_outputRuntimeSettingsToString isEqualToString:call.method]) {
         [self barcodeReaderOutputRuntimeSettingsToString:call.arguments];
+    } else if ([barcodeReader_decodeFile isEqualToString:call.method]) {
+        [self barcodeReader_decodeFile:call.arguments];
+    } else if ([barcodeReader_enableResultVerification isEqualToString:call.method]) {
+        [self barcodeReader_enableResultVerification:call.arguments];
     }
 
     // DCE
-    else if ([cameraEnhancer_dispose isEqualToString:call.method]) {
+    else if ([cameraEnhancer_createInstance isEqualToString:call.method]) {
+        [self cameraEnhancer_createInstance:call.arguments];
+    } else if ([cameraEnhancer_dispose isEqualToString:call.method]) {
         [self cameraEnhancerDispose:call.arguments];
     } else if ([cameraEnhancer_setScanRegion isEqualToString:call.method]) {
         [self cameraEnhancer_setScanRegion:call.arguments];
@@ -119,9 +118,20 @@
     } else if ([cameraEnhancer_setOverlayVisible isEqualToString:call.method]) {
         [self cameraEnhancer_setOverlayVisible:call.arguments];
     } else if ([cameraEnhancer_openCamera isEqualToString:call.method]) {
-        [self cameraEnhancer_openCamera:call.method];
+        [self cameraEnhancer_openCamera:call.arguments];
     } else if ([cameraEnhancer_closeCamera isEqualToString:call.method]) {
-        [self cameraEnhancer_closeCamera:call.method];
+        [self cameraEnhancer_closeCamera:call.arguments];
+    } else if ([cameraEnhancer_selectCamera isEqualToString:call.method]) {
+        [self cameraEnhancer_selectCamera:call.arguments];
+    } else if ([cameraEnhancer_turnOnTorch isEqualToString:call.method]) {
+        [self cameraEnhancer_turnOnTorch:call.arguments];
+    } else if ([cameraEnhancer_turnOffTorch isEqualToString:call.method]) {
+        [self cameraEnhancer_turnOffTorch:call.arguments];
+    }
+    
+    // DCECameraView
+    else if ([cameraView_torchButton isEqualToString:call.method]) {
+        [self cameraView_torchButton:call.arguments];
     }
     
     // Navigation methods
@@ -161,7 +171,6 @@
 
 - (void)barcodeReaderGetVersion:(id)arguments
 {
-    
     self.resultMethod([DynamsoftBarcodeReader getVersion]);
 }
 
@@ -169,9 +178,8 @@
 {
     [[DynamsoftSDKManager manager].barcodeReader startScanning];
     
-    if ([DynamsoftSDKManager manager].cameraEnhancer != nil && [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished == false) {
+    if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         
-        [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished = true;
         [[DynamsoftSDKManager manager].barcodeReader setDBRTextResultListener:[DynamsoftSDKManager manager]];
         [[DynamsoftSDKManager manager].barcodeReader setCameraEnhancer:[DynamsoftSDKManager manager].cameraEnhancer];
     }
@@ -257,12 +265,33 @@
     }
 }
 
+- (void)barcodeReader_decodeFile:(id)arguments {
+    NSString *filePath = [arguments valueForKey:@"flutterAssetsPath"];
+    NSError *error = nil;
+    NSArray<iTextResult *> *results = [[DynamsoftSDKManager manager].barcodeReader decodeFileWithName:filePath error:&error];
+    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+        self.resultMethod([[DynamsoftConvertManager manager] wrapResultsToJson:results]);
+    } else {
+        self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
+    }
+}
+
+- (void)barcodeReader_enableResultVerification:(id)arguments {
+    BOOL isEnable = [arguments boolValue];
+    [DynamsoftSDKManager manager].barcodeReader.enableResultVerification = isEnable;
+    self.resultMethod(nil);
+}
+
 
 //MARK: DCE methods
+
+- (void)cameraEnhancer_createInstance:(id)arguments {
+    self.resultMethod(nil);
+}
+
 - (void)cameraEnhancerDispose:(id)arguments
 {
     self.captureView = nil;
-    [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished = false;
     [[DynamsoftSDKManager manager].barcodeReader stopScanning];
     [[DynamsoftSDKManager manager].cameraEnhancer close];
     [DynamsoftSDKManager manager].cameraEnhancer = nil;
@@ -302,23 +331,72 @@
 }
 
 - (void)cameraEnhancer_openCamera:(id)arguments {
-    if ([DynamsoftSDKManager manager].cameraEnhancer != nil && [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished == true) {
+    if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer open];
     }
     self.resultMethod(nil);
 }
 
 - (void)cameraEnhancer_closeCamera:(id)arguments {
-    if ([DynamsoftSDKManager manager].cameraEnhancer != nil && [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished == true) {
+    if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer close];
     }
     self.resultMethod(nil);
 }
 
+- (void)cameraEnhancer_selectCamera:(id)arguments {
+    NSInteger cameraPosition = [arguments integerValue];
+    EnumCameraPosition cameraType = cameraPosition == 0 ? EnumCameraPositionBack : EnumCameraPositionFront;
+    NSError *error = nil;
+    [[DynamsoftSDKManager manager].cameraEnhancer selectCameraWithPosition: cameraType error:&error];
+    self.resultMethod(nil);
+}
+
+- (void)cameraEnhancer_turnOnTorch:(id)arguments {
+    [[DynamsoftSDKManager manager].cameraEnhancer turnOnTorch];
+    self.resultMethod(nil);
+}
+
+- (void)cameraEnhancer_turnOffTorch:(id)arguments {
+    [[DynamsoftSDKManager manager].cameraEnhancer turnOffTorch];
+    self.resultMethod(nil);
+}
+
+- (void)cameraView_torchButton:(id)arguments {
+    BOOL torchIsVisible = YES;
+    CGRect torchRect = CGRectMake(25, 100, 45, 45);
+    UIImage *torchOnImage = nil;
+    UIImage *torchOffImage = nil;
+    
+    if (![[arguments valueForKey:@"rect"] isEqual:[NSNull null]]) {
+        torchRect = [[DynamsoftConvertManager manager] aynlyzeCustomTorchButtonFrameFromJson:arguments torchDefaultRect:torchRect];
+    }
+    
+    if (![[arguments valueForKey:@"torchOnImage"] isEqual:[NSNull null]]) {
+        NSString *key = [self.registrar lookupKeyForAsset:[arguments valueForKey:@"torchOnImage"]];
+        NSString *path = [[NSBundle mainBundle] pathForResource:key ofType:nil];
+        torchOnImage = [UIImage imageWithContentsOfFile:path];
+    }
+
+    if (![[arguments valueForKey:@"torchOffImage"] isEqual:[NSNull null]]) {
+        NSString *key = [self.registrar lookupKeyForAsset:[arguments valueForKey:@"torchOffImage"]];
+        NSString *path = [[NSBundle mainBundle] pathForResource:key ofType:nil];
+        torchOffImage = [UIImage imageWithContentsOfFile:path];
+    }
+    
+    if (![[arguments valueForKey:@"visible"] isEqual:[NSNull null]]) {
+        torchIsVisible = [[arguments valueForKey:@"visible"] boolValue];
+    }
+    
+    [self.captureView.cameraView.dceView setTorchButton:torchRect torchOnImage:torchOnImage torchOffImage:torchOffImage];
+    self.captureView.cameraView.dceView.torchButtonVisible = torchIsVisible;
+    
+}
+
 //MARK: Application lifecycle
 - (void)navigationDidPopNext
 {
-    if ([DynamsoftSDKManager manager].cameraEnhancer != nil && [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished == true) {
+    if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer open];
     }
     
@@ -327,7 +405,7 @@
 
 - (void)navigationDidPushNext
 {
-    if ([DynamsoftSDKManager manager].cameraEnhancer != nil && [DynamsoftSDKManager manager].barcodeReaderLinkCameraEnhancerIsFinished == true) {
+    if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer close];
     }
     

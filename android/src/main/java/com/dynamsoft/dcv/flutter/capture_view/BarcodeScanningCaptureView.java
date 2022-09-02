@@ -14,24 +14,15 @@ import com.dynamsoft.dcv.flutter.handles.DynamsoftSDKManager;
 
 public class BarcodeScanningCaptureView implements PlatformView {
 
-    public DCECameraView cameraView;
+    public BarcodeScanningCaptureView(Context context) {
 
-    public BarcodeScanningCaptureView(Activity context) {
-
-        cameraView = new DCECameraView(context);
-        DynamsoftSDKManager.manager().cameraEnhancer = new CameraEnhancer(context);
-        DynamsoftSDKManager.manager().cameraEnhancer.setCameraView(cameraView);
-        try {
-            DynamsoftSDKManager.manager().cameraEnhancer.open();
-        } catch (CameraEnhancerException e) {
-            e.printStackTrace();
-        }
+        DynamsoftSDKManager.manager().cameraView = new DCECameraView(context);
 
     }
 
     @Override
     public View getView() {
-        return cameraView;
+        return DynamsoftSDKManager.manager().cameraView;
     }
 
     @Override

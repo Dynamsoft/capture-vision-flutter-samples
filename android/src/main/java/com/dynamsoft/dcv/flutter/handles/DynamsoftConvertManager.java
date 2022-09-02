@@ -1,5 +1,7 @@
 package com.dynamsoft.dcv.flutter.handles;
 
+import android.util.Base64;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +37,24 @@ public class DynamsoftConvertManager {
         Map settings = (Map)((Map)arguments).get("runtimeSettings");
 
         PublicRuntimeSettings publicRuntimeSettings = DynamsoftSDKManager.manager().barcodeReader.getRuntimeSettings();
-        publicRuntimeSettings.barcodeFormatIds = (int)settings.get("barcodeFormatIds");
-        publicRuntimeSettings.barcodeFormatIds_2 = (int)settings.get("barcodeFormatIds_2");
-        publicRuntimeSettings.expectedBarcodesCount = (int)settings.get("expectedBarcodeCount");
-        publicRuntimeSettings.timeout = (int)settings.get("timeout");
+        if(settings.get("barcodeFormatIds")!=null){
+            publicRuntimeSettings.barcodeFormatIds = (int)settings.get("barcodeFormatIds");
+        }
+        if(settings.get("barcodeFormatIds_2")!=null){
+            publicRuntimeSettings.barcodeFormatIds_2 = (int)settings.get("barcodeFormatIds_2");
+        }
+        if(settings.get("expectedBarcodeCount")!=null){
+            publicRuntimeSettings.expectedBarcodesCount = (int)settings.get("expectedBarcodeCount");
+        }
+        if(settings.get("timeout")!=null){
+            publicRuntimeSettings.timeout = (int)settings.get("timeout");
+        }
+        if(settings.get("minResultConfidence")!=null){
+            publicRuntimeSettings.minResultConfidence = (int)settings.get("minResultConfidence");
+        }
+        if(settings.get("minBarcodeTextLength")!=null){
+            publicRuntimeSettings.minBarcodeTextLength = (int)settings.get("minBarcodeTextLength");
+        }
         return publicRuntimeSettings;
     }
 
@@ -105,6 +121,7 @@ public class DynamsoftConvertManager {
         List jsonList = new ArrayList();
         for (int i = 0; i < textResults.length; i++) {
             TextResult textResult = textResults[i];
+            final String barcodeBytesString = Base64.encodeToString(textResult.barcodeBytes, Base64.NO_WRAP) ;
             final String barcodeFormatString;
             if (textResult.barcodeFormat_2 != 0) {
                 barcodeFormatString = textResult.barcodeFormatString_2;
@@ -128,6 +145,7 @@ public class DynamsoftConvertManager {
                 {
                     put("barcodeText", textResult.barcodeText);
                     put("barcodeFormatString", barcodeFormatString);
+                    put("barcodeBytesString", barcodeBytesString);
                     put("barcodeLocation", new HashMap<String, Object>() {
                         {
                             put("angle", textResult.localizationResult.angle);

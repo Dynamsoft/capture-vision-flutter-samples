@@ -1,9 +1,3 @@
-//
-//  DynamsoftSDKManager.h
-//  dbr_test_plugin
-//
-//  Created by dynamsoft on 2022/2/21.
-//
 
 #import <Foundation/Foundation.h>
 #import <DynamsoftBarcodeReader/DynamsoftBarcodeReader.h>
@@ -29,8 +23,6 @@ typedef NS_ENUM(NSInteger, DynamsoftCameraEnhancerState) {
 @property (nonatomic, strong) DynamsoftBarcodeReader *barcodeReader;
 
 @property (nonatomic, strong, nullable) DynamsoftCameraEnhancer *cameraEnhancer;
-
-@property (nonatomic, assign) BOOL barcodeReaderLinkCameraEnhancerIsFinished;
 
 @property (nonatomic, assign) DynamsoftBarcodeReaderState dynamsoftBarcodeReaderState;
 

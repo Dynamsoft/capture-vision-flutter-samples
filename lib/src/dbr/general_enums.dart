@@ -9,6 +9,11 @@ enum EnumDBRPresetTemplate {
   IMAGE_DEFAULT
 }
 
+enum EnumCameraPosition {
+  CP_BACK,
+  CP_FRONT
+}
+
 extension PresetTemplateSerializer on EnumDBRPresetTemplate {
   EnumDBRPresetTemplate fromJson(String? jsonValue) {
     switch (jsonValue) {

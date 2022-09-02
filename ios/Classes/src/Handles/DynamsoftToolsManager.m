@@ -1,9 +1,3 @@
-//
-//  DynamsoftToolsManager.m
-//  dynamsoft_barcode_reader
-//
-//  Created by dynamsoft on 2022/3/1.
-//
 
 #import "DynamsoftToolsManager.h"
 
@@ -102,7 +96,7 @@
     return ![self notEmptyOrNull:string];
 }
 
-/// Checks if the string is not empty
+/// Checks if the string is not empty.
 - (BOOL)notEmptyOrNull:(NSString*)string
 {
     if ([string isKindOfClass:[NSNull class]])
@@ -128,7 +122,7 @@
     }
 }
 
-/// cropString
+/// CropString.
 - (NSString*)trimString:(NSString*)str
 {
     return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
