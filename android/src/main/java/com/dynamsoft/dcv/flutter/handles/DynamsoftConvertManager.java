@@ -119,6 +119,7 @@ public class DynamsoftConvertManager {
     public List wrapResultsToJson(TextResult[] textResults) {
 
         List jsonList = new ArrayList();
+
         for (int i = 0; i < textResults.length; i++) {
             TextResult textResult = textResults[i];
             final String barcodeBytesString = Base64.encodeToString(textResult.barcodeBytes, Base64.NO_WRAP) ;

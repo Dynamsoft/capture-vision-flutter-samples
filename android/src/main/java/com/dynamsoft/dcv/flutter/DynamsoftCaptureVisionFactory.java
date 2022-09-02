@@ -357,7 +357,11 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 //					InputStream is = assetManager.open(path);
 //					TextResult[] results = DynamsoftSDKManager.manager().barcodeReader.decodeFileInMemory(is);
 					TextResult[] results = DynamsoftSDKManager.manager().barcodeReader.decodeFile(flutterAssetsPath);
-					result.success(DynamsoftConvertManager.manager().wrapResultsToJson(results));
+					if(results != null && results.length > 0) {
+						result.success(DynamsoftConvertManager.manager().wrapResultsToJson(results));
+					}else{
+						result.success(null);
+					}
 					return;
 				} catch (BarcodeReaderException e) {
 					e.printStackTrace();

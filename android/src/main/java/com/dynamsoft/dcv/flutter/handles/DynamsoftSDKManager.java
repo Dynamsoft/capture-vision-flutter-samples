@@ -50,9 +50,9 @@ public class DynamsoftSDKManager {
                     Common.pluginActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
-                            textResultStream.success(DynamsoftConvertManager.manager().wrapResultsToJson(textResults));
-
+                            if(textResults!=null && textResults.length > 0) {
+                                textResultStream.success(DynamsoftConvertManager.manager().wrapResultsToJson(textResults));
+                            }
                         }
                     });
 

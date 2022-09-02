@@ -1,4 +1,3 @@
-export 'src/dynamsoft_capture_vision.dart';
 export 'src/dynamsoft_barcode_reader.dart';
 export 'src/dynamsoft_camera_enhancer.dart';
 export 'src/dynamsoft_camera_view.dart';
