@@ -231,10 +231,15 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				}
 				String openImgPath = call.argument("torchOnImage");
 				String closeImgPath = call.argument("torchOffImage");
-
+				Boolean visible = false;
+				if(call.argument("visible") != null) {
+					if(call.argument("visible") instanceof Boolean){
+						visible = call.argument("visible");
+					}
+				}
 				if (x != null && y != null && width != null && height != null) {
 					try {
-						cameraViewTorchButton(x, y, width, height, openImgPath, closeImgPath);
+						cameraViewTorchButton(visible, x, y, width, height, openImgPath, closeImgPath);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -475,7 +480,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 		}
 	}
 
-	private void cameraViewTorchButton(int x, int y, int width, int height, String openImgPath, String closeImgPath) throws IOException {
+	private void cameraViewTorchButton(Boolean visible, int x, int y, int width, int height, String openImgPath, String closeImgPath) throws IOException {
 		if (DynamsoftSDKManager.manager().cameraView != null) {
 //			if(params.get("rect")!=null && params.get("rect") instanceof HashMap){
 //				HashMap<String, Integer> rect = (HashMap<String, Integer>) params.get("rect");
@@ -504,7 +509,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				closeImg = BitmapDrawable.createFromStream(is, null);
 				is.close();
 			}
-			DynamsoftSDKManager.manager().cameraView.setTorchButtonVisible(true);
+			DynamsoftSDKManager.manager().cameraView.setTorchButtonVisible(visible);
 			DynamsoftSDKManager.manager().cameraView.setTorchButton(new Point(x, y), width, height, openImg, closeImg);
 		}
 	}

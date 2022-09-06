@@ -100,14 +100,14 @@ class _BarcodeScannerState extends State<BarcodeScanner>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     _picker = ImagePicker();
     _sdkInit();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     _cameraEnhancer.close();
     _barcodeReader.stopScanning();
     super.dispose();
@@ -148,6 +148,8 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         rect: Rect(x: 50, y: 50, width: 100, height: 100),
         torchOnImage: 'assets/abc.png',
         torchOffImage: null);
+
+    await _barcodeReader.enableResultVerification(true);
 
     // Stream listener to handle callback when barcode result is returned.
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
