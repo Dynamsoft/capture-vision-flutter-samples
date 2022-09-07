@@ -481,25 +481,38 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 	private void cameraViewTorchButton(Boolean visible, Integer x, Integer y, Integer width, Integer height, String openImgPath, String closeImgPath) throws IOException {
 		if (DynamsoftSDKManager.manager().cameraView != null) {
 			if (DynamsoftSDKManager.manager().cameraView != null) {
-				if (x != null && y != null && width != null && height != null) {
-					Drawable openImg = null;
-					Drawable closeImg = null;
+				Point p = null;
+				if(x != null && y != null){
+					p = new Point();
+					p.x = x;
+					p.y = y;
+				}
 
-					if (openImgPath != null) {
-						String path = flutterAssets.getAssetFilePathBySubpath(openImgPath);
-						InputStream is = assetManager.open(path);
-						openImg = BitmapDrawable.createFromStream(is, null);
-						is.close();
-					}
-					if (closeImgPath != null) {
-						String path = flutterAssets.getAssetFilePathBySubpath(closeImgPath);
-						InputStream is = assetManager.open(path);
-						closeImg = BitmapDrawable.createFromStream(is, null);
-						is.close();
-					}
-					DynamsoftSDKManager.manager().cameraView.setTorchButton(new Point(x, y), width, height, openImg, closeImg);
+				if (width == null) {
+					width = 45;
+				}
+
+				if(height == null){
+					height = 45;
+				}
+
+				Drawable openImg = null;
+				Drawable closeImg = null;
+
+				if (openImgPath != null) {
+					String path = flutterAssets.getAssetFilePathBySubpath(openImgPath);
+					InputStream is = assetManager.open(path);
+					openImg = BitmapDrawable.createFromStream(is, null);
+					is.close();
+				}
+				if (closeImgPath != null) {
+					String path = flutterAssets.getAssetFilePathBySubpath(closeImgPath);
+					InputStream is = assetManager.open(path);
+					closeImg = BitmapDrawable.createFromStream(is, null);
+					is.close();
 				}
 				DynamsoftSDKManager.manager().cameraView.setTorchButtonVisible(visible);
+				DynamsoftSDKManager.manager().cameraView.setTorchButton(p, width, height, openImg, closeImg);
 
 			}
 		}
