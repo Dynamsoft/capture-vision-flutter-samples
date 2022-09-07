@@ -9,7 +9,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Put your Dynamsoft Barcode Reader license here.
-  const String licenseKey = 'DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTEwMTIwMDkzNiIsIm9yZ2FuaXphdGlvbklEIjoiMjAwMDAxIn0=';
+  const String licenseKey =
+      'DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTEwMTIwMDkzNiIsIm9yZ2FuaXphdGlvbklEIjoiMjAwMDAxIn0=';
 
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
@@ -145,9 +146,8 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     _cameraView.overlayVisible = true;
 
     _cameraView.torchButton = TorchButton(
-        rect: Rect(x: 50, y: 50, width: 100, height: 100),
-        torchOnImage: 'assets/abc.png',
-        torchOffImage: null);
+      visible: true,
+    );
 
     await _barcodeReader.enableResultVerification(true);
 
@@ -200,44 +200,52 @@ class _BarcodeScannerState extends State<BarcodeScanner>
               ),
             ),
             Positioned(
-                right: 20,
-                bottom: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    TextButton(
+              top: 150,
+              left: 25,
+              child: GestureDetector(
+                onTap: () {
+                  faceLens = !faceLens;
+                  _cameraEnhancer.selectCamera(faceLens
+                      ? EnumCameraPosition.CP_FRONT
+                      : EnumCameraPosition.CP_BACK);
+                },
+                child: Image.asset('assets/toggle_lens.png', width: 48, height: 48,),
+              ),
+            ),
+            Positioned(
+              bottom: 20,
+              left: MediaQuery.of(context).size.width / 2 - 80,
+              child: Column(
+                children: [
+                  Container(
+                    width: 160,
+                    child: TextButton(
                       onPressed: () => _pickImage(ImageSource.gallery),
                       child: Text('Select a photo'),
                       style: TextButton.styleFrom(
                           primary: Colors.white, backgroundColor: Colors.blue),
                     ),
-                    TextButton(
+                  ),
+                  Container(
+                    width: 160,
+                    child: TextButton(
                       onPressed: () => _pickImage(ImageSource.camera),
                       child: Text('Take a photo'),
                       style: TextButton.styleFrom(
                           primary: Colors.white, backgroundColor: Colors.blue),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        faceLens = !faceLens;
-                        _cameraEnhancer.selectCamera(faceLens
-                            ? EnumCameraPosition.CP_FRONT
-                            : EnumCameraPosition.CP_BACK);
-                      },
-                      child: Text('Toggle lens'),
-                      style: TextButton.styleFrom(
-                          primary: Colors.white, backgroundColor: Colors.blue),
-                    ),
-                    Text(
-                      '${resultText ?? ''}',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    Text(
-                      '${base64ResultText ?? ''}',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ))
+                  ),
+                  Text(
+                    '${resultText ?? ''}',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    '${base64ResultText ?? ''}',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            )
           ],
         ));
   }

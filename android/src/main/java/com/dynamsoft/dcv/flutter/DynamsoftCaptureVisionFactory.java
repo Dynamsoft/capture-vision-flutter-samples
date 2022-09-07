@@ -167,7 +167,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				barcodeReaderDecodeFile(call.argument("flutterAssetsPath"), result);
 				break;
 			case Common.barcodeReader_enableResultVerification:
-				barcodeReaderEnableResultVerification((boolean)call.arguments);
+				barcodeReaderEnableResultVerification((boolean) call.arguments);
 				result.success(null);
 				break;
 
@@ -232,17 +232,15 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				String openImgPath = call.argument("torchOnImage");
 				String closeImgPath = call.argument("torchOffImage");
 				Boolean visible = false;
-				if(call.argument("visible") != null) {
-					if(call.argument("visible") instanceof Boolean){
+				if (call.argument("visible") != null) {
+					if (call.argument("visible") instanceof Boolean) {
 						visible = call.argument("visible");
 					}
 				}
-				if (x != null && y != null && width != null && height != null) {
-					try {
-						cameraViewTorchButton(visible, x, y, width, height, openImgPath, closeImgPath);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				try {
+					cameraViewTorchButton(visible, x, y, width, height, openImgPath, closeImgPath);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 				result.success(null);
 				break;
@@ -362,9 +360,9 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 //					InputStream is = assetManager.open(path);
 //					TextResult[] results = DynamsoftSDKManager.manager().barcodeReader.decodeFileInMemory(is);
 					TextResult[] results = DynamsoftSDKManager.manager().barcodeReader.decodeFile(flutterAssetsPath);
-					if(results != null && results.length > 0) {
+					if (results != null && results.length > 0) {
 						result.success(DynamsoftConvertManager.manager().wrapResultsToJson(results));
-					}else{
+					} else {
 						result.success(null);
 					}
 					return;
@@ -480,37 +478,30 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 		}
 	}
 
-	private void cameraViewTorchButton(Boolean visible, int x, int y, int width, int height, String openImgPath, String closeImgPath) throws IOException {
+	private void cameraViewTorchButton(Boolean visible, Integer x, Integer y, Integer width, Integer height, String openImgPath, String closeImgPath) throws IOException {
 		if (DynamsoftSDKManager.manager().cameraView != null) {
-//			if(params.get("rect")!=null && params.get("rect") instanceof HashMap){
-//				HashMap<String, Integer> rect = (HashMap<String, Integer>) params.get("rect");
-//				int x = rect.get("x");
-//
-//			}
-//			if(rect != null){
-//				if(rect.get("x") !=null){
-//					Integer x = rect.get("x");
-//
-//				}
-//				int y = ((HashMap<String, Integer>)params.get("rect")).get("y");
-//			}
-			Drawable openImg = null;
-			Drawable closeImg = null;
+			if (DynamsoftSDKManager.manager().cameraView != null) {
+				if (x != null && y != null && width != null && height != null) {
+					Drawable openImg = null;
+					Drawable closeImg = null;
 
-			if (openImgPath != null) {
-				String path = flutterAssets.getAssetFilePathBySubpath(openImgPath);
-				InputStream is = assetManager.open(path);
-				openImg = BitmapDrawable.createFromStream(is, null);
-				is.close();
+					if (openImgPath != null) {
+						String path = flutterAssets.getAssetFilePathBySubpath(openImgPath);
+						InputStream is = assetManager.open(path);
+						openImg = BitmapDrawable.createFromStream(is, null);
+						is.close();
+					}
+					if (closeImgPath != null) {
+						String path = flutterAssets.getAssetFilePathBySubpath(closeImgPath);
+						InputStream is = assetManager.open(path);
+						closeImg = BitmapDrawable.createFromStream(is, null);
+						is.close();
+					}
+					DynamsoftSDKManager.manager().cameraView.setTorchButton(new Point(x, y), width, height, openImg, closeImg);
+				}
+				DynamsoftSDKManager.manager().cameraView.setTorchButtonVisible(visible);
+
 			}
-			if (closeImgPath != null) {
-				String path = flutterAssets.getAssetFilePathBySubpath(closeImgPath);
-				InputStream is = assetManager.open(path);
-				closeImg = BitmapDrawable.createFromStream(is, null);
-				is.close();
-			}
-			DynamsoftSDKManager.manager().cameraView.setTorchButtonVisible(visible);
-			DynamsoftSDKManager.manager().cameraView.setTorchButton(new Point(x, y), width, height, openImg, closeImg);
 		}
 	}
 
