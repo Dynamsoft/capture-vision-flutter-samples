@@ -147,6 +147,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
 
     _cameraView.torchButton = TorchButton(
       visible: true,
+      torchOnImage: 'assets/toggle_lens.png'
     );
 
     await _barcodeReader.enableResultVerification(true);
@@ -176,7 +177,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         textColor: Colors.white,
         // tileColor: Colors.green,
         child: ListTile(
-          title: Text(res.barcodeFormatString),
+          title: Text(res.barcodeFormatString??''),
           subtitle: Text(res.barcodeText),
         ));
   }
@@ -235,14 +236,14 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                           primary: Colors.white, backgroundColor: Colors.blue),
                     ),
                   ),
-                  Text(
-                    '${resultText ?? ''}',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  Text(
-                    '${base64ResultText ?? ''}',
-                    style: TextStyle(color: Colors.black),
-                  ),
+                  // Text(
+                  //   '${resultText ?? ''}',
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
+                  // Text(
+                  //   '${base64ResultText ?? ''}',
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
                 ],
               ),
             )
@@ -259,6 +260,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;
         base64ResultText = utf8.decode(bytes);
+        decodeRes.addAll(result);
       }
     }
     setState(() {});
