@@ -98,7 +98,7 @@ void main() async {
   const String licenseKey = '';
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
-    await DCVBarcodeReader.initLicense(license: licenseKey);
+    await DCVBarcodeReader.initLicense(licenseKey);
   } catch (e) {
     print(e);
   }
@@ -114,7 +114,7 @@ In this section, we are going to work on the `_MyHomePageState` class in the new
 Add the following instance variables:
 
 ```dart
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   late final DCVBarcodeReader _barcodeReader;
   late final DCVCameraEnhancer _cameraEnhancer;
   final DCVCameraView _cameraView = DCVCameraView();
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
 Add **_configDBR** method to initialize the barcode reader:
 
 ```dart
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   ...
   @override
   void initState() {
@@ -192,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
 Add configurations to parse and display the barcode decoding results:
 
 ```dart
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   ...
   /// Get listItem
   Widget listItem(BuildContext context, int index) {
@@ -213,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
 Modify the `build` method to display the decode barcode results on the widget.
 
 ```dart
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   ...
   @override
   Widget build(BuildContext context) {
