@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          path: repo
       - name: Publish
         uses: sakebook/actions-flutter-pub-publisher@v1.4.1
         with:
@@ -26,3 +28,4 @@ jobs:
           flutter_package: true
           skip_test: true
           dry_run: true
+          package_directory: repo
