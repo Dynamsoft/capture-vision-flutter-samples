@@ -15,6 +15,7 @@ void main() async {
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
     await DCVBarcodeReader.initLicense(licenseKey);
+
   } catch (e) {
     print(e);
   }
@@ -117,6 +118,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     // Create a barcode reader instance.
     _barcodeReader = await DCVBarcodeReader.createInstance();
     _cameraEnhancer = await DCVCameraEnhancer.createInstance();
+
     // Get the current runtime settings of the barcode reader.
     DBRRuntimeSettings currentSettings =
         await _barcodeReader.getRuntimeSettings();
@@ -125,12 +127,15 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         EnumBarcodeFormat.BF_QR_CODE |
         EnumBarcodeFormat.BF_PDF417 |
         EnumBarcodeFormat.BF_DATAMATRIX;
+
     // currentSettings.minResultConfidence = 70;
     // currentSettings.minBarcodeTextLength = 50;
+    
     // Set the expected barcode count to 0 when you are not sure how many barcodes you are scanning.
     // Set the expected barcode count to 1 can maximize the barcode decoding speed.
     currentSettings.expectedBarcodeCount = 0;
     // Apply the new runtime settings to the barcode reader.
+
     await _barcodeReader.updateRuntimeSettings(currentSettings);
 
     // Define the scan region.
