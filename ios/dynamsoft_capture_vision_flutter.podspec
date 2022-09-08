@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.source_files     = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'DynamsoftBarcodeReader', '9.2.11'
+  s.dependency 'DynamsoftBarcodeReader', '9.2.13'
   s.dependency 'DynamsoftCameraEnhancer', '2.3.2'
 
   # Flutter.framework does not contain a i386 slice.
