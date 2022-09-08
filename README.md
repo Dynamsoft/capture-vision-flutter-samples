@@ -263,6 +263,18 @@ flutter run
 
 #### Run iOS on macOS
 
+In the project folder, go to file ios/Runner/info.plist, add the following code for requesting camera permission:
+
+```xml
+<plist version="1.0">
+<dict>
+  ...
+  <key>NSCameraUsageDescription</key>
+  <string>Request your authorization.</string>
+  ...
+</dict>
+```
+
 Go to the **Podfile** in **ios** folder and add the following code at the top of the file:
 
 ```objc
