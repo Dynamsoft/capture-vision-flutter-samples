@@ -29,4 +29,3 @@ android/.gradle/
 .fvm/
 
 ../.idea/
-.github/workflows/dart.yml
