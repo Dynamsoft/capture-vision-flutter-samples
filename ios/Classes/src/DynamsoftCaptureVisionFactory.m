@@ -368,23 +368,23 @@
     UIImage *torchOnImage = nil;
     UIImage *torchOffImage = nil;
     
-    if (![[arguments valueForKey:@"rect"] isEqual:[NSNull null]]) {
+    if (![[arguments valueForKey:@"rect"] isEqual:[NSNull null]] && [arguments valueForKey:@"rect"] != nil) {
         torchRect = [[DynamsoftConvertManager manager] aynlyzeCustomTorchButtonFrameFromJson:arguments torchDefaultRect:torchRect];
     }
     
-    if (![[arguments valueForKey:@"torchOnImage"] isEqual:[NSNull null]]) {
+    if (![[arguments valueForKey:@"torchOnImage"] isEqual:[NSNull null]] && [arguments valueForKey:@"torchOnImage"] != nil) {
         NSString *key = [self.registrar lookupKeyForAsset:[arguments valueForKey:@"torchOnImage"]];
         NSString *path = [[NSBundle mainBundle] pathForResource:key ofType:nil];
         torchOnImage = [UIImage imageWithContentsOfFile:path];
     }
 
-    if (![[arguments valueForKey:@"torchOffImage"] isEqual:[NSNull null]]) {
+    if (![[arguments valueForKey:@"torchOffImage"] isEqual:[NSNull null]] && [arguments valueForKey:@"torchOffImage"] != nil) {
         NSString *key = [self.registrar lookupKeyForAsset:[arguments valueForKey:@"torchOffImage"]];
         NSString *path = [[NSBundle mainBundle] pathForResource:key ofType:nil];
         torchOffImage = [UIImage imageWithContentsOfFile:path];
     }
     
-    if (![[arguments valueForKey:@"visible"] isEqual:[NSNull null]]) {
+    if (![[arguments valueForKey:@"visible"] isEqual:[NSNull null]] && [arguments valueForKey:@"visible"] != nil) {
         torchIsVisible = [[arguments valueForKey:@"visible"] boolValue];
     }
     
