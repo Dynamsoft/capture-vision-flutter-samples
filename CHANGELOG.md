@@ -7,3 +7,23 @@
 ## 1.0.1
 
 * Fixed a bug.
+
+## 1.1.0
+
+### New
+
+* Added a new method `decodeFile` in Barcode Reader module to decode barcodes from an image file.
+* Added a new method `enableResultVerification` in Barcode Reader module to further improve the accuracy of barcode result.
+* Added a new property `torchButton` to `DCVCameraView` class for users to create a torch button on the view.
+* Added a new class `Rect`.
+* Added a new property `barcodeBytes` in `BarcodeResult` to output the byte data of the barcode.
+* Added a new property `minResultConfidence` in `DBRRuntimeSettings` to filter the barcode results by confidence.
+* Added a new property `minResultTextLength` in `DBRRuntimeSettings` to filter the barcode results by text length.
+* Added `DCVCameraEnhancer` class. Moved camera control APIs from `DCVCameraView` class to `DCVCameraEnhancer` class. Added a new method `selectCamera` in `DCVCameraEnhancer` class for users to switch between front-facing camera and back-facing camera.
+* Added an enumeration `EnumCameraPosition`.
+
+### Changes
+
+* Renamed `DynamsoftBarcodeReader` class to `DCVBarcodeReader`.
+* Renamed `DynamsoftCameraView` class to `DCVCameraView`.
+* Users have to call `DCVCameraEnhancer.open`/`DCVCameraEnhancer.close` manually when the application is **resumed**/**inactive**.
