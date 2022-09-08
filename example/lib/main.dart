@@ -147,7 +147,6 @@ class _BarcodeScannerState extends State<BarcodeScanner>
 
     _cameraView.torchButton = TorchButton(
       visible: true,
-      torchOnImage: 'assets/toggle_lens.png'
     );
 
     await _barcodeReader.enableResultVerification(true);
