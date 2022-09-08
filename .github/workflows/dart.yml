@@ -28,4 +28,4 @@ jobs:
           flutter_package: true
           skip_test: true
           dry_run: true
-          package_directory: ./repo
+          package_directory: /home/runner/work/capture-vision-flutter/repo
