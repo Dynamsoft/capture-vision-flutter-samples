@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import '../common/basic_structures.dart';
 
@@ -12,10 +15,21 @@ class BarcodeResult {
   /// The corresponding localization result.
   final BarcodeLocationResult barcodeLocation;
 
+  final String _barcodeBytesString;
+
+  Uint8List get barcodeBytes {
+    final base64Decoder = base64.decoder;
+    final decodedBytes = base64Decoder.convert(_barcodeBytesString);
+    print('_barcodeBytesString:$_barcodeBytesString');
+    return decodedBytes;
+  }
+
   BarcodeResult.fromJson(Map<dynamic, dynamic> json)
       : barcodeText = json['barcodeText'],
         barcodeFormatString = json['barcodeFormatString'],
-        barcodeLocation = BarcodeLocationResult.fromJson(json['barcodeLocation']);
+        _barcodeBytesString = json['barcodeBytesString'],
+        barcodeLocation =
+            BarcodeLocationResult.fromJson(json['barcodeLocation']);
 }
 
 @immutable

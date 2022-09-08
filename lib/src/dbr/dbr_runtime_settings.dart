@@ -5,6 +5,8 @@ class DBRRuntimeSettings extends Serializer {
   int? barcodeFormatIds_2;
   int? expectedBarcodeCount;
   int? timeout;
+  int? minBarcodeTextLength;
+  int? minResultConfidence;
 
   DBRRuntimeSettings._();
 
@@ -12,7 +14,9 @@ class DBRRuntimeSettings extends Serializer {
       : barcodeFormatIds = json['barcodeFormatIds'],
         barcodeFormatIds_2 = json['barcodeFormatIds_2'],
         expectedBarcodeCount = json['expectedBarcodeCount'],
-        timeout = json['timeout'];
+        timeout = json['timeout'],
+        minBarcodeTextLength = json['minBarcodeTextLength'],
+        minResultConfidence = json['minResultConfidence'];
 
   @override
   Map<String, dynamic> toJson() {
@@ -20,7 +24,9 @@ class DBRRuntimeSettings extends Serializer {
       'barcodeFormatIds': barcodeFormatIds,
       'barcodeFormatIds_2': barcodeFormatIds_2,
       'expectedBarcodeCount': expectedBarcodeCount,
-      'timeout': timeout
+      'timeout': timeout,
+      'minBarcodeTextLength': minBarcodeTextLength,
+      'minResultConfidence': minResultConfidence,
     };
   }
 }

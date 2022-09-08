@@ -8,13 +8,13 @@ import 'dbr/barcode_result.dart';
 /// Defines a class that provides functions for working with extracting barcode data.
 ///
 /// You should invoke [createInstance] to create an instance.
-class DynamsoftBarcodeReader {
-  DynamsoftBarcodeReader._();
+class DCVBarcodeReader {
+  DCVBarcodeReader._();
 
   static BarcodeReaderCaller get _barcodeReaderCaller =>
       BarcodeReaderCaller.instance;
 
-  static final DynamsoftBarcodeReader _barcodeReader = DynamsoftBarcodeReader._();
+  static final DCVBarcodeReader _barcodeReader = DCVBarcodeReader._();
 
   /// Initializes the barcode reader license and connects to the specified server for online verification.
   ///
@@ -31,8 +31,8 @@ class DynamsoftBarcodeReader {
   ///     print('license error = $e');
   /// }
   /// ```
-  static Future<bool> initLicense({required String license}) {
-    return _barcodeReaderCaller.initLicense(license: license);
+  static Future<bool> initLicense(String license) {
+    return _barcodeReaderCaller.initLicense(license);
   }
 
   /// Create an instance of DynamsoftBarcodeReader.
@@ -43,7 +43,7 @@ class DynamsoftBarcodeReader {
   /// late final DynamsoftBarcodeReader _barcodeReader;
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
   /// ```
-  static Future<DynamsoftBarcodeReader> createInstance() async {
+  static Future<DCVBarcodeReader> createInstance() async {
     await _barcodeReaderCaller.createInstance();
     return _barcodeReader;
   }
@@ -124,8 +124,8 @@ class DynamsoftBarcodeReader {
   ///   print('error = $e');
   /// }
   /// ```
-  Future<void> updateRuntimeSettings({required DBRRuntimeSettings settings}) {
-    return _barcodeReaderCaller.updateRuntimeSettings(settings: settings);
+  Future<void> updateRuntimeSettings(DBRRuntimeSettings settings) {
+    return _barcodeReaderCaller.updateRuntimeSettings(settings);
   }
 
   /// Update the runtime settings from a preset template.
@@ -139,8 +139,9 @@ class DynamsoftBarcodeReader {
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
   /// await _barcodeReader.updateRuntimeSettingsFromTemplate(template: EnumDBRPresetTemplate.videoDefault);
   /// ```
-  Future<void> updateRuntimeSettingsFromTemplate({required EnumDBRPresetTemplate template}) {
-    return _barcodeReaderCaller.updateRuntimeSettingsFromTemplate(template: template);
+  Future<void> updateRuntimeSettingsFromTemplate(
+      EnumDBRPresetTemplate template) {
+    return _barcodeReaderCaller.updateRuntimeSettingsFromTemplate(template);
   }
 
   /// Update runtime settings with the given JSON string.
@@ -160,8 +161,8 @@ class DynamsoftBarcodeReader {
   ///   print('error = $e');
   /// }
   /// ```
-  Future<void> updateRuntimeSettingsFromJson({required String jsonString}) {
-    return _barcodeReaderCaller.updateRuntimeSettingsFromJson(jsonString: jsonString);
+  Future<void> updateRuntimeSettingsFromJson(String jsonString) {
+    return _barcodeReaderCaller.updateRuntimeSettingsFromJson(jsonString);
   }
 
   /// Resets all parameters to default values.
@@ -202,7 +203,7 @@ class DynamsoftBarcodeReader {
     return _barcodeReaderCaller.outputRuntimeSettingsToString();
   }
 
-   /// Obtain the barcode results from the callback.
+  /// Obtain the barcode results from the callback.
   ///
   /// You can use this method to listen all the barcode results of the camera's capture.
   ///
@@ -217,5 +218,13 @@ class DynamsoftBarcodeReader {
   /// ```
   Stream<List<BarcodeResult>> receiveResultStream() {
     return _barcodeReaderCaller.receiveResultStream();
+  }
+
+  Future<List<BarcodeResult>> decodeFile(String path) {
+    return _barcodeReaderCaller.decodeFile(path);
+  }
+
+  Future enableResultVerification(bool isEnable) async {
+    return _barcodeReaderCaller.enableResultVerification(isEnable);
   }
 }

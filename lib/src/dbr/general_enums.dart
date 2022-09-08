@@ -9,6 +9,8 @@ enum EnumDBRPresetTemplate {
   IMAGE_DEFAULT
 }
 
+enum EnumCameraPosition { CP_BACK, CP_FRONT }
+
 extension PresetTemplateSerializer on EnumDBRPresetTemplate {
   EnumDBRPresetTemplate fromJson(String? jsonValue) {
     switch (jsonValue) {
@@ -25,7 +27,7 @@ extension PresetTemplateSerializer on EnumDBRPresetTemplate {
       case 'imageReadRateFirst':
         return EnumDBRPresetTemplate.IMAGE_READ_RATE_FIRST;
       case 'imageDefault':
-        return EnumDBRPresetTemplate.IMAGE_DEFAULT;  
+        return EnumDBRPresetTemplate.IMAGE_DEFAULT;
       default:
         throw Exception("Missing PresetTemplate for '$jsonValue'");
     }
@@ -47,10 +49,9 @@ extension PresetTemplateSerializer on EnumDBRPresetTemplate {
       case EnumDBRPresetTemplate.IMAGE_READ_RATE_FIRST:
         return 'imageReadRateFirst';
       case EnumDBRPresetTemplate.IMAGE_DEFAULT:
-        return 'imageDefault';  
+        return 'imageDefault';
       default:
         throw Exception("Missing Json Value for '$this' PresetTemplate");
     }
   }
 }
-

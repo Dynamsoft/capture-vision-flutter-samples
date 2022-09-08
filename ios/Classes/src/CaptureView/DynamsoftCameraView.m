@@ -1,9 +1,3 @@
-//
-//  DynamsoftCameraView.m
-//  dynamsoft_capture_vision
-//
-//  Created by dynamsoft on 2022/3/29.
-//
 
 #import "DynamsoftCameraView.h"
 
@@ -26,10 +20,10 @@
     [self addSubview:self.dceView];
 
     [DynamsoftSDKManager manager].cameraEnhancer = [[DynamsoftCameraEnhancer alloc] initWithView:self.dceView];
-
-    [[DynamsoftSDKManager manager].cameraEnhancer open];
-    
 }
 
+- (void)layoutSubviews {
+    self.dceView.frame = self.bounds;
+}
 
 @end

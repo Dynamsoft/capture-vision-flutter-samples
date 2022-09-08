@@ -1,9 +1,3 @@
-//
-//  DynamsoftConvertManager.m
-//  dynamsoft_flutter_barcode
-//
-//  Created by dynamsoft on 2022/3/7.
-//
 
 #import "DynamsoftConvertManager.h"
 
@@ -45,6 +39,8 @@
     publicRuntimeSettings.barcodeFormatIds_2 = [[settings valueForKey:@"barcodeFormatIds_2"] intValue];
     publicRuntimeSettings.expectedBarcodesCount = [[settings valueForKey:@"expectedBarcodeCount"] intValue];
     publicRuntimeSettings.timeout = [[settings valueForKey:@"timeout"] intValue];
+    publicRuntimeSettings.minBarcodeTextLength = [[settings valueForKey:@"minBarcodeTextLength"] intValue];
+    publicRuntimeSettings.minResultConfidence = [[settings valueForKey:@"minResultConfidence"] intValue];
     
     return publicRuntimeSettings;
 }
@@ -89,6 +85,16 @@
     return  regionDefiniton;
 }
 
+- (CGRect)aynlyzeCustomTorchButtonFrameFromJson:(id)jsonData
+                               torchDefaultRect:(CGRect)torchDefaultRect {
+    NSDictionary *customButtonDic = [jsonData valueForKey:@"rect"];
+    CGFloat x = [[customButtonDic valueForKey:@"x"] floatValue];
+    CGFloat y = [[customButtonDic valueForKey:@"y"] floatValue];
+    CGFloat width = [[customButtonDic valueForKey:@"width"] floatValue];
+    CGFloat height = [[customButtonDic valueForKey:@"height"] floatValue];
+    return CGRectMake(x, y, width <= torchDefaultRect.size.width ? width : torchDefaultRect.size.width, height <= torchDefaultRect.size.height ? height : torchDefaultRect.size.height);
+}
+
 //MARK: ToJson
 
 - (NSArray *)wrapResultsToJson:(NSArray<iTextResult *> *)results
@@ -109,8 +115,10 @@
                                         @"y":@((int)point.y)
                                       }];
         }
+
         [jsonArray addObject:@{@"barcodeText":textResult.barcodeText,
                                @"barcodeFormatString":barcodeFormatString,
+                               @"barcodeBytesString":[textResult.barcodeBytes base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed],
                                @"barcodeLocation":@{@"angle":@(textResult.localizationResult.angle),
                                                     @"location":@{@"pointsList":locationPoints}
                                }
@@ -126,7 +134,9 @@
     return @{@"barcodeFormatIds":@(runtimeSettings.barcodeFormatIds),
              @"barcodeFormatIds_2":@(runtimeSettings.barcodeFormatIds_2),
              @"expectedBarcodeCount":@(runtimeSettings.expectedBarcodesCount),
-             @"timeout":@(runtimeSettings.timeout)
+             @"timeout":@(runtimeSettings.timeout),
+             @"minBarcodeTextLength":@(runtimeSettings.minBarcodeTextLength),
+             @"minResultConfidence":@(runtimeSettings.minResultConfidence)
     };
 }
 

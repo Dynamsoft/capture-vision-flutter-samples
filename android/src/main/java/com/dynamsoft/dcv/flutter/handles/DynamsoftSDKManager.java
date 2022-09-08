@@ -10,6 +10,7 @@ import com.dynamsoft.dbr.ImageData;
 import com.dynamsoft.dbr.TextResult;
 import com.dynamsoft.dbr.TextResultListener;
 import com.dynamsoft.dce.CameraEnhancer;
+import com.dynamsoft.dce.DCECameraView;
 import com.dynamsoft.dcv.flutter.Common;
 
 import io.flutter.plugin.common.EventChannel;
@@ -19,10 +20,10 @@ public class DynamsoftSDKManager {
 
     public BarcodeReader barcodeReader;
     public CameraEnhancer cameraEnhancer;
-    public boolean barcodeReaderLinkCameraEnhancerIsFinished;
+    public DCECameraView cameraView;
 
     private volatile  static DynamsoftSDKManager manager;
-    private DynamsoftSDKManager() {};
+    private DynamsoftSDKManager() {}
 
     public  static DynamsoftSDKManager manager() {
         if (manager == null) {
@@ -49,9 +50,9 @@ public class DynamsoftSDKManager {
                     Common.pluginActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
-                            textResultStream.success(DynamsoftConvertManager.manager().wrapResultsToJson(textResults));
-
+                            if(textResults!=null && textResults.length > 0) {
+                                textResultStream.success(DynamsoftConvertManager.manager().wrapResultsToJson(textResults));
+                            }
                         }
                     });
 

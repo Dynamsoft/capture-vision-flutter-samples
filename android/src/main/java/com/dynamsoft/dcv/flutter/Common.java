@@ -31,15 +31,22 @@ public class Common {
     public static final String barcodeReader_resetRuntimeSettings = "barcodeReader_resetRuntimeSettings";
     public static final String barcodeReader_outputRuntimeSettingsToString = "barcodeReader_outputRuntimeSettingsToString";
     public static final String barcodeReader_addResultlistener = "barcodeReader_addResultlistener";
-
+    public static final String barcodeReader_decodeFile = "barcodeReader_decodeFile";
+    public static final String barcodeReader_enableResultVerification = "barcodeReader_enableResultVerification";
 
     /// DCE Methods
+    public static final String cameraEnhancer_createInstance = "cameraEnhancer_createInstance";
     public static final String cameraEnhancer_dispose = "cameraEnhancer_dispose";
     public static final String cameraEnhancer_setScanRegion = "cameraEnhancer_setScanRegion";
     public static final String cameraEnhancer_setScanRegionVisible = "cameraEnhancer_setScanRegionVisible";
     public static final String cameraEnhancer_setOverlayVisible = "cameraEnhancer_setOverlayVisible";
     public static final String cameraEnhancer_openCamera = "cameraEnhancer_openCamera";
     public static final String cameraEnhancer_closeCamera = "cameraEnhancer_closeCamera";
+    public static final String cameraEnhancer_selectCamera = "cameraEnhancer_selectCamera";
+    public static final String cameraEnhancer_turnOnTorch = "cameraEnhancer_turnOnTorch";
+    public static final String cameraEnhancer_turnOffTorch = "cameraEnhancer_turnOffTorch";
+
+    public static final String cameraView_torchButton = "cameraView_torchButton";
 
     /// Navigation and lifecycle methods
     public static final String navigation_didPopNext = "navigation_didPopNext";

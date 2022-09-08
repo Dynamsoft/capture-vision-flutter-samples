@@ -20,7 +20,6 @@
   - [License Activation](#license-activation)
   - [Configure the Barcode Reader](#configure-the-barcode-reader)
   - [Build the Widget](#build-the-widget)
-  - [Configure Camera Permissions](#configure-camera-permissions)
   - [Run the Project](#run-the-project)
 - [Samples](#samples)
 - [API References](#api-references)
@@ -55,16 +54,18 @@ Run the following command:
 flutter pub add dynamsoft_capture_vision_flutter
 ```
 
-This will add a line like this to your package's pubspec.yaml (and run an implicit flutter pub get):
+This will add a line like this to your package's `pubspec.yaml` (and run an implicit flutter pub get):
 
 ```dart
 dependencies:
-   dynamsoft_capture_vision_flutter: ^1.0.0
+   dynamsoft_capture_vision_flutter: ^1.1.0
 ```
 
 ## Build Your Barcode Scanner App
 
 Now you will learn how to create a simple barcode scanner using Dynamsoft Capture Vision Flutter SDK.
+
+>Note: You can get the full source code of a similar project:  [Barcode Reader Simple Sample](https://github.com/Dynamsoft/capture-vision-flutter-samples/tree/main/barcode_reader_simple_sample)
 
 ### Set up Development Environment
 
@@ -72,7 +73,7 @@ If you are a beginner with Flutter, please follow the guide on the <a href="http
 
 ### Initialize the Project
 
-Create a new Flutter project
+Create a new Flutter project.
 
 ```bash
 flutter create simple_barcode_scanner
@@ -80,7 +81,7 @@ flutter create simple_barcode_scanner
 
 ### Include the Library
 
-View the [installation section](#installation) for how to add the library. In **main.dart** of your project, import the library.
+View the [installation section](#installation) on how to add the library. In **main.dart** of your project, import the library.
 
 ```dart
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
@@ -88,7 +89,7 @@ import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutte
 
 ### License Activation
 
-The barcode reading module of Dynamsoft Capture Vision needs a valid license to work. In the **main()** function, add the following code to activate the license.
+The barcode reading module of Dynamsoft Capture Vision needs a valid license to work. Please refer to the [Licensing](#licensing) section for more info on how to obtain a license. In the `main()` function, add the following code to activate the license:
 
 ```dart
 void main() async {
@@ -97,7 +98,7 @@ void main() async {
   const String licenseKey = '';
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
-    await DynamsoftBarcodeReader.initLicense(license: licenseKey);
+    await DCVBarcodeReader.initLicense(license: licenseKey);
   } catch (e) {
     print(e);
   }
@@ -108,21 +109,23 @@ void main() async {
 
 ### Configure the Barcode Reader
 
-In this section, we are going to work on the **_MyHomePageState** class in the newly created project to add the barcode decoding feature.
+In this section, we are going to work on the `_MyHomePageState` class in the newly created project to add the barcode decoding feature.
 
 Add the following instance variables:
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
-  late final DynamsoftBarcodeReader _barcodeReader;
-  final DynamsoftCameraView _cameraView = DynamsoftCameraView();
+  late final DCVBarcodeReader _barcodeReader;
+  late final DCVCameraEnhancer _cameraEnhancer;
+  final DCVCameraView _cameraView = DCVCameraView();
   List<BarcodeResult> decodeResults = [];
 }
 ```
 
-- `barcodeReader`: The object that implements barcode decoding feature. Users can configure barcode decoding settings via this object.
-- `cameraView`: The camera view that displays the video streaming.
-- `decodeResults`: An object that will be used to receive and stores barcode decoding result.
+- `_barcodeReader`: The object that implements the barcode decoding feature. Users can configure barcode decoding settings via this object.
+- `_cameraView`: The camera view that displays the video stream (from a camera input).
+- `_cameraEnhancer`: The object that enables you to control the camera.
+- `decodeResults`: An object that will be used to receive and store barcode decoding results.
 
 Add **_configDBR** method to initialize the barcode reader:
 
@@ -132,12 +135,42 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _configDBR();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _cameraEnhancer.close();
+    _barcodeReader.stopScanning();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        _barcodeReader.startScanning();
+        _cameraEnhancer.open();
+        break;
+      case AppLifecycleState.inactive:
+        _cameraEnhancer.close();
+        _barcodeReader.stopScanning();
+        break;
+    }
   }
 
   _configDBR() async {
     /// Create an instance of barcode reader.
-    _barcodeReader = await DynamsoftBarcodeReader.createInstance();
+    _barcodeReader = await DCVBarcodeReader.createInstance();
+    /// Create an instance of camera enhancer.
+    _cameraEnhancer = await DCVCameraEnhancer.createInstance();
+
+    /// When overlayVisible is set to true, the decoded barcodes will be highlighted with overlays.
+    _cameraView.overlayVisible = true;
 
     /// Receive the barcode decoding results and store the result in object decodeResults
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
@@ -148,11 +181,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
 
+    await _cameraEnhancer.open();
+
     /// Start barcode decoding when the widget is created.
     _barcodeReader.startScanning();
-
-    /// When overlayVisible is set to true, the decoded barcodes will be highlighted with overlays.
-    _cameraView.overlayVisible = true;
   }
 }
 ```
@@ -168,7 +200,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return ListTileTheme(
         textColor: Colors.white,
-        // tileColor: Colors.green,
         child: ListTile(
           title: Text(res.barcodeFormatString),
           subtitle: Text(res.barcodeText),
@@ -179,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ### Build the Widget
 
-Modify the **build** method to display the decode barcode results on the widget.
+Modify the `build` method to display the decode barcode results on the widget.
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
@@ -208,29 +239,13 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-### Configure Camera Permissions
-
-Before you run the project on iOS devices, you have to add the camera permission first.
-
-In the project folder, go to file **ios/Runner/info.plist**, add the following code for requesting camera permission.
-
-```xml
-<plist version="1.0">
-<dict>
-  ...
-  <key>NSCameraUsageDescription</key>
-  <string>Request your authorization.</string>
-  ...
-</dict>
-```
-
 ### Run the Project
 
 #### Run Android on Windows
 
 Go to the file **build.gradle(app)**, update the `minSdkVersion` to 21.
 
-```gradle 
+```gradle
 android {
    defaultConfig {
       ...
@@ -248,7 +263,19 @@ flutter run
 
 #### Run iOS on macOS
 
-Go to the **podfile** in **ios** folder and add the following code at the top of the file:
+In the project folder, go to file ios/Runner/info.plist, add the following code for requesting camera permission:
+
+```xml
+<plist version="1.0">
+<dict>
+  ...
+  <key>NSCameraUsageDescription</key>
+  <string>Request your authorization.</string>
+  ...
+</dict>
+```
+
+Go to the **Podfile** in **ios** folder and add the following code at the top of the file:
 
 ```objc
 platform:ios, '10.0'
@@ -264,15 +291,16 @@ flutter run
 
 You can view all the DCV Flutter samples via the following links:
 
-- <a href = "https://github.com/Dynamsoft/capture-vision-flutter-samples/tree/main/BarcodeReaderSimpleSample" target = "_blank" >Barcode reader simple sample</a>
+- <a href = "https://github.com/Dynamsoft/capture-vision-flutter-samples/tree/main/barcode_reader_simple_sample" target = "_blank" >Barcode reader simple sample</a>
 
 ## API References
 
 View the API reference of DCV Flutter Edition to explore the full feature of DCV:
 
 - <a href = "https://www.dynamsoft.com/capture-vision/docs/programming/flutter/api-reference/?ver=latest" target = "_blank" >DCV API Reference - Flutter Edition</a>
-  - <a href = "https://www.dynamsoft.com/capture-vision/docs/programming/flutter/api-reference/barcode-reader.html?ver=latest" target = "_blank" >DynamsoftBarcodeReader Class</a>
-  - <a href = "https://www.dynamsoft.com/capture-vision/docs/programming/flutter/api-reference/camera-view.html?ver=latest" target = "_blank" >DynamsoftCameraEnhancer Class</a>
+  - <a href = "https://www.dynamsoft.com/capture-vision/docs/programming/flutter/api-reference/barcode-reader.html?ver=latest" target = "_blank" >DCVBarcodeReader Class</a>
+  - <a href = "https://www.dynamsoft.com/capture-vision/docs/programming/flutter/api-reference/camera-enhancer.html?ver=latest" target = "_blank" >DCVCameraEnhancer Class</a>
+  - <a href = "https://www.dynamsoft.com/capture-vision/docs/programming/flutter/api-reference/camera-view.html?ver=latest" target = "_blank" >DCVCameraView Class</a>
 
 ## License
 

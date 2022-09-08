@@ -1,15 +1,26 @@
 package com.dynamsoft.dcv.flutter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.pdf.PdfDocument;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 /// Plugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.plugin.common.JSONMessageCodec;
+import io.flutter.plugin.common.JSONUtil;
 import io.flutter.plugin.common.MessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
@@ -22,12 +33,15 @@ import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.EventChannel.StreamHandler;
 
 /// SDK
+import com.dynamsoft.dbr.BarcodeReader;
 import com.dynamsoft.dbr.BarcodeReaderException;
 import com.dynamsoft.dbr.EnumConflictMode;
 import com.dynamsoft.dbr.EnumPresetTemplate;
 import com.dynamsoft.dbr.PublicRuntimeSettings;
 import com.dynamsoft.dbr.TextResult;
+import com.dynamsoft.dce.CameraEnhancer;
 import com.dynamsoft.dce.DCEFrame;
+import com.dynamsoft.dce.EnumCameraPosition;
 import com.dynamsoft.dce.RegionDefinition;
 import com.dynamsoft.dce.CameraEnhancerException;
 
@@ -55,8 +69,18 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 
 	private BarcodeScanningCaptureView captureView;
 
+	private Context mContext;
+
+	private FlutterPlugin.FlutterAssets flutterAssets;
+
+	private AssetManager assetManager;
+
 	public DynamsoftCaptureVisionFactory(MessageCodec<Object> createArgsCodec, FlutterPlugin.FlutterPluginBinding flutterPluginBinding) {
 		super(createArgsCodec);
+
+		flutterAssets = flutterPluginBinding.getFlutterAssets();
+		mContext = flutterPluginBinding.getApplicationContext();
+		assetManager = flutterPluginBinding.getApplicationContext().getAssets();
 
 		methodChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), Common.methodChannel_Identifier);
 		methodChannel.setMethodCallHandler(this);
@@ -67,9 +91,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 
 	@Override
 	public PlatformView create(Context context, int viewId, Object args) {
-		if (Common.pluginActivity != null) {
-			captureView = new BarcodeScanningCaptureView(Common.pluginActivity);
-		}
+		captureView = new BarcodeScanningCaptureView(context);
 		return captureView;
 
 	}
@@ -141,9 +163,18 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 			case Common.barcodeReader_outputRuntimeSettingsToString:
 				barcodeReaderOutputRuntimeSettingsToString(call.arguments, result);
 				break;
-
+			case Common.barcodeReader_decodeFile:
+				barcodeReaderDecodeFile(call.argument("flutterAssetsPath"), result);
+				break;
+			case Common.barcodeReader_enableResultVerification:
+				barcodeReaderEnableResultVerification((boolean) call.arguments);
+				result.success(null);
+				break;
 
 			/// DCE
+			case Common.cameraEnhancer_createInstance:
+				cameraEnhancerCreateInstance(Common.pluginActivity, result);
+				break;
 			case Common.cameraEnhancer_dispose:
 				cameraEnhancerDispose(call.arguments, result);
 				break;
@@ -157,32 +188,82 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				cameraEnhancerSetOverlayVisible(call.arguments, result);
 				break;
 			case Common.cameraEnhancer_openCamera:
-				cameraEnhancerOpenCamera(call.arguments, result);
+				cameraEnhancerOpenCamera(result);
 				break;
 			case Common.cameraEnhancer_closeCamera:
-				cameraEnhancerCloseCamera(call.arguments, result);
+				cameraEnhancerCloseCamera(result);
+				break;
+			case Common.cameraEnhancer_selectCamera:
+				try {
+					cameraEnhancerSelectCamera((Integer) call.arguments);
+				} catch (CameraEnhancerException e) {
+					e.printStackTrace();
+				}
+				result.success(null);
+				break;
+			case Common.cameraEnhancer_turnOnTorch:
+				try {
+					cameraEnhancerTurnOnTorch();
+				} catch (CameraEnhancerException e) {
+					e.printStackTrace();
+				}
+				result.success(null);
+				break;
+			case Common.cameraEnhancer_turnOffTorch:
+				try {
+					cameraEnhancerTurnOffTorch();
+				} catch (CameraEnhancerException e) {
+					e.printStackTrace();
+				}
+				result.success(null);
+				break;
+			case Common.cameraView_torchButton:
+				HashMap<String, Integer> rect = call.argument("rect");
+				Integer x = null;
+				Integer y = null;
+				Integer width = null;
+				Integer height = null;
+				if (rect != null) {
+					x = rect.get("x");
+					y = rect.get("y");
+					width = rect.get("width");
+					height = rect.get("height");
+				}
+				String openImgPath = call.argument("torchOnImage");
+				String closeImgPath = call.argument("torchOffImage");
+				Boolean visible = false;
+				if (call.argument("visible") != null) {
+					if (call.argument("visible") instanceof Boolean) {
+						visible = call.argument("visible");
+					}
+				}
+				try {
+					cameraViewTorchButton(visible, x, y, width, height, openImgPath, closeImgPath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				result.success(null);
 				break;
 
 			/// Navigation and lifecycle methods
-			case Common.navigation_didPushNext:
-				navigationDidPushNext(result);
-				break;
-			case Common.navigation_didPopNext:
-				navigationDidPopNext(result);
-				break;
-			case Common.appState_becomeResumed:
-				appStateBecomeResumed(result);
-				break;
-			case Common.appState_becomeInactive:
-				appStateBecomeInactive(result);
-				break;
+//			case Common.navigation_didPushNext:
+//				navigationDidPushNext(result);
+//				break;
+//			case Common.navigation_didPopNext:
+//				navigationDidPopNext(result);
+//				break;
+//			case Common.appState_becomeResumed:
+//				appStateBecomeResumed(result);
+//				break;
+//			case Common.appState_becomeInactive:
+//				appStateBecomeInactive(result);
+//				break;
 
 			default:
 				result.notImplemented();
 		}
 
 	}
-
 
 	/// DBR methods
 	private void barcodeReaderInitLicense(Object arguments, Result result) {
@@ -194,13 +275,12 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 	}
 
 	private void barcodeReaderGetVersion(Object arguments, Result result) {
-		result.success(DynamsoftSDKManager.manager().barcodeReader.getVersion());
+		result.success(BarcodeReader.getVersion());
 	}
 
 	private void barcodeReaderStartScanning(Object arguments, Result result) {
 
-		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == false) {
-			DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished = true;
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
 			DynamsoftSDKManager.manager().barcodeReader.setCameraEnhancer(DynamsoftSDKManager.manager().cameraEnhancer);
 		}
 		DynamsoftSDKManager.manager().barcodeReader.startScanning();
@@ -272,10 +352,47 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 		}
 	}
 
+	private void barcodeReaderDecodeFile(String flutterAssetsPath, Result result) {
+		if (DynamsoftSDKManager.manager().barcodeReader != null) {
+			if (flutterAssets != null) {
+				String path = flutterAssets.getAssetFilePathBySubpath(flutterAssetsPath);
+				try {
+//					InputStream is = assetManager.open(path);
+//					TextResult[] results = DynamsoftSDKManager.manager().barcodeReader.decodeFileInMemory(is);
+					TextResult[] results = DynamsoftSDKManager.manager().barcodeReader.decodeFile(flutterAssetsPath);
+					if (results != null && results.length > 0) {
+						result.success(DynamsoftConvertManager.manager().wrapResultsToJson(results));
+					} else {
+						result.success(null);
+					}
+					return;
+				} catch (BarcodeReaderException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		result.error("-10000", "Decode file failed.", null);
+	}
+
+	private void barcodeReaderEnableResultVerification(boolean enabled) {
+		if (DynamsoftSDKManager.manager().barcodeReader != null) {
+			DynamsoftSDKManager.manager().barcodeReader.enableResultVerification(enabled);
+		}
+	}
+
 	/// DCE methods
 
+	private void cameraEnhancerCreateInstance(Activity activity, Result result) {
+		if (activity != null) {
+			DynamsoftSDKManager.manager().cameraEnhancer = new CameraEnhancer(activity);
+			if (DynamsoftSDKManager.manager().cameraView != null) {
+				DynamsoftSDKManager.manager().cameraEnhancer.setCameraView(DynamsoftSDKManager.manager().cameraView);
+			}
+		}
+		result.success(null);
+	}
+
 	private void cameraEnhancerDispose(Object arguments, Result result) {
-		DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished = false;
 		if (DynamsoftSDKManager.manager().barcodeReader != null) {
 			DynamsoftSDKManager.manager().barcodeReader.stopScanning();
 		}
@@ -310,12 +427,12 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 
 	private void cameraEnhancerSetOverlayVisible(Object arguments, Result result) {
 		boolean overlayVisible = (boolean) ((Map) arguments).get("isVisible");
-		captureView.cameraView.setOverlayVisible(overlayVisible);
+		DynamsoftSDKManager.manager().cameraView.setOverlayVisible(overlayVisible);
 		result.success(null);
 	}
 
-	private void cameraEnhancerOpenCamera(Object arguments, Result result) {
-		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+	private void cameraEnhancerOpenCamera(Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
 			try {
 				DynamsoftSDKManager.manager().cameraEnhancer.open();
 				result.success(null);
@@ -325,8 +442,8 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 		}
 	}
 
-	private void cameraEnhancerCloseCamera(Object arguments, Result result) {
-		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+	private void cameraEnhancerCloseCamera(Result result) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
 			try {
 				DynamsoftSDKManager.manager().cameraEnhancer.close();
 				result.success(null);
@@ -336,9 +453,75 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 		}
 	}
 
+	private void cameraEnhancerSelectCamera(int position) throws CameraEnhancerException {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
+			switch (position) {
+				case 1:
+					DynamsoftSDKManager.manager().cameraEnhancer.selectCamera(EnumCameraPosition.CP_FRONT);
+					break;
+				case 0:
+				default:
+					DynamsoftSDKManager.manager().cameraEnhancer.selectCamera(EnumCameraPosition.CP_BACK);
+			}
+		}
+	}
+
+	private void cameraEnhancerTurnOnTorch() throws CameraEnhancerException {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
+			DynamsoftSDKManager.manager().cameraEnhancer.turnOnTorch();
+		}
+	}
+
+	private void cameraEnhancerTurnOffTorch() throws CameraEnhancerException {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
+			DynamsoftSDKManager.manager().cameraEnhancer.turnOffTorch();
+		}
+	}
+
+	private void cameraViewTorchButton(Boolean visible, Integer x, Integer y, Integer width, Integer height, String openImgPath, String closeImgPath) throws IOException {
+		if (DynamsoftSDKManager.manager().cameraView != null) {
+			if (DynamsoftSDKManager.manager().cameraView != null) {
+				Point p = null;
+				if(x != null && y != null){
+					p = new Point();
+					p.x = x;
+					p.y = y;
+				}
+
+				if (width == null) {
+					width = 45;
+				}
+
+				if(height == null){
+					height = 45;
+				}
+
+				Drawable openImg = null;
+				Drawable closeImg = null;
+
+				if (openImgPath != null) {
+					String path = flutterAssets.getAssetFilePathBySubpath(openImgPath);
+					InputStream is = assetManager.open(path);
+					openImg = BitmapDrawable.createFromStream(is, null);
+					is.close();
+				}
+				if (closeImgPath != null) {
+					String path = flutterAssets.getAssetFilePathBySubpath(closeImgPath);
+					InputStream is = assetManager.open(path);
+					closeImg = BitmapDrawable.createFromStream(is, null);
+					is.close();
+				}
+				DynamsoftSDKManager.manager().cameraView.setTorchButtonVisible(visible);
+				DynamsoftSDKManager.manager().cameraView.setTorchButton(p, width, height, openImg, closeImg);
+
+			}
+		}
+	}
+
+
 	/// Navigation and lifecycle methods
 	private void navigationDidPopNext(Result result) {
-		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
 			try {
 				DynamsoftSDKManager.manager().cameraEnhancer.open();
 				result.success(null);
@@ -349,7 +532,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 	}
 
 	private void navigationDidPushNext(Result result) {
-		if (DynamsoftSDKManager.manager().cameraEnhancer != null && DynamsoftSDKManager.manager().barcodeReaderLinkCameraEnhancerIsFinished == true) {
+		if (DynamsoftSDKManager.manager().cameraEnhancer != null) {
 			try {
 				DynamsoftSDKManager.manager().cameraEnhancer.close();
 				result.success(null);

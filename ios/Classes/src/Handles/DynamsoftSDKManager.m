@@ -1,9 +1,3 @@
-//
-//  DynamsoftSDKManager.m
-//  dbr_test_plugin
-//
-//  Created by dynamsoft on 2022/2/21.
-//
 
 #import "DynamsoftSDKManager.h"
 #import "DynamsoftToolsManager.h"
