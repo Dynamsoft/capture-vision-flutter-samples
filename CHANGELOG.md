@@ -27,3 +27,9 @@
 * Renamed `DynamsoftBarcodeReader` class to `DCVBarcodeReader`.
 * Renamed `DynamsoftCameraView` class to `DCVCameraView`.
 * Users have to call `DCVCameraEnhancer.open`/`DCVCameraEnhancer.close` manually when the application is **resumed**/**inactive**.
+
+## 1.1.1
+
+### Fixed
+
+* Fixed a bug that could result in incorrect counts for scanned barcodes.
