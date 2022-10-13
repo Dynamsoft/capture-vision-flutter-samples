@@ -17,7 +17,6 @@ void main() async {
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
     await DCVBarcodeReader.initLicense(licenseKey);
-
   } catch (e) {
     print(e);
   }
@@ -27,6 +26,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -132,7 +132,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
 
     // currentSettings.minResultConfidence = 70;
     // currentSettings.minBarcodeTextLength = 50;
-    
+
     // Set the expected barcode count to 0 when you are not sure how many barcodes you are scanning.
     // Set the expected barcode count to 1 can maximize the barcode decoding speed.
     currentSettings.expectedBarcodeCount = 0;
@@ -267,7 +267,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       final result = await _barcodeReader.decodeFile(path).then((value) {
         _vibrateWithBeep();
       });
-      if (result.isNotEmpty) {
+      if (result != null && result.isNotEmpty) {
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;
         base64ResultText = utf8.decode(bytes);
@@ -278,7 +278,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
   }
 
   void _vibrateWithBeep() async {
-    if(await Vibration.hasVibrator()??false){
+    if (await Vibration.hasVibrator() ?? false) {
       Vibration.vibrate();
     }
     FlutterBeep.beep();
