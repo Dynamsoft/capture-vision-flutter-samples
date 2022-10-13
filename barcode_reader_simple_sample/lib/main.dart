@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -262,7 +264,9 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     final XFile? image = await _picker.pickImage(source: source);
     final path = image?.path;
     if (path != null) {
-      final result = await _barcodeReader.decodeFile(path);
+      final result = await _barcodeReader.decodeFile(path).then((value) {
+        _vibrateWithBeep();
+      });
       if (result.isNotEmpty) {
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;
@@ -271,6 +275,13 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       }
     }
     setState(() {});
+  }
+
+  void _vibrateWithBeep() async {
+    if(await Vibration.hasVibrator()??false){
+      Vibration.vibrate();
+    }
+    FlutterBeep.beep();
   }
 
   @override
