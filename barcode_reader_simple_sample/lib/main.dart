@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +17,6 @@ void main() async {
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
     await DCVBarcodeReader.initLicense(licenseKey);
-
   } catch (e) {
     print(e);
   }
@@ -25,6 +26,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -130,7 +132,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
 
     // currentSettings.minResultConfidence = 70;
     // currentSettings.minBarcodeTextLength = 50;
-    
+
     // Set the expected barcode count to 0 when you are not sure how many barcodes you are scanning.
     // Set the expected barcode count to 1 can maximize the barcode decoding speed.
     currentSettings.expectedBarcodeCount = 0;
@@ -158,6 +160,9 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     // Stream listener to handle callback when barcode result is returned.
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
       if (mounted) {
+
+        _vibrateWithBeep();
+
         setState(() {
           decodeRes = res;
         });
@@ -262,8 +267,10 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     final XFile? image = await _picker.pickImage(source: source);
     final path = image?.path;
     if (path != null) {
-      final result = await _barcodeReader.decodeFile(path);
-      if (result.isNotEmpty) {
+      final result = await _barcodeReader.decodeFile(path).then((value) {
+        _vibrateWithBeep();
+      });
+      if (result != null && result.isNotEmpty) {
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;
         base64ResultText = utf8.decode(bytes);
@@ -271,6 +278,13 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       }
     }
     setState(() {});
+  }
+
+  void _vibrateWithBeep() async {
+    if (await Vibration.hasVibrator() ?? false) {
+      Vibration.vibrate();
+    }
+    FlutterBeep.beep();
   }
 
   @override
