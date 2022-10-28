@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -140,7 +142,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         regionLeft: 15,
         regionBottom: 70,
         regionRight: 85,
-        regionMeasuredByPercentage: true));
+        regionMeasuredByPercentage: 1));
 
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
@@ -176,7 +178,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         textColor: Colors.white,
         // tileColor: Colors.green,
         child: ListTile(
-          title: Text(res.barcodeFormatString??''),
+          title: Text(res.barcodeFormatString ?? ''),
           subtitle: Text(res.barcodeText),
         ));
   }
@@ -209,7 +211,11 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                       ? EnumCameraPosition.CP_FRONT
                       : EnumCameraPosition.CP_BACK);
                 },
-                child: Image.asset('assets/toggle_lens.png', width: 48, height: 48,),
+                child: Image.asset(
+                  'assets/toggle_lens.png',
+                  width: 48,
+                  height: 48,
+                ),
               ),
             ),
             Positioned(
@@ -254,7 +260,12 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     final XFile? image = await _picker.pickImage(source: source);
     final path = image?.path;
     if (path != null) {
-      final result = await _barcodeReader.decodeFile(path);
+      final result = await _barcodeReader.decodeFile(path).then((value) async {
+        if (await Vibration.hasVibrator() ?? false) {
+          Vibration.vibrate();
+        }
+        FlutterBeep.beep();
+      });
       if (result.isNotEmpty) {
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;

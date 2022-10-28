@@ -12,9 +12,9 @@ class BarcodeReaderCaller {
   static BarcodeReaderCaller get instance => _instance;
 
   Future<bool> initLicense(String license) async {
-   
-    final Map jsonMap = await methodChannel.invokeMethod('barcodeReader_initLicense', {'license': license});
-    
+    final Map jsonMap = await methodChannel
+        .invokeMethod('barcodeReader_initLicense', {'license': license});
+
     if (jsonMap["isSuccess"] == false) {
       throw FlutterError(jsonMap["errorString"]);
     }
@@ -38,20 +38,27 @@ class BarcodeReaderCaller {
   }
 
   Future<void> updateRuntimeSettings(DBRRuntimeSettings settings) {
-    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettings',{'runtimeSettings': settings.toJson()});
+    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettings',
+        {'runtimeSettings': settings.toJson()});
   }
 
   Future<DBRRuntimeSettings> getRuntimeSettings() async {
-    final jsonMap = await methodChannel.invokeMethod('barcodeReader_getRuntimeSettings');
-    return DBRRuntimeSettings.fromJson(jsonMap);
+   final jsonMap =
+        await methodChannel.invokeMethod('barcodeReader_getRuntimeSettings');
+    return DBRRuntimeSettings.fromJson(Map<String, dynamic>.from(jsonMap));
   }
 
-  Future<void> updateRuntimeSettingsFromTemplate(EnumDBRPresetTemplate template) {
-    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettingsFromTemplate',{'presetTemplate': template.jsonValue});
+  Future<void> updateRuntimeSettingsFromTemplate(
+      EnumDBRPresetTemplate template) {
+    return methodChannel.invokeMethod(
+        'barcodeReader_updateRuntimeSettingsFromTemplate',
+        {'presetTemplate': template.jsonValue});
   }
 
   Future<void> updateRuntimeSettingsFromJson(String jsonString) {
-    return methodChannel.invokeMethod('barcodeReader_updateRuntimeSettingsFromJson', {'jsonString': jsonString});
+    return methodChannel.invokeMethod(
+        'barcodeReader_updateRuntimeSettingsFromJson',
+        {'jsonString': jsonString});
   }
 
   Future<void> resetRuntimeSettings() {
@@ -59,22 +66,36 @@ class BarcodeReaderCaller {
   }
 
   Future<String?> outputRuntimeSettingsToString() {
-    return methodChannel.invokeMethod<String>('barcodeReader_outputRuntimeSettingsToString');
+    return methodChannel
+        .invokeMethod<String>('barcodeReader_outputRuntimeSettingsToString');
   }
 
   Stream<List<BarcodeResult>> receiveResultStream() {
-    return barcodeResultEventChannel.receiveBroadcastStream({'streamName': 'barcodeReader_addResultlistener'}).map((event) {
-      return BarcodeUtilityTool.convertToBarcodeResults(List<Map<dynamic, dynamic>>.from(event));
+    return barcodeResultEventChannel.receiveBroadcastStream(
+        {'streamName': 'barcodeReader_addResultlistener'}).map((event) {
+      return BarcodeUtilityTool.convertToBarcodeResults(
+          List<Map<dynamic, dynamic>>.from(event));
     });
   }
 
   Future<List<BarcodeResult>> decodeFile(String path) async {
-    final list = List<Map<dynamic, dynamic>>.from(await methodChannel.invokeMethod('barcodeReader_decodeFile', {'flutterAssetsPath': path}));
+    final list = List<Map<dynamic, dynamic>>.from(await methodChannel
+        .invokeMethod('barcodeReader_decodeFile', {'flutterAssetsPath': path}));
     return BarcodeUtilityTool.convertToBarcodeResults(list);
   }
 
-  Future enableResultVerification(bool isEnable) async {
-    return methodChannel.invokeMethod('barcodeReader_enableResultVerification', isEnable);
+  Future enableResultVerification(bool isEnable) {
+    return methodChannel.invokeMethod(
+        'barcodeReader_enableResultVerification', isEnable);
   }
 
+  Future getModeArgument(String modesName, int index, String argumentName) {
+    return methodChannel.invokeMethod('barcodeReader_getModeArgument',
+        {'modesName': modesName, 'index': index, 'argumentName': argumentName});
+  }
+
+  Future setModeArgument(String modesName, int index, String argumentName, String argumentValue) {
+    return methodChannel.invokeMethod('barcodeReader_getModeArgument',
+        {'modesName': modesName, 'index': index, 'argumentName': argumentName, 'argumentValue': argumentValue});
+  }
 }

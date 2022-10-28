@@ -139,7 +139,8 @@ class DCVBarcodeReader {
   /// _barcodeReader = await DynamsoftBarcodeReader.createInstance();
   /// await _barcodeReader.updateRuntimeSettingsFromTemplate(template: EnumDBRPresetTemplate.videoDefault);
   /// ```
-  Future<void> updateRuntimeSettingsFromTemplate(EnumDBRPresetTemplate template) {
+  Future<void> updateRuntimeSettingsFromTemplate(
+      EnumDBRPresetTemplate template) {
     return _barcodeReaderCaller.updateRuntimeSettingsFromTemplate(template);
   }
 
@@ -202,7 +203,7 @@ class DCVBarcodeReader {
     return _barcodeReaderCaller.outputRuntimeSettingsToString();
   }
 
-   /// Obtain the barcode results from the callback.
+  /// Obtain the barcode results from the callback.
   ///
   /// You can use this method to listen all the barcode results of the camera's capture.
   ///
@@ -219,11 +220,19 @@ class DCVBarcodeReader {
     return _barcodeReaderCaller.receiveResultStream();
   }
 
-  Future<List<BarcodeResult>> decodeFile(String path){
+  Future<List<BarcodeResult>> decodeFile(String path) {
     return _barcodeReaderCaller.decodeFile(path);
   }
 
   Future enableResultVerification(bool isEnable) async {
     return _barcodeReaderCaller.enableResultVerification(isEnable);
+  }
+
+  Future getModeArgument(String modesName, int index, String argumentName) {
+    return _barcodeReaderCaller.getModeArgument(modesName, index, argumentName);
+  }
+
+  Future setModeArgument(String modesName, int index, String argumentName, String argumentValue) {
+    return _barcodeReaderCaller.setModeArgument(modesName, index, argumentName, argumentValue);
   }
 }
