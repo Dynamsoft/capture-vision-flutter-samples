@@ -95,7 +95,7 @@ class BarcodeReaderCaller {
   }
 
   Future setModeArgument(String modesName, int index, String argumentName, String argumentValue) {
-    return methodChannel.invokeMethod('barcodeReader_getModeArgument',
+    return methodChannel.invokeMethod('barcodeReader_setModeArgument',
         {'modesName': modesName, 'index': index, 'argumentName': argumentName, 'argumentValue': argumentValue});
   }
 }

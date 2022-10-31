@@ -4,6 +4,6 @@ export 'src/dynamsoft_camera_view.dart';
 
 export 'src/dbr/barcode_formats.dart';
 export 'src/dbr/dbr_runtime_settings.dart';
-export 'src/dbr/general_enums.dart' show EnumDBRPresetTemplate, EnumCameraPosition;
+export 'src/dbr/general_enums.dart' show EnumDBRPresetTemplate, EnumCameraPosition, EnumDeblurMode;
 export 'src/dbr/barcode_result.dart';
 export 'src/common/basic_structures.dart';
