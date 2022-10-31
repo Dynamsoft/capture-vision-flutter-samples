@@ -10,11 +10,11 @@ class DBRRuntimeSettings extends Serializer {
   int? timeout;
   int? minBarcodeTextLength;
   int? minResultConfidence;
-  Int32List? binarizationModes;
-  Int32List? deblurModes;
-  Int32List? localizationModes;
-  Int32List? scaleUpModes;
-  Int32List? textResultOrderModes;
+  List<int>? binarizationModes;
+  List<int>? deblurModes;
+  List<int>? localizationModes;
+  List<int>? scaleUpModes;
+  List<int>? textResultOrderModes;
   int? deblurLevel;
   int? scaleDownThreshold;
   Region? region;
@@ -29,17 +29,19 @@ class DBRRuntimeSettings extends Serializer {
     timeout = json['timeout'];
     minBarcodeTextLength = json['minBarcodeTextLength'];
     minResultConfidence = json['minResultConfidence'];
-    binarizationModes = json['binarizationModes'];
-    deblurModes = json['deblurModes'];
+    binarizationModes = List<int>.from(json['binarizationModes']);
+    deblurModes = List<int>.from(json['deblurModes']);
     deblurLevel = json['deblurLevel'];
-    localizationModes = json['localizationModes'];
+    localizationModes = List<int>.from(json['localizationModes']);
     scaleDownThreshold = json['scaleDownThreshold'];
-    scaleUpModes = json['scaleUpModes'];
-    textResultOrderModes = json['textResultOrderModes'];
-    region =
-        json['region'] != null ? new Region.fromJson(Map<String, dynamic>.from(json['region'])) : null;
+    scaleUpModes = List<int>.from(json['scaleUpModes']);
+    textResultOrderModes = List<int>.from(json['textResultOrderModes']);
+    region = json['region'] != null
+        ? new Region.fromJson(Map<String, dynamic>.from(json['region']))
+        : null;
     furtherModes = json['furtherModes'] != null
-        ? new FurtherModes.fromJson(Map<String, dynamic>.from(json['furtherModes']))
+        ? new FurtherModes.fromJson(
+            Map<String, dynamic>.from(json['furtherModes']))
         : null;
   }
 

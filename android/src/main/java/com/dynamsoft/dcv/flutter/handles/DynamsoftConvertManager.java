@@ -59,16 +59,16 @@ public class DynamsoftConvertManager {
 			publicRuntimeSettings.minBarcodeTextLength = (int) settings.get("minBarcodeTextLength");
 		}
 		if (settings.get("binarizationModes") != null) {
-			publicRuntimeSettings.binarizationModes = (int[]) settings.get("binarizationModes");
+			publicRuntimeSettings.binarizationModes = intListToArray(((List<Integer>)settings.get("binarizationModes")));
 		}
 		if (settings.get("deblurLevel") != null) {
 			publicRuntimeSettings.deblurLevel = (int) settings.get("deblurLevel");
 		}
 		if (settings.get("deblurModes") != null) {
-			publicRuntimeSettings.deblurModes = (int[]) settings.get("deblurModes");
+			publicRuntimeSettings.deblurModes = intListToArray((List<Integer>) settings.get("deblurModes"));
 		}
 		if (settings.get("localizationModes") != null) {
-			publicRuntimeSettings.localizationModes = (int[]) settings.get("localizationModes");
+			publicRuntimeSettings.localizationModes = intListToArray((List<Integer>) settings.get("localizationModes"));
 		}
 		if (settings.get("region") != null) {
 			com.dynamsoft.dbr.RegionDefinition regionDefinition = new com.dynamsoft.dbr.RegionDefinition();
@@ -86,28 +86,26 @@ public class DynamsoftConvertManager {
 			publicRuntimeSettings.scaleDownThreshold = (int) settings.get("scaleDownThreshold");
 		}
 		if (settings.get("scaleUpModes") != null) {
-			publicRuntimeSettings.scaleUpModes = (int[]) settings.get("scaleUpModes");
+			publicRuntimeSettings.scaleUpModes = intListToArray((List<Integer>) settings.get("scaleUpModes"));
 		}
 		if (settings.get("textResultOrderModes") != null) {
-			publicRuntimeSettings.textResultOrderModes = (int[]) settings.get("textResultOrderModes");
+			publicRuntimeSettings.textResultOrderModes = intListToArray((List<Integer>) settings.get("textResultOrderModes"));
 		}
 		if (settings.get("furtherModes") != null) {
 			FurtherModes modes = new FurtherModes();
 			HashMap<String, Object> map = (HashMap<String, Object>) settings.get("furtherModes");
 			if (map != null) {
-				modes.colourClusteringModes = (int[]) map.get("colourClusteringModes");
-				modes.colourConversionModes = (int[]) map.get("colourConversionModes");
-				modes.grayscaleTransformationModes = (int[]) map.get("grayscaleTransformationModes");
-				modes.regionPredetectionModes = (int[]) map.get("regionPredetectionModes");
-				modes.imagePreprocessingModes = (int[]) map.get("imagePreprocessingModes");
-				modes.textureDetectionModes = (int[]) map.get("textureDetectionModes");
-				modes.textFilterModes = (int[]) map.get("textFilterModes");
-				modes.textAssistedCorrectionMode = (int) map.get("textAssistedCorrectionMode");
-				modes.dpmCodeReadingModes = (int[]) map.get("dpmCodeReadingModes");
-				modes.deformationResistingModes = (int[]) map.get("deformationResistingModes");
-				modes.barcodeComplementModes = (int[]) map.get("barcodeComplementModes");
-				modes.barcodeColourModes = (int[]) map.get("barcodeColourModes");
-				modes.accompanyingTextRecognitionModes = (int[]) map.get("accompanyingTextRecognitionModes");
+				modes.colourClusteringModes = intListToArray((List<Integer>) map.get("colourClusteringModes"));
+				modes.colourConversionModes = intListToArray((List<Integer>) map.get("colourConversionModes"));
+				modes.grayscaleTransformationModes = intListToArray((List<Integer>) map.get("grayscaleTransformationModes"));
+				modes.regionPredetectionModes = intListToArray((List<Integer>) map.get("regionPredetectionModes"));
+				modes.imagePreprocessingModes = intListToArray((List<Integer>) map.get("imagePreprocessingModes"));
+				modes.textureDetectionModes = intListToArray((List<Integer>) map.get("textureDetectionModes"));
+				modes.textFilterModes = intListToArray((List<Integer>) map.get("textFilterModes"));
+				modes.dpmCodeReadingModes = intListToArray((List<Integer>) map.get("dpmCodeReadingModes"));
+				modes.deformationResistingModes = intListToArray((List<Integer>) map.get("deformationResistingModes"));
+				modes.barcodeComplementModes = intListToArray((List<Integer>) map.get("barcodeComplementModes"));
+				modes.barcodeColourModes = intListToArray((List<Integer>) map.get("barcodeColourModes"));
 				publicRuntimeSettings.furtherModes = modes;
 			}
 		}
@@ -271,5 +269,16 @@ public class DynamsoftConvertManager {
 		};
 	}
 
+
+	private int[] intListToArray(List<Integer> intList) {
+		if(intList!=null && intList.size()>0) {
+			int[] array = new int[intList.size()];
+			for(int i=0; i<array.length; i++) {
+				array[i] = intList.get(i);
+			}
+			return array;
+		}
+		return null;
+	}
 
 }

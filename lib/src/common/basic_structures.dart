@@ -110,19 +110,17 @@ class Rect {
 }
 
 class FurtherModes {
-  Int32List? colourClusteringModes;
-  Int32List? colourConversionModes;
-  Int32List? grayscaleTransformationModes;
-  Int32List? regionPredetectionModes;
-  Int32List? imagePreprocessingModes;
-  Int32List? textureDetectionModes;
-  Int32List? textFilterModes;
-  Int32List? dpmCodeReadingModes;
-  Int32List? deformationResistingModes;
-  Int32List? barcodeComplementModes;
-  Int32List? barcodeColourModes;
-  Int32List? accompanyingTextRecognitionModes;
-  int? textAssistedCorrectionMode;
+  List<int>? colourClusteringModes;
+  List<int>? colourConversionModes;
+  List<int>? grayscaleTransformationModes;
+  List<int>? regionPredetectionModes;
+  List<int>? imagePreprocessingModes;
+  List<int>? textureDetectionModes;
+  List<int>? textFilterModes;
+  List<int>? dpmCodeReadingModes;
+  List<int>? deformationResistingModes;
+  List<int>? barcodeComplementModes;
+  List<int>? barcodeColourModes;
 
   FurtherModes(
       {this.colourClusteringModes,
@@ -135,24 +133,20 @@ class FurtherModes {
       this.dpmCodeReadingModes,
       this.deformationResistingModes,
       this.barcodeComplementModes,
-      this.barcodeColourModes,
-      this.accompanyingTextRecognitionModes,
-      this.textAssistedCorrectionMode});
+      this.barcodeColourModes,});
 
   FurtherModes.fromJson(Map<String, dynamic> json) {
-    colourClusteringModes = json['colourClusteringModes'];
-    colourConversionModes = json['colourConversionModes'];
-    grayscaleTransformationModes = json['grayscaleTransformationModes'];
-    regionPredetectionModes = json['regionPredetectionModes'];
-    imagePreprocessingModes = json['imagePreprocessingModes'];
-    textureDetectionModes = json['textureDetectionModes'];
-    textFilterModes = json['textFilterModes'];
-    dpmCodeReadingModes = json['dpmCodeReadingModes'];
-    deformationResistingModes = json['deformationResistingModes'];
-    barcodeComplementModes = json['barcodeComplementModes'];
-    barcodeColourModes = json['barcodeColourModes'];
-    accompanyingTextRecognitionModes = json['accompanyingTextRecognitionModes'];
-    textAssistedCorrectionMode = json['textAssistedCorrectionMode'];
+    colourClusteringModes = List<int>.from(json['colourClusteringModes']);
+    colourConversionModes = List<int>.from(json['colourConversionModes']);
+    grayscaleTransformationModes = List<int>.from(json['grayscaleTransformationModes']);
+    regionPredetectionModes = List<int>.from(json['regionPredetectionModes']);
+    imagePreprocessingModes = List<int>.from(json['imagePreprocessingModes']);
+    textureDetectionModes = List<int>.from(json['textureDetectionModes']);
+    textFilterModes = List<int>.from(json['textFilterModes']);
+    dpmCodeReadingModes = List<int>.from(json['dpmCodeReadingModes']);
+    deformationResistingModes = List<int>.from(json['deformationResistingModes']);
+    barcodeComplementModes = List<int>.from(json['barcodeComplementModes']);
+    barcodeColourModes = List<int>.from(json['barcodeColourModes']);
   }
 
   Map<String, dynamic> toJson() {
@@ -168,8 +162,6 @@ class FurtherModes {
     data['deformationResistingModes'] = this.deformationResistingModes;
     data['barcodeComplementModes'] = this.barcodeComplementModes;
     data['barcodeColourModes'] = this.barcodeColourModes;
-    data['accompanyingTextRecognitionModes'] = this.accompanyingTextRecognitionModes;
-    data['textAssistedCorrectionMode'] = this.textAssistedCorrectionMode;
     return data;
   }
 }
