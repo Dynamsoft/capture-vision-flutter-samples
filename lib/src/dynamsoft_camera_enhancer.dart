@@ -46,7 +46,7 @@ class DCVCameraEnhancer {
   /// Region scanRegion = Region(regionTop: 20, regionBottom: 80, regionLeft: 20, regionRight: 80, regionMeasuredByPercentage: true);
   /// _cameraView.scanRegion = scanRegion;
   /// ```
-  Future setScanRegion(Region scanRegion){
+  Future setScanRegion(Region? scanRegion){
     return _cameraEnhancerCaller.setScanRegion(scanRegion);
   }
 }
