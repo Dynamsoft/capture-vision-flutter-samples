@@ -25,6 +25,8 @@ static NSString *const barcodeReader_outputRuntimeSettingsToString = @"barcodeRe
 static NSString *const barcodeReader_addResultlistener = @"barcodeReader_addResultlistener";
 static NSString *const barcodeReader_decodeFile = @"barcodeReader_decodeFile";
 static NSString *const barcodeReader_enableResultVerification = @"barcodeReader_enableResultVerification";
+static NSString *const barcodeReader_setModeArgument = @"barcodeReader_setModeArgument";
+static NSString *const barcodeReader_getModeArgument = @"barcodeReader_getModeArgument";
 
 /// DCE methods.
 static NSString *const cameraEnhancer_createInstance = @"cameraEnhancer_createInstance";
