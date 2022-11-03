@@ -51,12 +51,8 @@
 //MARK: DBRTextResultListener
 - (void)textResultCallback:(NSInteger)frameId imageData:(iImageData *)imageData results:(NSArray<iTextResult *> *)results
 {
-    if (results.count > 0) {
-        
-        if (self.barcodeTextResultCallBack) {
-            self.barcodeTextResultCallBack(results);
-        }
-
+    if (self.barcodeTextResultCallBack) {
+        self.barcodeTextResultCallBack(results);
     }
 }
 
