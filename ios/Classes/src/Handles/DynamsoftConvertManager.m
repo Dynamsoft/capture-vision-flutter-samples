@@ -1,5 +1,6 @@
 
 #import "DynamsoftConvertManager.h"
+#import <Flutter/Flutter.h>
 
 @implementation DynamsoftConvertManager
 
@@ -42,6 +43,32 @@
     publicRuntimeSettings.minBarcodeTextLength = [[settings valueForKey:@"minBarcodeTextLength"] intValue];
     publicRuntimeSettings.minResultConfidence = [[settings valueForKey:@"minResultConfidence"] intValue];
     
+    publicRuntimeSettings.binarizationModes = [settings valueForKey:@"binarizationModes"];
+    publicRuntimeSettings.deblurModes = [settings valueForKey:@"deblurModes"];
+    publicRuntimeSettings.localizationModes = [settings valueForKey:@"localizationModes"];
+    publicRuntimeSettings.scaleUpModes = [settings valueForKey:@"scaleUpModes"];
+    publicRuntimeSettings.textResultOrderModes = [settings valueForKey:@"textResultOrderModes"];
+    publicRuntimeSettings.deblurLevel = [[settings valueForKey:@"deblurLevel"] intValue];
+    publicRuntimeSettings.scaleDownThreshold = [[settings valueForKey:@"scaleDownThreshold"] intValue];
+    
+    publicRuntimeSettings.region.regionTop = [[[settings valueForKey:@"region"] valueForKey:@"regionTop"] intValue];
+    publicRuntimeSettings.region.regionBottom = [[[settings valueForKey:@"region"] valueForKey:@"regionBottom"] intValue];
+    publicRuntimeSettings.region.regionLeft = [[[settings valueForKey:@"region"] valueForKey:@"regionLeft"] intValue];
+    publicRuntimeSettings.region.regionRight = [[[settings valueForKey:@"region"] valueForKey:@"regionRight"] intValue];
+    publicRuntimeSettings.region.regionMeasuredByPercentage = [[[settings valueForKey:@"region"] valueForKey:@"regionMeasuredByPercentage"] intValue];
+    
+    publicRuntimeSettings.furtherModes.colourClusteringModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"colourClusteringModes"];
+    publicRuntimeSettings.furtherModes.colourConversionModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"colourConversionModes"];
+    publicRuntimeSettings.furtherModes.grayscaleTransformationModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"grayscaleTransformationModes"];
+    publicRuntimeSettings.furtherModes.regionPredetectionModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"regionPredetectionModes"];
+    publicRuntimeSettings.furtherModes.imagePreprocessingModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"imagePreprocessingModes"];
+    publicRuntimeSettings.furtherModes.textureDetectionModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"textureDetectionModes"];
+    publicRuntimeSettings.furtherModes.textFilterModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"textFilterModes"];
+    publicRuntimeSettings.furtherModes.dpmCodeReadingModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"dpmCodeReadingModes"];
+    publicRuntimeSettings.furtherModes.deformationResistingModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"deformationResistingModes"];
+    publicRuntimeSettings.furtherModes.barcodeComplementModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"barcodeComplementModes"];
+    publicRuntimeSettings.furtherModes.barcodeColourModes = [[settings valueForKey:@"furtherModes"] valueForKey:@"barcodeColourModes"];
+    
     return publicRuntimeSettings;
 }
 
@@ -75,7 +102,7 @@
     NSInteger regionBottom = [[scanRegionDic valueForKey:@"regionBottom"] integerValue];
     NSInteger regionLeft = [[scanRegionDic valueForKey:@"regionLeft"] integerValue];
     NSInteger regionRight = [[scanRegionDic valueForKey:@"regionRight"] integerValue];
-    bool regionMeasuredByPercentage = [[scanRegionDic valueForKey:@"regionMeasuredByPercentage"] boolValue];
+    NSInteger regionMeasuredByPercentage = [[scanRegionDic valueForKey:@"regionMeasuredByPercentage"] integerValue];
     iRegionDefinition *regionDefiniton = [[iRegionDefinition alloc] init];
     regionDefiniton.regionTop = regionTop;
     regionDefiniton.regionBottom = regionBottom;
@@ -136,7 +163,32 @@
              @"expectedBarcodeCount":@(runtimeSettings.expectedBarcodesCount),
              @"timeout":@(runtimeSettings.timeout),
              @"minBarcodeTextLength":@(runtimeSettings.minBarcodeTextLength),
-             @"minResultConfidence":@(runtimeSettings.minResultConfidence)
+             @"minResultConfidence":@(runtimeSettings.minResultConfidence),
+             @"binarizationModes":runtimeSettings.binarizationModes,
+             @"deblurModes":runtimeSettings.deblurModes,
+             @"localizationModes":runtimeSettings.localizationModes,
+             @"scaleUpModes":runtimeSettings.scaleUpModes,
+             @"textResultOrderModes":runtimeSettings.textResultOrderModes,
+             @"deblurLevel":@(runtimeSettings.deblurLevel),
+             @"scaleDownThreshold":@(runtimeSettings.scaleDownThreshold),
+             @"region":@{@"regionTop":@(runtimeSettings.region.regionTop),
+                         @"regionBottom":@(runtimeSettings.region.regionBottom),
+                         @"regionLeft":@(runtimeSettings.region.regionLeft),
+                         @"regionRight":@(runtimeSettings.region.regionRight),
+                         @"regionMeasuredByPercentage":@(runtimeSettings.region.regionMeasuredByPercentage)
+             },
+             @"furtherModes":@{@"colourClusteringModes":runtimeSettings.furtherModes.colourClusteringModes,
+                               @"colourConversionModes":runtimeSettings.furtherModes.colourConversionModes,
+                               @"grayscaleTransformationModes":runtimeSettings.furtherModes.grayscaleTransformationModes,
+                               @"regionPredetectionModes":runtimeSettings.furtherModes.regionPredetectionModes,
+                               @"imagePreprocessingModes":runtimeSettings.furtherModes.imagePreprocessingModes,
+                               @"textureDetectionModes":runtimeSettings.furtherModes.textureDetectionModes,
+                               @"textFilterModes":runtimeSettings.furtherModes.textFilterModes,
+                               @"dpmCodeReadingModes":runtimeSettings.furtherModes.dpmCodeReadingModes,
+                               @"deformationResistingModes":runtimeSettings.furtherModes.deformationResistingModes,
+                               @"barcodeComplementModes":runtimeSettings.furtherModes.barcodeComplementModes,
+                               @"barcodeColourModes":runtimeSettings.furtherModes.barcodeColourModes,
+             }
     };
 }
 
