@@ -50,8 +50,10 @@ public class DynamsoftSDKManager {
                     Common.pluginActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(textResults!=null && textResults.length > 0) {
+                            if(textResults!=null) {
                                 textResultStream.success(DynamsoftConvertManager.manager().wrapResultsToJson(textResults));
+                            }else{
+                                textResultStream.success(null);
                             }
                         }
                     });

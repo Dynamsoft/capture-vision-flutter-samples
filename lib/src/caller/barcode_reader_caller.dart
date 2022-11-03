@@ -70,11 +70,11 @@ class BarcodeReaderCaller {
         .invokeMethod<String>('barcodeReader_outputRuntimeSettingsToString');
   }
 
-  Stream<List<BarcodeResult>> receiveResultStream() {
+  Stream<List<BarcodeResult>?> receiveResultStream() {
     return barcodeResultEventChannel.receiveBroadcastStream(
         {'streamName': 'barcodeReader_addResultlistener'}).map((event) {
-      return BarcodeUtilityTool.convertToBarcodeResults(
-          List<Map<dynamic, dynamic>>.from(event));
+          return event == null ? null : BarcodeUtilityTool.convertToBarcodeResults(
+              List<Map<dynamic, dynamic>>.from(event));
     });
   }
 
