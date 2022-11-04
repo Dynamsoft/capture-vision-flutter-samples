@@ -160,8 +160,9 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     // Stream listener to handle callback when barcode result is returned.
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult>? res) {
       if (mounted) {
-
-        _vibrateWithBeep();
+        if(res != null && res.length > 0) {
+          _vibrateWithBeep();
+        }
 
         setState(() {
           decodeRes = res ?? [];
