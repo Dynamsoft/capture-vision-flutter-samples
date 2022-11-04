@@ -146,7 +146,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         regionLeft: 15,
         regionBottom: 70,
         regionRight: 85,
-        regionMeasuredByPercentage: true));
+        regionMeasuredByPercentage: 1));
 
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
@@ -158,13 +158,13 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     await _barcodeReader.enableResultVerification(true);
 
     // Stream listener to handle callback when barcode result is returned.
-    _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
+    _barcodeReader.receiveResultStream().listen((List<BarcodeResult>? res) {
       if (mounted) {
 
         _vibrateWithBeep();
 
         setState(() {
-          decodeRes = res;
+          decodeRes = res ?? [];
         });
       }
     });
