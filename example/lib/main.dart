@@ -154,10 +154,10 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     await _barcodeReader.enableResultVerification(true);
 
     // Stream listener to handle callback when barcode result is returned.
-    _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
+    _barcodeReader.receiveResultStream().listen((List<BarcodeResult>? res) {
       if (mounted) {
         setState(() {
-          decodeRes = res;
+          decodeRes = res ?? [];
         });
       }
     });

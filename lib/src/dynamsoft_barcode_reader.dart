@@ -216,7 +216,7 @@ class DCVBarcodeReader {
   /// _barcodeReader.startScanning();
   /// _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {});
   /// ```
-  Stream<List<BarcodeResult>> receiveResultStream() {
+  Stream<List<BarcodeResult>?> receiveResultStream() {
     return _barcodeReaderCaller.receiveResultStream();
   }
 
