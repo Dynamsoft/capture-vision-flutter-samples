@@ -62,7 +62,7 @@
     
     if ([streamName isEqualToString:barcodeReader_addResultlistener]) {
         _textResultStream = events;
-        [DynamsoftSDKManager manager].barcodeTextResultCallBack = ^(NSArray<iTextResult *> * _Nonnull results) {
+        [DynamsoftSDKManager manager].barcodeTextResultCallBack = ^(NSArray<iTextResult *> * _Nullable results) {
             if (self.textResultStream) {
                 self.textResultStream([[DynamsoftConvertManager manager] wrapResultsToJson:results]);
                
