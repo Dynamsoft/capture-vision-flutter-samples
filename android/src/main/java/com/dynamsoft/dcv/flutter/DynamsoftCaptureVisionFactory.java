@@ -171,9 +171,9 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				result.success(null);
 				break;
 			case Common.barcodeReader_getModeArgument:
-				barcodeReaderGetModeArgument(call.argument("modesName"), call.argument("index"),
+				String argument = barcodeReaderGetModeArgument(call.argument("modesName"), call.argument("index"),
 						call.argument("argumentName"));
-				result.success(null);
+				result.success(argument);
 				break;
 			case Common.barcodeReader_setModeArgument:
 				barcodeReaderSetModeArgument(call.argument("modesName"), call.argument("index"),
@@ -275,12 +275,13 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 
 	}
 
-	private void barcodeReaderGetModeArgument(String modesName, int index, String argumentName) {
+	private String barcodeReaderGetModeArgument(String modesName, int index, String argumentName) {
 		try {
-			DynamsoftSDKManager.manager().barcodeReader.getModeArgument(modesName, index, argumentName);
+			return DynamsoftSDKManager.manager().barcodeReader.getModeArgument(modesName, index, argumentName);
 		} catch (BarcodeReaderException e) {
 			e.printStackTrace();
 		}
+		return "";
 	}
 
 	private void barcodeReaderSetModeArgument(String modesName, int index, String argumentName,

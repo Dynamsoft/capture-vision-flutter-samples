@@ -89,7 +89,7 @@ class BarcodeReaderCaller {
         'barcodeReader_enableResultVerification', isEnable);
   }
 
-  Future getModeArgument(String modesName, int index, String argumentName) {
+  Future<String?> getModeArgument(String modesName, int index, String argumentName) {
     return methodChannel.invokeMethod('barcodeReader_getModeArgument',
         {'modesName': modesName, 'index': index, 'argumentName': argumentName});
   }
