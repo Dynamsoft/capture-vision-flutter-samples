@@ -264,6 +264,8 @@ public class DynamsoftConvertManager {
 				put("scaleUpModes", runtimeSettings.scaleUpModes);
 				put("textResultOrderModes", runtimeSettings.textResultOrderModes);
 				put("binarizationModes", runtimeSettings.binarizationModes);
+				put("minBarcodeTextLength", runtimeSettings.minBarcodeTextLength);
+				put("minResultConfidence", runtimeSettings.minResultConfidence);
 				put("furtherModes", furtherModesMap);
 			}
 		};
