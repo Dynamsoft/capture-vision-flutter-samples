@@ -268,10 +268,14 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     final XFile? image = await _picker.pickImage(source: source);
     final path = image?.path;
     if (path != null) {
-      final result = await _barcodeReader.decodeFile(path).then((value) {
-        _vibrateWithBeep();
-      });
-      if (result != null && result.isNotEmpty) {
+      final result = await _barcodeReader.decodeFile(path);
+
+      if (await Vibration.hasVibrator() ?? false) {
+        Vibration.vibrate();
+      }
+      FlutterBeep.beep();
+
+      if (result.isNotEmpty) {
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;
         base64ResultText = utf8.decode(bytes);
@@ -279,13 +283,6 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       }
     }
     setState(() {});
-  }
-
-  void _vibrateWithBeep() async {
-    if (await Vibration.hasVibrator() ?? false) {
-      Vibration.vibrate();
-    }
-    FlutterBeep.beep();
   }
 
   @override
@@ -300,6 +297,8 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       case AppLifecycleState.inactive:
         _cameraEnhancer.close();
         _barcodeReader.stopScanning();
+        break;
+      default:
         break;
     }
   }
