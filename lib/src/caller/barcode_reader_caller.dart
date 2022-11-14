@@ -78,10 +78,13 @@ class BarcodeReaderCaller {
     });
   }
 
-  Future<List<BarcodeResult>> decodeFile(String path) async {
-    final list = List<Map<dynamic, dynamic>>.from(await methodChannel
-        .invokeMethod('barcodeReader_decodeFile', {'flutterAssetsPath': path}));
-    return BarcodeUtilityTool.convertToBarcodeResults(list);
+  Future<List<BarcodeResult>?> decodeFile(String path) async {
+    final rawData = await methodChannel.invokeMethod('barcodeReader_decodeFile', {'flutterAssetsPath': path});
+    if (rawData != null) {
+      final list = List<Map<dynamic, dynamic>>.from(rawData);
+      return BarcodeUtilityTool.convertToBarcodeResults(list);
+    }
+    return null;
   }
 
   Future enableResultVerification(bool isEnable) {
