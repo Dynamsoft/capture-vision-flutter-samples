@@ -48,7 +48,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final ImagePicker _picker;
+  late final DCVBarcodeReader _barcodeReader;
+
   String? path;
+  String? resultText;
+  String? base64ResultText;
+  List<BarcodeResult> decodeRes = [];
 
   void _startScanning() {
     Navigator.push(
@@ -58,6 +64,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    _picker = ImagePicker();
+    _sdkInit();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _barcodeReader.stopScanning();
   }
 
   @override
@@ -74,9 +88,86 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextButton.styleFrom(
                 primary: Colors.white, backgroundColor: Colors.blue),
           ),
+          TextButton(
+            onPressed: () => _pickImage(ImageSource.gallery),
+            child: Text('Select a photo'),
+            style: TextButton.styleFrom(
+                primary: Colors.white, backgroundColor: Colors.blue),
+          ),
+          TextButton(
+            onPressed: () => _pickImage(ImageSource.camera),
+            child: Text('Take a photo'),
+            style: TextButton.styleFrom(
+                primary: Colors.white, backgroundColor: Colors.blue),
+          ),
         ],
       ),
     );
+  }
+
+  void _sdkInit() async {
+    // Create a barcode reader instance.
+    _barcodeReader = await DCVBarcodeReader.createInstance();
+
+    // Get the current runtime settings of the barcode reader.
+    DBRRuntimeSettings currentSettings =
+        await _barcodeReader.getRuntimeSettings();
+    // Set the barcode format to read.
+    currentSettings.barcodeFormatIds = EnumBarcodeFormat.BF_ONED |
+        EnumBarcodeFormat.BF_QR_CODE |
+        EnumBarcodeFormat.BF_PDF417 |
+        EnumBarcodeFormat.BF_DATAMATRIX;
+
+    // currentSettings.minResultConfidence = 70;
+    // currentSettings.minBarcodeTextLength = 50;
+
+    // Set a higher expected barcode count can improve the read rate of the library.
+    currentSettings.expectedBarcodeCount = 512;
+    // Apply the new runtime settings to the barcode reader.
+    await _barcodeReader.updateRuntimeSettings(currentSettings);
+    await _barcodeReader.updateRuntimeSettingsFromTemplate(
+        EnumDBRPresetTemplate.IMAGE_READ_RATE_FIRST);
+    await _barcodeReader.enableResultVerification(true);
+  }
+
+  void _pickImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+    final path = image?.path;
+    if (path != null) {
+      final List<BarcodeResult>? result = await _barcodeReader.decodeFile(path);
+      if (result != null && result.isNotEmpty) {
+        resultText = result[0].barcodeText;
+        final format = result[0].barcodeFormatString;
+        _showDialog(format, resultText ?? '');
+        _vibrateWithBeep();
+      }
+    }
+  }
+
+  void _showDialog(String title, String text) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Result(s)'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Format: $title'),
+                  Text('Text: $text'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }
 
@@ -89,9 +180,8 @@ class BarcodeScanner extends StatefulWidget {
 
 class _BarcodeScannerState extends State<BarcodeScanner>
     with WidgetsBindingObserver {
-  late final DCVBarcodeReader _barcodeReader;
   late final DCVCameraEnhancer _cameraEnhancer;
-  late final ImagePicker _picker;
+  late final DCVBarcodeReader _barcodeReader;
 
   final DCVCameraView _cameraView = DCVCameraView();
 
@@ -104,7 +194,6 @@ class _BarcodeScannerState extends State<BarcodeScanner>
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    _picker = ImagePicker();
     _sdkInit();
   }
 
@@ -139,14 +228,15 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     // Apply the new runtime settings to the barcode reader.
 
     await _barcodeReader.updateRuntimeSettings(currentSettings);
-
+    await _barcodeReader
+        .updateRuntimeSettingsFromTemplate(EnumDBRPresetTemplate.DEFAULT);
     // Define the scan region.
     _cameraEnhancer.setScanRegion(Region(
         regionTop: 30,
         regionLeft: 15,
         regionBottom: 70,
         regionRight: 85,
-        regionMeasuredByPercentage: 1));
+        regionMeasuredByPercentage: true));
 
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
@@ -160,7 +250,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     // Stream listener to handle callback when barcode result is returned.
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult>? res) {
       if (mounted) {
-        if(res != null && res.length > 0) {
+        if (res != null && res.length > 0) {
           _vibrateWithBeep();
         }
 
@@ -226,63 +316,8 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                 ),
               ),
             ),
-            Positioned(
-              bottom: 20,
-              left: MediaQuery.of(context).size.width / 2 - 80,
-              child: Column(
-                children: [
-                  Container(
-                    width: 160,
-                    child: TextButton(
-                      onPressed: () => _pickImage(ImageSource.gallery),
-                      child: Text('Select a photo'),
-                      style: TextButton.styleFrom(
-                          primary: Colors.white, backgroundColor: Colors.blue),
-                    ),
-                  ),
-                  Container(
-                    width: 160,
-                    child: TextButton(
-                      onPressed: () => _pickImage(ImageSource.camera),
-                      child: Text('Take a photo'),
-                      style: TextButton.styleFrom(
-                          primary: Colors.white, backgroundColor: Colors.blue),
-                    ),
-                  ),
-                  // Text(
-                  //   '${resultText ?? ''}',
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
-                  // Text(
-                  //   '${base64ResultText ?? ''}',
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
-                ],
-              ),
-            )
           ],
         ));
-  }
-
-  void _pickImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source);
-    final path = image?.path;
-    if (path != null) {
-      final result = await _barcodeReader.decodeFile(path);
-
-      if (await Vibration.hasVibrator() ?? false) {
-        Vibration.vibrate();
-      }
-      FlutterBeep.beep();
-
-      if (result.isNotEmpty) {
-        resultText = result[0].barcodeText;
-        final bytes = result[0].barcodeBytes;
-        base64ResultText = utf8.decode(bytes);
-        decodeRes.addAll(result);
-      }
-    }
-    setState(() {});
   }
 
   @override
@@ -298,8 +333,13 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         _cameraEnhancer.close();
         _barcodeReader.stopScanning();
         break;
-      default:
-        break;
     }
   }
+}
+
+void _vibrateWithBeep() async {
+  if (await Vibration.hasVibrator() ?? false) {
+    Vibration.vibrate();
+  }
+  FlutterBeep.beep();
 }
