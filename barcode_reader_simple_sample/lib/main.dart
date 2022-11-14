@@ -139,8 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
         resultText = result[0].barcodeText;
         final format = result[0].barcodeFormatString;
         _showDialog(format, resultText ?? '');
-        _vibrateWithBeep();
+      }else{
+        _showDialog('', '');
       }
+      _vibrateWithBeep();
     }
   }
 
