@@ -136,17 +136,15 @@ class _MyHomePageState extends State<MyHomePage> {
     if (path != null) {
       final List<BarcodeResult>? result = await _barcodeReader.decodeFile(path);
       if (result != null && result.isNotEmpty) {
-        resultText = result[0].barcodeText;
-        final format = result[0].barcodeFormatString;
-        _showDialog(format, resultText ?? '');
+        _showDialog(result);
       }else{
-        _showDialog('', '');
+        _showDialog([]);
       }
       _vibrateWithBeep();
     }
   }
 
-  void _showDialog(String title, String text) {
+  void _showDialog(List<BarcodeResult> result) {
     showDialog(
         context: context,
         builder: (context) {
@@ -155,8 +153,13 @@ class _MyHomePageState extends State<MyHomePage> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text('Format: $title'),
-                  Text('Text: $text'),
+                  for(int i = 0; i < result.length ; i++)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      Text('Format: ${result[i].barcodeFormatString}'),
+                      Text('Text: ${result[i].barcodeText}'),
+                    ],)
                 ],
               ),
             ),
@@ -278,7 +281,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         textColor: Colors.white,
         // tileColor: Colors.green,
         child: ListTile(
-          title: Text(res.barcodeFormatString ?? ''),
+          title: Text(res.barcodeFormatString),
           subtitle: Text(res.barcodeText),
         ));
   }
