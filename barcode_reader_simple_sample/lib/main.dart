@@ -238,7 +238,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         regionLeft: 15,
         regionBottom: 70,
         regionRight: 85,
-        regionMeasuredByPercentage: true));
+        regionMeasuredByPercentage: 1));
 
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
