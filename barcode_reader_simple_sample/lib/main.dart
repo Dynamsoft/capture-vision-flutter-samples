@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void _startScanning() {
     Navigator.push(
             context, MaterialPageRoute(builder: (context) => BarcodeScanner()))
-        .then((value)async{
-          _updateRuntimeSettings();
+        .then((value) {
+      _updateRuntimeSettings();
     });
   }
 
@@ -117,12 +117,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Future _updateRuntimeSettings() async {
     // Get the current runtime settings of the barcode reader.
     DBRRuntimeSettings currentSettings =
-    await _barcodeReader.getRuntimeSettings();
+        await _barcodeReader.getRuntimeSettings();
     // Set the barcode format to read.
     currentSettings.barcodeFormatIds = EnumBarcodeFormat.BF_ONED |
-    EnumBarcodeFormat.BF_QR_CODE |
-    EnumBarcodeFormat.BF_PDF417 |
-    EnumBarcodeFormat.BF_DATAMATRIX;
+        EnumBarcodeFormat.BF_QR_CODE |
+        EnumBarcodeFormat.BF_PDF417 |
+        EnumBarcodeFormat.BF_DATAMATRIX;
 
     // currentSettings.minResultConfidence = 70;
     // currentSettings.minBarcodeTextLength = 50;
@@ -248,7 +248,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         regionLeft: 15,
         regionBottom: 70,
         regionRight: 85,
-        regionMeasuredByPercentage: true));
+        regionMeasuredByPercentage: 1));
 
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
