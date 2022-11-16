@@ -58,7 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _startScanning() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => BarcodeScanner()));
+            context, MaterialPageRoute(builder: (context) => BarcodeScanner()))
+        .then((value)async{
+          _updateRuntimeSettings();
+    });
   }
 
   @override
@@ -105,18 +108,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _sdkInit() async {
+  Future _sdkInit() async {
     // Create a barcode reader instance.
     _barcodeReader = await DCVBarcodeReader.createInstance();
+    _updateRuntimeSettings();
+  }
 
+  Future _updateRuntimeSettings() async {
     // Get the current runtime settings of the barcode reader.
     DBRRuntimeSettings currentSettings =
-        await _barcodeReader.getRuntimeSettings();
+    await _barcodeReader.getRuntimeSettings();
     // Set the barcode format to read.
     currentSettings.barcodeFormatIds = EnumBarcodeFormat.BF_ONED |
-        EnumBarcodeFormat.BF_QR_CODE |
-        EnumBarcodeFormat.BF_PDF417 |
-        EnumBarcodeFormat.BF_DATAMATRIX;
+    EnumBarcodeFormat.BF_QR_CODE |
+    EnumBarcodeFormat.BF_PDF417 |
+    EnumBarcodeFormat.BF_DATAMATRIX;
 
     // currentSettings.minResultConfidence = 70;
     // currentSettings.minBarcodeTextLength = 50;
@@ -137,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final List<BarcodeResult>? result = await _barcodeReader.decodeFile(path);
       if (result != null && result.isNotEmpty) {
         _showDialog(result);
-      }else{
+      } else {
         _showDialog([]);
       }
       _vibrateWithBeep();
@@ -153,13 +159,14 @@ class _MyHomePageState extends State<MyHomePage> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  for(int i = 0; i < result.length ; i++)
+                  for (int i = 0; i < result.length; i++)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Format: ${result[i].barcodeFormatString}'),
-                      Text('Text: ${result[i].barcodeText}'),
-                    ],)
+                        Text('Format: ${result[i].barcodeFormatString}'),
+                        Text('Text: ${result[i].barcodeText}'),
+                      ],
+                    )
                 ],
               ),
             ),
@@ -231,17 +238,17 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     // Set the expected barcode count to 1 can maximize the barcode decoding speed.
     currentSettings.expectedBarcodeCount = 0;
     // Apply the new runtime settings to the barcode reader.
-
-    await _barcodeReader.updateRuntimeSettings(currentSettings);
     await _barcodeReader
         .updateRuntimeSettingsFromTemplate(EnumDBRPresetTemplate.DEFAULT);
+    await _barcodeReader.updateRuntimeSettings(currentSettings);
+
     // Define the scan region.
     _cameraEnhancer.setScanRegion(Region(
         regionTop: 30,
         regionLeft: 15,
         regionBottom: 70,
         regionRight: 85,
-        regionMeasuredByPercentage: 1));
+        regionMeasuredByPercentage: true));
 
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
