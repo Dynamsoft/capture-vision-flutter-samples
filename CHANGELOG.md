@@ -12,7 +12,8 @@
   * `textResultOrderModes`
   * `furtherModes`
 * Added a new class `FurtherModes` to set the `furtherModes` parameter of `DBRRuntimeSettings`.
-* Added new methods `setModeArgument` and `getModeArgument`. These two methods give you access to the optional arguments of the **mode parameters**.
+* Added new methods `setModeArgument` and `getModeArgument` in class `DCVBarcodeReader`. These two methods give you access to the optional arguments of the **mode parameters**.
+* Added enumerations classes to set **mode parameter**.
 
 ## 1.1.1
 
