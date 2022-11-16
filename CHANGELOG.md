@@ -1,12 +1,24 @@
-## 1.0.0
+## 1.2.0
 
-* Dynamsoft Capture Vision is an aggregating SDK of a series of specific functional products. In 1.0 version, The following products are included:
-  * Dynamsoft Camera Enhancer: Provides camera enhancements and UI configuration APIs.
-  * Dynamsoft Barcode Reader: Provides barcode decoding algorithm and APIs.
+### New
 
-## 1.0.1
+* Extended `DBRRuntimeSettings` with more **mode parameters**. You can further optimize the barcode decoding performance of your project with the **mode parameters**:
+  * `binarizationModes`
+  * `deblurLevel`
+  * `deblurModes`
+  * `region`
+  * `scaleDownThreshold`
+  * `scaleUpModes`
+  * `textResultOrderModes`
+  * `furtherModes`
+* Added a new class `FurtherModes` to set the `furtherModes` parameter of `DBRRuntimeSettings`.
+* Added new methods `setModeArgument` and `getModeArgument`. These two methods give you access to the optional arguments of the **mode parameters**.
 
-* Fixed a bug.
+## 1.1.1
+
+### Fixed
+
+* Fixed a bug that could result in incorrect counts for scanned barcodes.
 
 ## 1.1.0
 
@@ -27,3 +39,13 @@
 * Renamed `DynamsoftBarcodeReader` class to `DCVBarcodeReader`.
 * Renamed `DynamsoftCameraView` class to `DCVCameraView`.
 * Users have to call `DCVCameraEnhancer.open`/`DCVCameraEnhancer.close` manually when the application is **resumed**/**inactive**.
+
+## 1.0.1
+
+* Fixed a bug.
+
+## 1.0.0
+
+* Dynamsoft Capture Vision is an aggregating SDK of a series of specific functional products. In 1.0 version, The following products are included:
+  * Dynamsoft Camera Enhancer: Provides camera enhancements and UI configuration APIs.
+  * Dynamsoft Barcode Reader: Provides barcode decoding algorithm and APIs.
