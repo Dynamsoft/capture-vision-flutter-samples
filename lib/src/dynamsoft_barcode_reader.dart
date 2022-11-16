@@ -216,15 +216,24 @@ class DCVBarcodeReader {
   /// _barcodeReader.startScanning();
   /// _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {});
   /// ```
-  Stream<List<BarcodeResult>> receiveResultStream() {
+  Stream<List<BarcodeResult>?> receiveResultStream() {
     return _barcodeReaderCaller.receiveResultStream();
   }
 
-  Future<List<BarcodeResult>> decodeFile(String path) {
+
+  Future<List<BarcodeResult>?> decodeFile(String path) {
     return _barcodeReaderCaller.decodeFile(path);
   }
 
   Future enableResultVerification(bool isEnable) async {
     return _barcodeReaderCaller.enableResultVerification(isEnable);
+  }
+
+  Future getModeArgument(String modesName, int index, String argumentName) {
+    return _barcodeReaderCaller.getModeArgument(modesName, index, argumentName);
+  }
+
+  Future setModeArgument(String modesName, int index, String argumentName, String argumentValue) {
+    return _barcodeReaderCaller.setModeArgument(modesName, index, argumentName, argumentValue);
   }
 }

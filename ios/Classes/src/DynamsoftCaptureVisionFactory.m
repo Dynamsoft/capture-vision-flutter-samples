@@ -62,7 +62,7 @@
     
     if ([streamName isEqualToString:barcodeReader_addResultlistener]) {
         _textResultStream = events;
-        [DynamsoftSDKManager manager].barcodeTextResultCallBack = ^(NSArray<iTextResult *> * _Nonnull results) {
+        [DynamsoftSDKManager manager].barcodeTextResultCallBack = ^(NSArray<iTextResult *> * _Nullable results) {
             if (self.textResultStream) {
                 self.textResultStream([[DynamsoftConvertManager manager] wrapResultsToJson:results]);
                
@@ -104,6 +104,10 @@
         [self barcodeReader_decodeFile:call.arguments];
     } else if ([barcodeReader_enableResultVerification isEqualToString:call.method]) {
         [self barcodeReader_enableResultVerification:call.arguments];
+    } else if ([barcodeReader_setModeArgument isEqualToString:call.method]) {
+        [self barcodeReader_setModeArgument:call.arguments];
+    } else if ([barcodeReader_getModeArgument isEqualToString:call.method]) {
+        [self barcodeReader_getModeArgument:call.arguments];
     }
 
     // DCE
@@ -196,7 +200,7 @@
 - (void)barcodeReaderUpdateRuntimeSettings:(id)arguments
 {
     iPublicRuntimeSettings *runtimeSettings = [[DynamsoftConvertManager manager] aynlyzeRuntimeSettingsFromJson:arguments];
-
+    
     NSError *error = nil;
     [[DynamsoftSDKManager manager].barcodeReader updateRuntimeSettings:runtimeSettings error:&error];
     
@@ -280,6 +284,35 @@
     BOOL isEnable = [arguments boolValue];
     [DynamsoftSDKManager manager].barcodeReader.enableResultVerification = isEnable;
     self.resultMethod(nil);
+}
+
+- (void)barcodeReader_setModeArgument:(id)arguments {
+    NSString *modesName = [arguments valueForKey:@"modesName"];
+    NSInteger index = [[arguments valueForKey:@"index"] integerValue];
+    NSString *argumentName = [arguments valueForKey:@"argumentName"];
+    NSString *argumentValue = [arguments valueForKey:@"argumentValue"];
+    
+    NSError *error = nil;
+    [[DynamsoftSDKManager manager].barcodeReader setModeArgument:modesName index:index argumentName:argumentName argumentValue:argumentValue error:&error];
+    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+        self.resultMethod(nil);
+    } else {
+        self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
+    }
+}
+
+- (void)barcodeReader_getModeArgument:(id)arguments {
+    NSString *modesName = [arguments valueForKey:@"modesName"];
+    NSInteger index = [[arguments valueForKey:@"index"] integerValue];
+    NSString *argumentName = [arguments valueForKey:@"argumentName"];
+    
+    NSError *error = nil;
+    NSString *argumentValue =  [[DynamsoftSDKManager manager].barcodeReader getModeArgument:modesName index:index argumentName:argumentName error:&error];
+    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+        self.resultMethod(argumentValue);
+    } else {
+        self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
+    }
 }
 
 

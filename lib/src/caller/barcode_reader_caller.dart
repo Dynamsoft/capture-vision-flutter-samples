@@ -43,9 +43,9 @@ class BarcodeReaderCaller {
   }
 
   Future<DBRRuntimeSettings> getRuntimeSettings() async {
-    final jsonMap =
+   final jsonMap =
         await methodChannel.invokeMethod('barcodeReader_getRuntimeSettings');
-    return DBRRuntimeSettings.fromJson(jsonMap);
+    return DBRRuntimeSettings.fromJson(Map<String, dynamic>.from(jsonMap));
   }
 
   Future<void> updateRuntimeSettingsFromTemplate(
@@ -70,22 +70,35 @@ class BarcodeReaderCaller {
         .invokeMethod<String>('barcodeReader_outputRuntimeSettingsToString');
   }
 
-  Stream<List<BarcodeResult>> receiveResultStream() {
+  Stream<List<BarcodeResult>?> receiveResultStream() {
     return barcodeResultEventChannel.receiveBroadcastStream(
         {'streamName': 'barcodeReader_addResultlistener'}).map((event) {
-      return BarcodeUtilityTool.convertToBarcodeResults(
-          List<Map<dynamic, dynamic>>.from(event));
+          return event == null ? null : BarcodeUtilityTool.convertToBarcodeResults(
+              List<Map<dynamic, dynamic>>.from(event));
     });
   }
 
-  Future<List<BarcodeResult>> decodeFile(String path) async {
-    final list = List<Map<dynamic, dynamic>>.from(await methodChannel
-        .invokeMethod('barcodeReader_decodeFile', {'flutterAssetsPath': path}));
-    return BarcodeUtilityTool.convertToBarcodeResults(list);
+  Future<List<BarcodeResult>?> decodeFile(String path) async {
+    final rawData = await methodChannel.invokeMethod('barcodeReader_decodeFile', {'flutterAssetsPath': path});
+    if (rawData != null) {
+      final list = List<Map<dynamic, dynamic>>.from(rawData);
+      return BarcodeUtilityTool.convertToBarcodeResults(list);
+    }
+    return null;
   }
 
-  Future enableResultVerification(bool isEnable) async {
+  Future enableResultVerification(bool isEnable) {
     return methodChannel.invokeMethod(
         'barcodeReader_enableResultVerification', isEnable);
+  }
+
+  Future<String?> getModeArgument(String modesName, int index, String argumentName) {
+    return methodChannel.invokeMethod('barcodeReader_getModeArgument',
+        {'modesName': modesName, 'index': index, 'argumentName': argumentName});
+  }
+
+  Future setModeArgument(String modesName, int index, String argumentName, String argumentValue) {
+    return methodChannel.invokeMethod('barcodeReader_setModeArgument',
+        {'modesName': modesName, 'index': index, 'argumentName': argumentName, 'argumentValue': argumentValue});
   }
 }

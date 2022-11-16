@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger, DynamsoftCameraEnhancerState) {
 - (void)barcodeReaderInitLicense:(NSString *)license;
 
 /// TextResultCallBack
-@property (nonatomic, copy) void(^barcodeTextResultCallBack)(NSArray<iTextResult *> *results);
+@property (nonatomic, copy) void(^barcodeTextResultCallBack)(NSArray<iTextResult *> *_Nullable results);
 
 /// DBRLicenseVerificationCallback
 @property (nonatomic, copy) void(^dbrLicenseVerificationCallback)(bool isSuccess, NSError *error);

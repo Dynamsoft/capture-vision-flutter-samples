@@ -33,6 +33,8 @@ public class Common {
     public static final String barcodeReader_addResultlistener = "barcodeReader_addResultlistener";
     public static final String barcodeReader_decodeFile = "barcodeReader_decodeFile";
     public static final String barcodeReader_enableResultVerification = "barcodeReader_enableResultVerification";
+    public static final String barcodeReader_getModeArgument = "barcodeReader_getModeArgument";
+    public static final String barcodeReader_setModeArgument = "barcodeReader_setModeArgument";
 
     /// DCE Methods
     public static final String cameraEnhancer_createInstance = "cameraEnhancer_createInstance";

@@ -170,6 +170,16 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 				barcodeReaderEnableResultVerification((boolean) call.arguments);
 				result.success(null);
 				break;
+			case Common.barcodeReader_getModeArgument:
+				String argument = barcodeReaderGetModeArgument(call.argument("modesName"), call.argument("index"),
+						call.argument("argumentName"));
+				result.success(argument);
+				break;
+			case Common.barcodeReader_setModeArgument:
+				barcodeReaderSetModeArgument(call.argument("modesName"), call.argument("index"),
+						call.argument("argumentName"), call.argument("argumentValue"));
+				result.success(null);
+				break;
 
 			/// DCE
 			case Common.cameraEnhancer_createInstance:
@@ -265,6 +275,25 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 
 	}
 
+	private String barcodeReaderGetModeArgument(String modesName, int index, String argumentName) {
+		try {
+			return DynamsoftSDKManager.manager().barcodeReader.getModeArgument(modesName, index, argumentName);
+		} catch (BarcodeReaderException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	private void barcodeReaderSetModeArgument(String modesName, int index, String argumentName,
+	                                          String argumentValue) {
+		try {
+			DynamsoftSDKManager.manager().barcodeReader.setModeArgument(modesName, index,
+					argumentName, argumentValue);
+		} catch (BarcodeReaderException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/// DBR methods
 	private void barcodeReaderInitLicense(Object arguments, Result result) {
 		DynamsoftSDKManager.manager().barcodeReaderInitLicense(arguments, result);
@@ -325,8 +354,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 	private void barcodeReaderUpdateRuntimeSettingsFromJson(Object arguments, Result result) {
 		String jsonString = (String) ((Map) arguments).get("jsonString");
 		try {
-			DynamsoftSDKManager.manager().barcodeReader.initRuntimeSettingsWithString(jsonString
-					, EnumConflictMode.CM_OVERWRITE);
+			DynamsoftSDKManager.manager().barcodeReader.initRuntimeSettingsWithString(jsonString, EnumConflictMode.CM_OVERWRITE);
 			result.success(null);
 		} catch (BarcodeReaderException e) {
 			result.error(Common.exceptionTip, e.getMessage(), null);
@@ -482,7 +510,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 		if (DynamsoftSDKManager.manager().cameraView != null) {
 			if (DynamsoftSDKManager.manager().cameraView != null) {
 				Point p = null;
-				if(x != null && y != null){
+				if (x != null && y != null) {
 					p = new Point();
 					p.x = x;
 					p.y = y;
@@ -492,7 +520,7 @@ public class DynamsoftCaptureVisionFactory extends PlatformViewFactory implement
 					width = 45;
 				}
 
-				if(height == null){
+				if (height == null) {
 					height = 45;
 				}
 

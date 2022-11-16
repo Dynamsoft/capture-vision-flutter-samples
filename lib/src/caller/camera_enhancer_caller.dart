@@ -15,9 +15,9 @@ class CameraEnhancerCaller {
     return methodChannel.invokeMethod('cameraEnhancer_dispose');
   }
 
-  Future<void> setScanRegion(Region region) {
+  Future<void> setScanRegion(Region? region) {
     return methodChannel.invokeMethod(
-        'cameraEnhancer_setScanRegion', {'scanRegion': region.toJson()});
+        'cameraEnhancer_setScanRegion', {'scanRegion': region?.toJson()});
   }
 
   Future<void> setScanRegionVisible({required bool isVisible}) {

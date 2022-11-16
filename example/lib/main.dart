@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -139,7 +140,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         regionLeft: 15,
         regionBottom: 70,
         regionRight: 85,
-        regionMeasuredByPercentage: true));
+        regionMeasuredByPercentage: 1));
 
     // Enable barcode overlay visiblity.
     _cameraView.overlayVisible = true;
@@ -151,10 +152,10 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     await _barcodeReader.enableResultVerification(true);
 
     // Stream listener to handle callback when barcode result is returned.
-    _barcodeReader.receiveResultStream().listen((List<BarcodeResult> res) {
+    _barcodeReader.receiveResultStream().listen((List<BarcodeResult>? res) {
       if (mounted) {
         setState(() {
-          decodeRes = res;
+          decodeRes = res ?? [];
         });
       }
     });
@@ -175,7 +176,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         textColor: Colors.white,
         // tileColor: Colors.green,
         child: ListTile(
-          title: Text(res.barcodeFormatString ?? ''),
+          title: Text(res.barcodeFormatString),
           subtitle: Text(res.barcodeText),
         ));
   }
@@ -258,7 +259,13 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     final path = image?.path;
     if (path != null) {
       final result = await _barcodeReader.decodeFile(path);
-      if (result.isNotEmpty) {
+
+      if (await Vibration.hasVibrator() ?? false) {
+        Vibration.vibrate();
+      }
+      FlutterBeep.beep();
+
+      if (result!=null && result.isNotEmpty) {
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;
         base64ResultText = utf8.decode(bytes);
@@ -280,6 +287,8 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       case AppLifecycleState.inactive:
         _cameraEnhancer.close();
         _barcodeReader.stopScanning();
+        break;
+      default:
         break;
     }
   }
