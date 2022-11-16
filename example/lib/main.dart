@@ -266,7 +266,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       }
       FlutterBeep.beep();
 
-      if (result.isNotEmpty) {
+      if (result!=null && result.isNotEmpty) {
         resultText = result[0].barcodeText;
         final bytes = result[0].barcodeBytes;
         base64ResultText = utf8.decode(bytes);
