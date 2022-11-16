@@ -28,7 +28,8 @@ class BarcodeResult {
       : barcodeText = json['barcodeText'],
         barcodeFormatString = json['barcodeFormatString'],
         _barcodeBytesString = json['barcodeBytesString'],
-        barcodeLocation = BarcodeLocationResult.fromJson(json['barcodeLocation']);
+        barcodeLocation =
+            BarcodeLocationResult.fromJson(json['barcodeLocation']);
 }
 
 @immutable

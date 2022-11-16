@@ -9,10 +9,12 @@ enum EnumDBRPresetTemplate {
   IMAGE_DEFAULT
 }
 
+
 enum EnumCameraPosition { 
   CP_BACK,
   CP_FRONT 
 }
+
 
 extension PresetTemplateSerializer on EnumDBRPresetTemplate {
   EnumDBRPresetTemplate fromJson(String? jsonValue) {
@@ -58,7 +60,6 @@ extension PresetTemplateSerializer on EnumDBRPresetTemplate {
     }
   }
 }
-
 class EnumBinarizationMode {
   static const int BM_SKIP = 0;
   static const int BM_AUTO = 1;
@@ -184,3 +185,4 @@ class EnumBarcodeColourMode {
   static const int BICM_DARK_LIGHT_MIXED = 16;
   static const int BICM_DARK_ON_LIGHT_DARK_SURROUNDING = 32;
 }
+

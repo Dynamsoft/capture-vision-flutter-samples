@@ -52,6 +52,7 @@ class CameraEnhancerCaller {
   }
 
   Future setTorchButton(TorchButton button) {
-    return methodChannel.invokeMethod("cameraView_torchButton", button.toJson());
+    return methodChannel.invokeMethod(
+        "cameraView_torchButton", button.toJson());
   }
 }

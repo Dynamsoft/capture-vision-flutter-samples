@@ -220,6 +220,7 @@ class DCVBarcodeReader {
     return _barcodeReaderCaller.receiveResultStream();
   }
 
+
   Future<List<BarcodeResult>?> decodeFile(String path) {
     return _barcodeReaderCaller.decodeFile(path);
   }

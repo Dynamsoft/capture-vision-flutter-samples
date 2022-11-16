@@ -5,6 +5,7 @@ import '../misc/dcv_serializer.dart';
 ///
 /// When [regionMeasuredByPercentage] set to true, the values of Top, Left, Right, Bottom indicate the percentage (from 0 to 100); otherwise, they refer to the coordinates.
 class Region extends Serializer {
+
   int? regionTop;
   int? regionBottom;
   int? regionLeft;
@@ -28,6 +29,7 @@ class Region extends Serializer {
       'regionMeasuredByPercentage': regionMeasuredByPercentage
     };
   }
+
 
   Region.fromJson(Map<String, dynamic> json) {
     regionTop = json['regionTop'];
