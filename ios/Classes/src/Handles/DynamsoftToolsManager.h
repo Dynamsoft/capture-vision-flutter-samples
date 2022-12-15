@@ -8,11 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (DynamsoftToolsManager *)manager;
 
-/// Get Top ViewController
+/// Get Top ViewController.
 - (UIViewController *)viewControllerWithWindow:(UIWindow *_Nullable)window;
 
-/// Vertify the operation is success or failure.
-- (BOOL)vertifyOperationResultWithError:(NSError *)error;
+/// Verify the operation is success or failure.
+- (BOOL)verifyOperationResultWithError:(NSError *)error;
 
 - (NSString *)getErrorMsgWithError:(NSError *)error;
 
