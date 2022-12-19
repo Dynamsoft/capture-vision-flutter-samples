@@ -17,7 +17,9 @@ public class BarcodeScanningCaptureView implements PlatformView {
     public BarcodeScanningCaptureView(Context context) {
 
         DynamsoftSDKManager.manager().cameraView = new DCECameraView(context);
-
+        if(DynamsoftSDKManager.manager().cameraEnhancer != null){
+            DynamsoftSDKManager.manager().cameraEnhancer.setCameraView(DynamsoftSDKManager.manager().cameraView);
+        }
     }
 
     @Override
