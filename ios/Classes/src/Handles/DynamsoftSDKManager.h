@@ -28,6 +28,8 @@ typedef NS_ENUM(NSInteger, DynamsoftCameraEnhancerState) {
 
 @property (nonatomic, assign) DynamsoftCameraEnhancerState dynamsoftCameraEnhancerState;
 
+@property (nonatomic, strong) DCECameraView *dceCameraView;
+
 /// DBR set license
 - (void)barcodeReaderInitLicense:(NSString *)license;
 
