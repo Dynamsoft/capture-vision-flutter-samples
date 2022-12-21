@@ -22,6 +22,7 @@
     [self addSubview:self.dceView];
     
     if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
+        [[DynamsoftSDKManager manager].cameraEnhancer close];
         [DynamsoftSDKManager manager].cameraEnhancer.dceCameraView = [DynamsoftSDKManager manager].dceCameraView;
     }
 }
