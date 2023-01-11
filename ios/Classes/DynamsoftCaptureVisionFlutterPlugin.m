@@ -15,7 +15,7 @@
         methodChannelWithName:methodChannel_Identifier
               binaryMessenger:[registrar messenger]];
       
-    // dynamsoft facotry
+    // dynamsoft facotry.
     DynamsoftCaptureVisionFactory *dynamsoftFactory = [[DynamsoftCaptureVisionFactory alloc] initWithFlutterChannel:channel binaryMessenger:registrar];
     
     DynamsoftCaptureVisionFlutterPlugin* instance = [[DynamsoftCaptureVisionFlutterPlugin alloc] initWithCaptureFactory:dynamsoftFactory];

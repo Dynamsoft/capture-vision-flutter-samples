@@ -28,6 +28,7 @@
     if (self) {
         self.methodChannel = channel;
         self.registrar = registrar;
+        [DynamsoftSDKManager manager].dceCameraViewSettings = [[DCECameraViewSetting alloc] init];
         
         // Stream
         FlutterEventChannel *barcodeResultEventChannel = [FlutterEventChannel eventChannelWithName:barcodeResult_EventChannel_Identifier binaryMessenger:[registrar messenger]];
@@ -183,7 +184,6 @@
     [[DynamsoftSDKManager manager].barcodeReader startScanning];
     
     if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
-        
         [[DynamsoftSDKManager manager].barcodeReader setDBRTextResultListener:[DynamsoftSDKManager manager]];
         [[DynamsoftSDKManager manager].barcodeReader setCameraEnhancer:[DynamsoftSDKManager manager].cameraEnhancer];
     }
@@ -209,7 +209,6 @@
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
     }
-    
 }
 
 - (void)barcodeReaderGetRuntimeSettings:(id)arguments
@@ -319,6 +318,12 @@
 //MARK: DCE methods
 
 - (void)cameraEnhancer_createInstance:(id)arguments {
+    
+    [DynamsoftSDKManager manager].cameraEnhancer = [[DynamsoftCameraEnhancer alloc] init];
+    
+    if ([DynamsoftSDKManager manager].dceCameraView != nil) {
+        [DynamsoftSDKManager manager].cameraEnhancer.dceCameraView = [DynamsoftSDKManager manager].dceCameraView;
+    }
     self.resultMethod(nil);
 }
 
@@ -334,7 +339,6 @@
 
 - (void)cameraEnhancer_setScanRegion:(id)arguments
 {
-
     id scanRegion = [arguments valueForKey:@"scanRegion"] == [NSNull null] ? nil : [[DynamsoftConvertManager manager] analyzeiRegionDefinitionFromJson:arguments];
    
     NSError *error = nil;
@@ -358,7 +362,8 @@
 - (void)cameraEnhancer_setOverlayVisible:(id)arguments
 {
     BOOL isVisible = [[arguments valueForKey:@"isVisible"] boolValue];
-    self.captureView.cameraView.dceView.overlayVisible = isVisible;
+    [DynamsoftSDKManager manager].dceCameraView.overlayVisible = isVisible;
+    [DynamsoftSDKManager manager].dceCameraViewSettings.overlayVisibleArguments = arguments;
     
     self.resultMethod(nil);
 }
@@ -366,6 +371,7 @@
 - (void)cameraEnhancer_openCamera:(id)arguments {
     if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer open];
+        [[DynamsoftSDKManager manager].dceCameraViewSettings configureArguments];
     }
     self.resultMethod(nil);
 }
@@ -373,6 +379,7 @@
 - (void)cameraEnhancer_closeCamera:(id)arguments {
     if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer close];
+        [[DynamsoftSDKManager manager].dceCameraViewSettings clearAllArguments];
     }
     self.resultMethod(nil);
 }
@@ -421,9 +428,10 @@
         torchIsVisible = [[arguments valueForKey:@"visible"] boolValue];
     }
     
-    [self.captureView.cameraView.dceView setTorchButton:torchRect torchOnImage:torchOnImage torchOffImage:torchOffImage];
-    self.captureView.cameraView.dceView.torchButtonVisible = torchIsVisible;
-    
+    [[DynamsoftSDKManager manager].dceCameraView setTorchButton:torchRect torchOnImage:torchOnImage torchOffImage:torchOffImage];
+    [DynamsoftSDKManager manager].dceCameraView.torchButtonVisible = torchIsVisible;
+    [DynamsoftSDKManager manager].dceCameraViewSettings.torchButtonArguments = arguments;
+    self.resultMethod(nil);
 }
 
 //MARK: Application lifecycle
