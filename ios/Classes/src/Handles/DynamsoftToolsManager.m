@@ -63,7 +63,7 @@
   return topController;
 }
 
-- (BOOL)vertifyOperationResultWithError:(NSError *)error
+- (BOOL)verifyOperationResultWithError:(NSError *)error
 {
     BOOL isSuccess = YES;
     if (error != nil) {
@@ -90,7 +90,7 @@
 }
 
 //MARK: String methods
-/// Checks if the string is empty
+/// Checks if the string is empty.
 - (BOOL)stringIsEmptyOrNull:(NSString*)string
 {
     return ![self notEmptyOrNull:string];

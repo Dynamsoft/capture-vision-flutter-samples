@@ -32,7 +32,7 @@
 
 //MARK: FromJson
 
-- (iPublicRuntimeSettings *)aynlyzeRuntimeSettingsFromJson:(id)jsonData
+- (iPublicRuntimeSettings *)analyzeRuntimeSettingsFromJson:(id)jsonData
 {
     NSDictionary *settings = [jsonData valueForKey:@"runtimeSettings"];
     iPublicRuntimeSettings *publicRuntimeSettings = [[DynamsoftSDKManager manager].barcodeReader getRuntimeSettings:nil];
@@ -72,7 +72,7 @@
     return publicRuntimeSettings;
 }
 
-- (EnumPresetTemplate)aynlyzePresetTemplateFromJson:(id)jsonData
+- (EnumPresetTemplate)analyzePresetTemplateFromJson:(id)jsonData
 {
     NSString *presetTemplate = [jsonData valueForKey:@"presetTemplate"];
     EnumPresetTemplate enumPresetTemplate = EnumPresetTemplateDefault;
@@ -95,7 +95,7 @@
 }
 
 /// Convert json to iRegionDefinition
-- (iRegionDefinition *)aynlyzeiRegionDefinitionFromJson:(id)jsonData
+- (iRegionDefinition *)analyzeiRegionDefinitionFromJson:(id)jsonData
 {
     NSDictionary *scanRegionDic = [jsonData valueForKey:@"scanRegion"];
     NSInteger regionTop = [[scanRegionDic valueForKey:@"regionTop"] integerValue];
@@ -112,7 +112,7 @@
     return  regionDefiniton;
 }
 
-- (CGRect)aynlyzeCustomTorchButtonFrameFromJson:(id)jsonData
+- (CGRect)analyzeCustomTorchButtonFrameFromJson:(id)jsonData
                                torchDefaultRect:(CGRect)torchDefaultRect {
     NSDictionary *customButtonDic = [jsonData valueForKey:@"rect"];
     CGFloat x = [[customButtonDic valueForKey:@"x"] floatValue];

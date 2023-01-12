@@ -28,8 +28,9 @@
     if (self) {
         self.methodChannel = channel;
         self.registrar = registrar;
+        [DynamsoftSDKManager manager].dceCameraViewSettings = [[DCECameraViewSetting alloc] init];
         
-        // stream
+        // Stream
         FlutterEventChannel *barcodeResultEventChannel = [FlutterEventChannel eventChannelWithName:barcodeResult_EventChannel_Identifier binaryMessenger:[registrar messenger]];
         
         [barcodeResultEventChannel setStreamHandler:self];
@@ -183,7 +184,6 @@
     [[DynamsoftSDKManager manager].barcodeReader startScanning];
     
     if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
-        
         [[DynamsoftSDKManager manager].barcodeReader setDBRTextResultListener:[DynamsoftSDKManager manager]];
         [[DynamsoftSDKManager manager].barcodeReader setCameraEnhancer:[DynamsoftSDKManager manager].cameraEnhancer];
     }
@@ -199,17 +199,16 @@
 
 - (void)barcodeReaderUpdateRuntimeSettings:(id)arguments
 {
-    iPublicRuntimeSettings *runtimeSettings = [[DynamsoftConvertManager manager] aynlyzeRuntimeSettingsFromJson:arguments];
+    iPublicRuntimeSettings *runtimeSettings = [[DynamsoftConvertManager manager] analyzeRuntimeSettingsFromJson:arguments];
     
     NSError *error = nil;
     [[DynamsoftSDKManager manager].barcodeReader updateRuntimeSettings:runtimeSettings error:&error];
     
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod(nil);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
     }
-    
 }
 
 - (void)barcodeReaderGetRuntimeSettings:(id)arguments
@@ -217,7 +216,7 @@
     NSError *error = nil;
     iPublicRuntimeSettings *runtimeSettings = [[DynamsoftSDKManager manager].barcodeReader getRuntimeSettings:&error];
     
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod([[DynamsoftConvertManager manager] wrapRuntimeSettingsToJson:runtimeSettings]);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -226,7 +225,7 @@
 
 - (void)barcodeReaderUpdateRuntimeSettingsFromTemplate:(id)arguments
 {
-    EnumPresetTemplate presetTemple = [[DynamsoftConvertManager manager] aynlyzePresetTemplateFromJson:arguments];
+    EnumPresetTemplate presetTemple = [[DynamsoftConvertManager manager] analyzePresetTemplateFromJson:arguments];
 
     [[DynamsoftSDKManager manager].barcodeReader updateRuntimeSettings:presetTemple];
     self.resultMethod(nil);
@@ -238,7 +237,7 @@
     NSError *error = nil;
     [[DynamsoftSDKManager manager].barcodeReader initRuntimeSettingsWithString:jsonString conflictMode:EnumConflictModeOverwrite error:&error];
     
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod(nil);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -250,7 +249,7 @@
     NSError *error = nil;
     [[DynamsoftSDKManager manager].barcodeReader resetRuntimeSettings:&error];
     
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod(nil);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -262,7 +261,7 @@
     NSError *error = nil;
     NSString *settingsString = [[DynamsoftSDKManager manager].barcodeReader outputSettingsToString:@"" error:&error];
     
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod([[DynamsoftToolsManager manager] stringIsEmptyOrNull:settingsString] ? @"" : settingsString);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -273,7 +272,7 @@
     NSString *filePath = [arguments valueForKey:@"flutterAssetsPath"];
     NSError *error = nil;
     NSArray<iTextResult *> *results = [[DynamsoftSDKManager manager].barcodeReader decodeFileWithName:filePath error:&error];
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod([[DynamsoftConvertManager manager] wrapResultsToJson:results]);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -294,7 +293,7 @@
     
     NSError *error = nil;
     [[DynamsoftSDKManager manager].barcodeReader setModeArgument:modesName index:index argumentName:argumentName argumentValue:argumentValue error:&error];
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod(nil);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -308,7 +307,7 @@
     
     NSError *error = nil;
     NSString *argumentValue =  [[DynamsoftSDKManager manager].barcodeReader getModeArgument:modesName index:index argumentName:argumentName error:&error];
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod(argumentValue);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -319,6 +318,12 @@
 //MARK: DCE methods
 
 - (void)cameraEnhancer_createInstance:(id)arguments {
+    
+    [DynamsoftSDKManager manager].cameraEnhancer = [[DynamsoftCameraEnhancer alloc] init];
+    
+    if ([DynamsoftSDKManager manager].dceCameraView != nil) {
+        [DynamsoftSDKManager manager].cameraEnhancer.dceCameraView = [DynamsoftSDKManager manager].dceCameraView;
+    }
     self.resultMethod(nil);
 }
 
@@ -334,13 +339,12 @@
 
 - (void)cameraEnhancer_setScanRegion:(id)arguments
 {
-
-    id scanRegion = [arguments valueForKey:@"scanRegion"] == [NSNull null] ? nil : [[DynamsoftConvertManager manager] aynlyzeiRegionDefinitionFromJson:arguments];
+    id scanRegion = [arguments valueForKey:@"scanRegion"] == [NSNull null] ? nil : [[DynamsoftConvertManager manager] analyzeiRegionDefinitionFromJson:arguments];
    
     NSError *error = nil;
     [[DynamsoftSDKManager manager].cameraEnhancer setScanRegion:scanRegion error:&error];
     
-    if ([[DynamsoftToolsManager manager] vertifyOperationResultWithError:error]) {
+    if ([[DynamsoftToolsManager manager] verifyOperationResultWithError:error]) {
         self.resultMethod(nil);
     } else {
         self.resultMethod([FlutterError errorWithCode:exceptionTip message:[[DynamsoftToolsManager manager] getErrorMsgWithError:error] details:nil]);
@@ -358,7 +362,8 @@
 - (void)cameraEnhancer_setOverlayVisible:(id)arguments
 {
     BOOL isVisible = [[arguments valueForKey:@"isVisible"] boolValue];
-    self.captureView.cameraView.dceView.overlayVisible = isVisible;
+    [DynamsoftSDKManager manager].dceCameraView.overlayVisible = isVisible;
+    [DynamsoftSDKManager manager].dceCameraViewSettings.overlayVisibleArguments = arguments;
     
     self.resultMethod(nil);
 }
@@ -366,6 +371,7 @@
 - (void)cameraEnhancer_openCamera:(id)arguments {
     if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer open];
+        [[DynamsoftSDKManager manager].dceCameraViewSettings configureArguments];
     }
     self.resultMethod(nil);
 }
@@ -373,6 +379,7 @@
 - (void)cameraEnhancer_closeCamera:(id)arguments {
     if ([DynamsoftSDKManager manager].cameraEnhancer != nil) {
         [[DynamsoftSDKManager manager].cameraEnhancer close];
+        [[DynamsoftSDKManager manager].dceCameraViewSettings clearAllArguments];
     }
     self.resultMethod(nil);
 }
@@ -402,7 +409,7 @@
     UIImage *torchOffImage = nil;
     
     if (![[arguments valueForKey:@"rect"] isEqual:[NSNull null]] && [arguments valueForKey:@"rect"] != nil) {
-        torchRect = [[DynamsoftConvertManager manager] aynlyzeCustomTorchButtonFrameFromJson:arguments torchDefaultRect:torchRect];
+        torchRect = [[DynamsoftConvertManager manager] analyzeCustomTorchButtonFrameFromJson:arguments torchDefaultRect:torchRect];
     }
     
     if (![[arguments valueForKey:@"torchOnImage"] isEqual:[NSNull null]] && [arguments valueForKey:@"torchOnImage"] != nil) {
@@ -421,9 +428,10 @@
         torchIsVisible = [[arguments valueForKey:@"visible"] boolValue];
     }
     
-    [self.captureView.cameraView.dceView setTorchButton:torchRect torchOnImage:torchOnImage torchOffImage:torchOffImage];
-    self.captureView.cameraView.dceView.torchButtonVisible = torchIsVisible;
-    
+    [[DynamsoftSDKManager manager].dceCameraView setTorchButton:torchRect torchOnImage:torchOnImage torchOffImage:torchOffImage];
+    [DynamsoftSDKManager manager].dceCameraView.torchButtonVisible = torchIsVisible;
+    [DynamsoftSDKManager manager].dceCameraViewSettings.torchButtonArguments = arguments;
+    self.resultMethod(nil);
 }
 
 //MARK: Application lifecycle

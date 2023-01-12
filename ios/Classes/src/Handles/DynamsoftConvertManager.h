@@ -13,16 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 //MARK: FromJson
 
 /// Convert json to iPublicRuntimeSettings.
-- (iPublicRuntimeSettings *)aynlyzeRuntimeSettingsFromJson:(id)jsonData;
+- (iPublicRuntimeSettings *)analyzeRuntimeSettingsFromJson:(id)jsonData;
 
 /// Convert json to EnumPresetTemplate.
-- (EnumPresetTemplate)aynlyzePresetTemplateFromJson:(id)jsonData;
+- (EnumPresetTemplate)analyzePresetTemplateFromJson:(id)jsonData;
 
 /// Convert json to iRegionDefinition.
-- (iRegionDefinition *)aynlyzeiRegionDefinitionFromJson:(id)jsonData;
+- (iRegionDefinition *)analyzeiRegionDefinitionFromJson:(id)jsonData;
 
 /// Convert json to custom torch button frame.
-- (CGRect)aynlyzeCustomTorchButtonFrameFromJson:(id)jsonData
+- (CGRect)analyzeCustomTorchButtonFrameFromJson:(id)jsonData
                                torchDefaultRect:(CGRect)torchDefaultRect;
 
 //MARK: ToJson

@@ -1,3 +1,9 @@
+## 1.2.1
+
+### Improved
+
+* Optimized the internal code to support more usage scenarios.
+
 ## 1.2.0
 
 ### New
