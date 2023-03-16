@@ -1,3 +1,10 @@
+## 1.2.2
+
+### Fixed
+
+* Fixed a crash bug on the devices that do not support 16:9 size resolution.
+* Fixed a display bug when the display orientation is landscape.
+
 ## 1.2.1
 
 ### Improved

@@ -40,6 +40,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.dynamsoft:dynamsoftcameraenhancer:2.3.10@aar'
-    implementation 'com.dynamsoft:dynamsoftbarcodereader:9.6.10@aar'
+    implementation 'com.dynamsoft:dynamsoftcameraenhancer:2.3.11@aar'
+    implementation 'com.dynamsoft:dynamsoftbarcodereader:9.6.20@aar'
 }
