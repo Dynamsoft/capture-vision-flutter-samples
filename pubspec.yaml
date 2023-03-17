@@ -1,7 +1,7 @@
 name: dynamsoft_capture_vision_flutter
 description: Dynamsoft Capture Vision Flutter SDK provides the ability to decode barcodes, recognize labels, detect and normalize documents.
 
-version: 1.2.1
+version: 1.2.2
 
 homepage: https://www.dynamsoft.com/capture-vision/docs/introduction/
 repository: https://github.com/Dynamsoft/capture-vision-flutter
