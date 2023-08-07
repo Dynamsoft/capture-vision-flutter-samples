@@ -1,3 +1,6 @@
+group 'com.dynamsoft.dcv.flutter'
+version '1.2.2'
+
 buildscript {
     repositories {
         google()
@@ -5,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:7.3.0'
     }
 }
 
@@ -22,7 +25,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -31,15 +34,12 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
     }
 
-    buildToolsVersion "30.0.3"
+    dependencies {
+        implementation 'com.dynamsoft:dynamsoftcameraenhancer:2.3.11@aar'
+        implementation 'com.dynamsoft:dynamsoftbarcodereader:9.6.20@aar'
+    }
 }
 
-dependencies {
-    implementation 'com.dynamsoft:dynamsoftcameraenhancer:2.3.11@aar'
-    implementation 'com.dynamsoft:dynamsoftbarcodereader:9.6.20@aar'
-}
+

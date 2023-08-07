@@ -29,7 +29,7 @@ public class BarcodeScanningCaptureView implements PlatformView {
 
     @Override
     public void dispose() {
-
+        DynamsoftSDKManager.manager().cameraView = null;
     }
 
 }

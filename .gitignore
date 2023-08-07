@@ -31,3 +31,4 @@ android/.gradle/
 ../.idea/
 
 .idea/
+android/local.properties
