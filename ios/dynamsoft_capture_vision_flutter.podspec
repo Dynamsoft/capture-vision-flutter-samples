@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.homepage         = pubspec['homepage']
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Dynamsoft' => 'support@dynamsoft.com' }
-  s.platforms        = { :ios => '10.0'}
+  s.platforms        = { :ios => '11.0'}
   s.source           = { :path => '.' }
   s.source_files     = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
