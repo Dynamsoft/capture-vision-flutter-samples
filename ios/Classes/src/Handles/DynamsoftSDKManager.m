@@ -92,17 +92,21 @@
 
 //MARK: DBRLicenseVerificationListener
 - (void)DBRLicenseVerificationCallback:(bool)isSuccess error:(NSError *)error{
-    if (self.dbrLicenseVerificationCallback) {
-        self.dbrLicenseVerificationCallback(isSuccess, error);
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.dbrLicenseVerificationCallback) {
+            self.dbrLicenseVerificationCallback(isSuccess, error);
+        }
+    });
 }
 
 //MARK: DBRTextResultListener
 - (void)textResultCallback:(NSInteger)frameId imageData:(iImageData *)imageData results:(NSArray<iTextResult *> *)results
 {
-    if (self.barcodeTextResultCallBack) {
-        self.barcodeTextResultCallBack(results);
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.barcodeTextResultCallBack) {
+            self.barcodeTextResultCallBack(results);
+        }
+    });
 }
 
 @end
