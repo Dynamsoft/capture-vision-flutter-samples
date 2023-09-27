@@ -1,6 +1,13 @@
 # Dynamsoft Capture Vision samples for Flutter edition
 
-This repository contains multiple samples that demonstrate how to use the [Dynamsoft Capture Vision](https://www.dynamsoft.com/capture-vision/docs/introduction/) Flutter Edition.
+This repository contains multiple samples that demonstrate how to use the Dynamsoft Capture Vision Flutter Edition.
+
+- [User Guide](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/user-guide/barcode-reader.html?product=dbr&version=latest&repoType=mobile)
+- [API reference](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/api-reference/?product=dbr&version=latest&repoType=mobile)
+
+## License
+
+The sample includes a default trial license valid for 24 hours. You can request a 30-day free trial license via [customer portal](https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&package=mobile&utm_source=github)
 
 ## System Requirements
 
@@ -43,10 +50,6 @@ Go to your project folder and run the following command:
 ```bash
 flutter run
 ```
-
-## License
-
-- You can also request an extension for your trial license in the [customer portal](https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&utm_source=github)
 
 ## Contact
 
