@@ -1,9 +1,9 @@
 # Dynamsoft Capture Vision samples for Flutter edition
 
-This repository contains multiple samples that demonstrate how to use the [Dynamsoft Capture Vision](https://www.dynamsoft.com/capture-vision/docs/introduction/) Flutter Edition.
+This repository contains multiple samples that demonstrate how to use the Dynamsoft Capture Vision Flutter Edition.
 
-- [User Guide](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/user-guide/barcode-reader.html)
-- [API reference](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/api-reference/)
+- [User Guide](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/user-guide/barcode-reader.html?product=dbr&version=latest)
+- [API reference](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/api-reference/?product=dbr&version=latest)
 
 ## License
 
