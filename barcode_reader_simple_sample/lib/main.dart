@@ -92,19 +92,19 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: _startScanning,
             child: Text('Start Scanning'),
             style: TextButton.styleFrom(
-                primary: Colors.white, backgroundColor: Colors.blue),
+                foregroundColor: Colors.white, backgroundColor: Colors.blue),
           ),
           TextButton(
             onPressed: () => _pickImage(ImageSource.gallery),
             child: Text('Select a photo'),
             style: TextButton.styleFrom(
-                primary: Colors.white, backgroundColor: Colors.blue),
+                foregroundColor: Colors.white, backgroundColor: Colors.blue),
           ),
           TextButton(
             onPressed: () => _pickImage(ImageSource.camera),
             child: Text('Take a photo'),
             style: TextButton.styleFrom(
-                primary: Colors.white, backgroundColor: Colors.blue),
+                foregroundColor: Colors.white, backgroundColor: Colors.blue),
           ),
         ],
       ),
@@ -347,6 +347,10 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       case AppLifecycleState.inactive:
         _cameraEnhancer.close();
         _barcodeReader.stopScanning();
+        break;
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.paused:
         break;
     }
   }
