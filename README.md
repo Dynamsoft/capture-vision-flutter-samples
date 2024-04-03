@@ -1,33 +1,25 @@
 # Dynamsoft Capture Vision samples for Flutter edition
 
-This repository contains multiple samples that demonstrate how to use the Dynamsoft Capture Vision Flutter Edition.
-
-- [User Guide](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/user-guide/barcode-reader.html?product=dbr&version=latest&repoType=mobile)
-- [API Reference](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/api-reference/?product=dbr&version=latest&repoType=mobile)
-
-## License
-
-The sample includes a default trial license valid for 24 hours. You can request a 30-day free trial license via [customer portal](https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&package=mobile&utm_source=github)
+This repository contains multiple samples that demonstrate how to use the [Dynamsoft Capture Vision](https://www.dynamsoft.com/capture-vision/docs/core/introduction/) Flutter Edition.
 
 ## System Requirements
 
-### Flutter & Dart
+### Flutter
 
-- Flutter version: >=2.0.0
-- Dart version: >=2.12.0 <3.0.0
+- Flutter version: >=3.10.0
 
 ### Android
 
 - Supported OS: Android 5.0 (API Level 21) or higher.
 - Supported ABI: **armeabi-v7a**, **arm64-v8a**, **x86** and **x86_64**.
-- Development Environment: Android Studio 3.4+ (Android Studio 4.2+ recommended).
+- Development Environment: Android Studio 2022.2.1 or higher.
 - JDK: 1.8+
 
 ### iOS
 
-- Supported OS: **iOS 10.0** or higher.
-- Supported ABI: **arm64** and **x86_64**.
-- Development Environment: Xcode 7.1 and above (Xcode 13.0+ recommended), CocoaPods 1.11.0+.
+- Supported OS: iOS 11 or higher (iOS 13 and higher recommended).
+- Supported ABI: arm64 and x86_64.
+- Development Environment: Xcode 13 and above (Xcode 14.1+ recommended).
 
 ## Samples
 
@@ -51,6 +43,10 @@ Go to your project folder and run the following command:
 flutter run
 ```
 
+## License
+
+- You can also request an extension for your trial license in the [customer portal](https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&utm_source=github)
+
 ## Contact
 
-https://www.dynamsoft.com/company/contact/
+https://www.dynamsoft.com/contact/
