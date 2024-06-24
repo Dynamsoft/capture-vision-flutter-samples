@@ -15,7 +15,7 @@ void main() async {
   // The license string here is a time-limited trial license. Note that network connection is required for this license to work.
   // You can also request an extension for your trial license via the Request a Trial License link: https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&utm_source=github&package=flutter&version=9
   const String licenseKey =
-      'DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTEwMTIwMDkzNiIsIm9yZ2FuaXphdGlvbklEIjoiMjAwMDAxIn0=';
+      'DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9';
 
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
