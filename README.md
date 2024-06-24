@@ -2,6 +2,9 @@
 
 This repository contains multiple samples that demonstrate how to use the [Dynamsoft Capture Vision](https://www.dynamsoft.com/capture-vision/docs/core/introduction/) Flutter Edition.
 
+* [User Guide](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/user-guide/barcode-reader.html)
+* [API Reference](https://www.dynamsoft.com/capture-vision/docs/mobile/programming/flutter/api-reference/)
+
 ## System Requirements
 
 ### Flutter
