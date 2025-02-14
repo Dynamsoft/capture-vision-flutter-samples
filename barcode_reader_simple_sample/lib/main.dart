@@ -1,21 +1,16 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
-import 'package:flutter_beep/flutter_beep.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vibration/vibration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   // Put your Dynamsoft Barcode Reader license here.
   // Initialize license for the Barcode Decoding module of Dynamsoft Capture Vision.
   // The license string here is a time-limited trial license. Note that network connection is required for this license to work.
-  // You can also request an extension for your trial license via the Request a Trial License link: https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&utm_source=github&package=flutter&version=9
+  // You can also request an extension for your trial license in the customer portal: https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&utm_source=samples&package=flutter
   const String licenseKey =
-      'DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9';
+      'DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTEwMTIwMDkzNiIsIm9yZ2FuaXphdGlvbklEIjoiMjAwMDAxIn0=';
 
   // Initialize the license so that you can use full feature of the Barcode Reader module.
   try {
@@ -149,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         _showDialog([]);
       }
-      _vibrateWithBeep();
+      _vibrate();
     }
   }
 
@@ -266,7 +261,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult>? res) {
       if (mounted) {
         if (res != null && res.length > 0) {
-          _vibrateWithBeep();
+          _vibrate();
         }
 
         setState(() {
@@ -356,9 +351,8 @@ class _BarcodeScannerState extends State<BarcodeScanner>
   }
 }
 
-void _vibrateWithBeep() async {
+void _vibrate() async {
   if (await Vibration.hasVibrator() ?? false) {
     Vibration.vibrate();
   }
-  FlutterBeep.beep();
 }
