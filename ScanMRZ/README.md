@@ -24,7 +24,7 @@ Install [Flutter](https://flutter.dev/) and all required dev tools.
 Clone this repository and navigate to the project directory.
 
 ```
-cd Scan_MRZ/
+cd ScanMRZ/
 ```
 
 Fetch and install the dependencies of this example project via Flutter CLI:
