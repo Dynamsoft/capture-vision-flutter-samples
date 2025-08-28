@@ -1,52 +1,87 @@
-# Dynamsoft Capture Vision samples for Flutter edition
+# Dynamsoft Capture Vision Flutter Samples
 
-This repository contains multiple samples that demonstrate how to use the [Dynamsoft Capture Vision](https://www.dynamsoft.com/capture-vision/docs/core/introduction/) Flutter Edition.
+This repository contains multiple samples that show you how use the Dynamsoft Capture Vision Flutter SDK.
 
-## System Requirements
+## Requirements
 
-### Flutter
+### Dev tools
 
-- Flutter version: >=3.10.0
+* Latest [Flutter SDK](https://flutter.dev/)
+* For Android apps: Android SDK (API Level 21+), platforms and developer tools
+* For iOS apps: iOS 13+, macOS with latest Xcode and command line tools
 
-### Android
+### Mobile platforms
 
-- Supported OS: Android 5.0 (API Level 21) or higher.
-- Supported ABI: **armeabi-v7a**, **arm64-v8a**, **x86** and **x86_64**.
-- Development Environment: Android Studio 2022.2.1 or higher.
-- JDK: 17+
+* Android 5.0 (API Level 21) and higher
+* iOS 13 and higher
 
-### iOS
+## Integration Guide For Your Project
 
-- Supported OS: iOS 11 or higher (iOS 13 and higher recommended).
-- Supported ABI: arm64 and x86_64.
-- Development Environment: Xcode 13 and above (Xcode 14.1+ recommended).
+- [MRZ Scanner Integration Guide](./guide-scan-mrz.md)
+- [Document Scanner Integration Guide](./guide-scan-document.md)
+- [VIN Scanner Integration Guide](./guide-scan-vin.md)
 
 ## Samples
 
-| Sample Name | Description |
-| ----------- | ----------- |
-| `barcode_reader_simple_sample` | This is a sample that illustrates the simplest way to recognize barcodes from video streaming with Dynamsoft Capture Vision Flutter SDK. |
+| Sample Name                  | Description                                                                                                                              |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| [ScanMRZ](ScanMRZ)           | This sample illustrates how to scan passport and ID cards from video streaming.                                                          |
+| [ScanDocument](ScanDocument) | This sample illustrates how to detect and deskew document pages from the video stream.                                                   |
+| [ScanVIN](ScanVIN)           | This sample illustrates how to Scan the VIN code from a barcode or a text line and extract the vehicle information from video streaming. |
 
-### Install the Dependencies
+## How to build and run a sample
 
-Go to your project folder and run the following command:
+### Step 1: Enter a sample folder that you want to try
 
 ```bash
+cd ScanMRZ
+```
+or
+```bash
+cd ScanDocument
+```
+or
+```bash
+cd ScanVIN
+```
+
+### Step 2: Fetch and install the dependencies of this example project via Flutter CLI:
+
+```
 flutter pub get
 ```
 
-### Build and Run
+Connect a mobile device via USB and run the app.
 
-Go to your project folder and run the following command:
+### Step 3: Start your application
 
-```bash
-flutter run
+**Android:**
+
+```
+flutter run -d <DEVICE_ID>
 ```
 
-## License
+You can get the IDs of all connected devices with `flutter devices`.
 
-- You can also request an extension for your trial license in the [customer portal](https://www.dynamsoft.com/customer/license/trialLicense?product=dbr&utm_source=github)
+**iOS:**
 
-## Contact
+Install Pods dependencies:
 
-https://www.dynamsoft.com/contact/
+```
+cd ios/
+pod install --repo-update
+```
+
+Open the **workspace**(!) `ios/Runner.xcworkspace` in Xcode and adjust the *Signing / Developer Account* settings. Then, build and run the app in Xcode.
+
+> [!NOTE]
+>- The license string here grants a time-limited free trial which requires network connection to work.
+>- You can request a 30-day trial license via the [Request a Trial License](https://www.dynamsoft.com/customer/license/trialLicense?product=dcv&utm_source=guide&package=mobile) link.
+
+## Request Dynamsoft Trial License Key
+
+- You can request a 30-day trial license via the [Request a Trial License](https://www.dynamsoft.com/customer/license/trialLicense?product=dcv&utm_source=github&package=mobile) link.
+
+## Support
+
+https://www.dynamsoft.com/company/contact/
