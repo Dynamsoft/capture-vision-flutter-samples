@@ -1,9 +1,11 @@
 # MRZ Scanner Integration Guide
-In this guide, we will guide you to develop a MRZ scanning app with the MRZScanner component.
+
+In this guide, we will guide you to develop a MRZ scanning app with the [`MRZScanner`](https://pub.dev/documentation/dynamsoft_mrz_scanner_bundle_flutter/latest/) component.
 
 `MRZScanner` is a ready-to-use component that allows developers to quickly set up an MRZ scanning app. With the built-in component, it streamlines the integration of MRZ scanning functionality into any application.
 
 ## Supported Machine-Readable Travel Document Types
+
 The Machine Readable Travel Documents (MRTD) standard specified by the International Civil Aviation Organization (ICAO) defines how to encode information for optical character recognition on official travel documents.
 
 Currently, the SDK supports three types of MRTD:
@@ -150,9 +152,6 @@ class _MyHomePageState extends State<MyHomePage> {
 >- You can request a 30-day trial license via the [Request a Trial License](https://www.dynamsoft.com/customer/license/trialLicense?product=mrz&utm_source=github&package=mobile) link.
 
 ### MRZ Scan Result And MRZ Data
-Also see it in the [MRZScanResult](https://dynamsoft.github.io/capture-vision-react-native-samples/APIReferences/dynamsoft-mrz-scanner-bundle-flutter/dynamsoft_mrz_scanner_bundle_flutter/MRZScanResult-class.html)
-and [MRZData](https://dynamsoft.github.io/capture-vision-react-native-samples/APIReferences/dynamsoft-mrz-scanner-bundle-flutter/dynamsoft_mrz_scanner_bundle_flutter/MRZData-class.html) 
-section of API References.
 
 `MRZScanResult` structure:
 
@@ -165,6 +164,7 @@ section of API References.
 - data: The parsed MRZ data.
   
 `MRZData` structure:
+
 - documentType: The type of document, such as `'ID cards'` or `'passports'`.
 - firstName: The first name of the user of the MRZ document.
 - lastName: The last name of the user of the MRZ document.
@@ -179,8 +179,6 @@ section of API References.
 
 
 ### (Optional)Change the MRZScanConfig to meet your needs
-
-Also see it in the [MRZScanConfig](https://dynamsoft.github.io/capture-vision-react-native-samples/APIReferences/dynamsoft-mrz-scanner-bundle-flutter/dynamsoft_mrz_scanner_bundle_flutter/MRZScannerConfig-class.html) section of API References.
 
 ```dart
 

@@ -1,6 +1,6 @@
 # Document Scanner Integration Guide
 
-In this guide, we will explore the Document Scanner features of the [Dynamsoft Capture Vision](https://www.dynamsoft.com/capture-vision/docs/core/introduction/) SDK.
+In this guide, we will explore the Document Scanner features of the [Dynamsoft Capture Vision](https://pub.dev/documentation/dynamsoft_capture_vision_flutter/latest/) SDK.
 
 ## Requirements
 

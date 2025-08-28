@@ -1,6 +1,6 @@
 # VIN Scanner Integration Guide
 
-In this guide, we will explore the VIN Scanner features of the [Dynamsoft Capture Vision](https://www.dynamsoft.com/capture-vision/docs/core/introduction/) SDK.
+In this guide, we will explore the VIN Scanner features of the [Dynamsoft Capture Vision](https://pub.dev/documentation/dynamsoft_capture_vision_flutter/latest/) SDK.
 
 ## Description
 
@@ -63,7 +63,7 @@ Scanning the VIN code from a Text line needs to load the model(VINCharRecognitio
 
 You can get `VINCharRecognition.data` from [here](ScanVIN/android/app/src/main/assets/Models/VINCharRecognition.data).
 
-Then copy the `VINCharRecognition.data` into `android/app/src/main/assets/Models/` of your React Native Project.
+Then copy the `VINCharRecognition.data` into `android/app/src/main/assets/Models/` of your Flutter Project.
 
 ### iOS
 
