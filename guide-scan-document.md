@@ -111,7 +111,7 @@ class _ScannerPageState extends State<ScannerPage> {
       if (result.deskewedImageResultItems?.isNotEmpty ?? false) {
         var item = result.deskewedImageResultItems![0];
         if (item.crossVerificationStatus == EnumCrossVerificationStatus.passed || _isBtnClicked) {
-          final originalImage = await CaptureVisionRouter.getOriginalImage(result.originalImageHashId)!; //Please call getOriginalImage before _cvr.stopCapturing()
+          final originalImage = await _cvr.getIntermediateResultManager().getOriginalImage(result.originalImageHashId)!; //Please call getOriginalImage before _cvr.stopCapturing()
           final deskewedImage = item.imageData!;
           final sourceDeskewQuad = item.sourceDeskewQuad;
           //Do something with the item and the original image

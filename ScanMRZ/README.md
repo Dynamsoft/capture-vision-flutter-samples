@@ -96,7 +96,3 @@ The MRZ (Machine Readable Zone) in TD3 format consists of 2 lines, with each lin
 ## Support
 
 https://www.dynamsoft.com/company/contact/
-
-## License
-
-[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)

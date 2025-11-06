@@ -1,8 +1,8 @@
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'result_page.dart';
 import 'main.dart';
+import 'result_page.dart';
 
 class ScannerPage extends StatefulWidget {
   const ScannerPage({super.key});
@@ -26,20 +26,20 @@ class _ScannerPageState extends State<ScannerPage> with RouteAware {
         var item = result.deskewedImageResultItems![0];
         if (item.crossVerificationStatus == EnumCrossVerificationStatus.passed || _isBtnClicked) {
           _isBtnClicked = false;
-          final originalImage = await CaptureVisionRouter.getOriginalImage(result.originalImageHashId);
+          //`getOriginalImage()` needs to be called before stopCapturing, otherwise it will return null.
+          final originalImage = await _cvr.getIntermediateResultManager().getOriginalImage(result.originalImageHashId);
           final deskewedImage = item.imageData!;
           final sourceDeskewQuad = item.sourceDeskewQuad;
           await _cvr.stopCapturing();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResultPage(
-                deskewedImage: deskewedImage,
-                originalImage: originalImage!,
-                sourceDeskewQuad: sourceDeskewQuad,
+          if (mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ResultPage(deskewedImage: deskewedImage, originalImage: originalImage!, sourceDeskewQuad: sourceDeskewQuad),
               ),
-            ),
-          );}
+            );
+          }
+        }
       }
     };
 
@@ -95,6 +95,7 @@ class _ScannerPageState extends State<ScannerPage> with RouteAware {
     _cvr.stopCapturing();
     _camera.close();
     _cvr.removeResultReceiver(_receiver);
+    _cvr.removeAllResultFilters();
   }
 
   @override
@@ -116,18 +117,15 @@ class _ScannerPageState extends State<ScannerPage> with RouteAware {
       body: Stack(
         children: [
           CameraView(cameraEnhancer: _camera),
-          Positioned(
-            bottom: 50,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: TextButton(
-                onPressed: () {
-                  _isBtnClicked = true;
-                },
-                style: TextButton.styleFrom(backgroundColor: Colors.orange, foregroundColor: Colors.white),
-                child: Text('Capture'),
-              ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            padding: EdgeInsets.only(bottom: 50),
+            child: TextButton(
+              onPressed: () {
+                _isBtnClicked = true;
+              },
+              style: TextButton.styleFrom(backgroundColor: Colors.orange, foregroundColor: Colors.white),
+              child: Text('Capture'),
             ),
           ),
         ],

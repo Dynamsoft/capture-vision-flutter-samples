@@ -137,8 +137,10 @@ class _ScannerPageState extends State<ScannerPage> {
         } else {
           // result.items!.length>1
           for (var item in result.items!) {
-            if (item.targetROIDefName == 'roi-vin-barcode') {
+            if (item.targetROIDefName.contains('vin-barcode')) {
+              //Means this item is pared from a barcode, which is more accurate than textLine.
               data = VINData.fromParsedResultItem(item);
+              break;
             }
           }
         }

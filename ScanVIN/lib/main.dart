@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'vin_scan_result.dart';
 import 'scan_page.dart';
+import 'vin_scan_result.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(_scanResult, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 20),
+            const SizedBox(height: 20), //add some space
             TextButton(
               onPressed: () async {
                 final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => const ScannerPage())) as VINScanResult;
@@ -54,8 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         .toMap()
                         .entries
                         .map((entry) {
-                      return "${entry.key}: ${entry.value}";
-                    })
+                          return "${entry.key}: ${entry.value}";
+                        })
                         .join("\n");
                   } else if (result.resultStatus == EnumResultStatus.cancelled) {
                     _scanResult = 'Scan cancelled';
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextButton.styleFrom(backgroundColor: Colors.orange, foregroundColor: Colors.white),
               child: const Text('Open VIN Scanner'),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 50),  //add some space
           ],
         ),
       ),

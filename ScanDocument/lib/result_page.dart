@@ -1,72 +1,60 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+
 import 'edit_page.dart';
-import 'dart:typed_data';
 
 class ResultPage extends StatefulWidget {
   final ImageData deskewedImage;
   final ImageData originalImage;
   final Quadrilateral sourceDeskewQuad;
 
-  const ResultPage({
-    super.key,
-    required this.originalImage,
-    required this.deskewedImage,
-    required this.sourceDeskewQuad,
-  });
+  const ResultPage({super.key, required this.originalImage, required this.deskewedImage, required this.sourceDeskewQuad});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
 
 class _ResultPageState extends State<ResultPage> {
-  late ImageData _deskewImage;
+  late ImageData _deskewedColorfulImage;
   late ImageData _showingImage;
   late Quadrilateral _quad;
 
   @override
   void initState() {
     super.initState();
-    _deskewImage = widget.deskewedImage;
-    _showingImage = _deskewImage;
+    _deskewedColorfulImage = widget.deskewedImage;
+    _showingImage = _deskewedColorfulImage;
     _quad = widget.sourceDeskewQuad;
   }
 
   Future<void> _changeColourMode(EnumImageColourMode mode) async {
-    final cvr = CaptureVisionRouter.instance;
-    final settings = await cvr.getSimplifiedSettings(EnumPresetTemplate.normalizeDocument);
-    if (settings?.documentSettings != null) {
-      settings!.documentSettings!.colourMode = mode;
-      cvr.updateSettings(EnumPresetTemplate.normalizeDocument, settings);
-      final result = await cvr.capture(_deskewImage, EnumPresetTemplate.normalizeDocument);
-      if (result.processedDocumentResult?.enhancedImageResultItems != null &&
-          result.processedDocumentResult?.enhancedImageResultItems?.isNotEmpty == true) {
-        setState(() {
-          _showingImage = result.processedDocumentResult!.enhancedImageResultItems![0].imageData!;
-        });
-      }
+    if (mode == EnumImageColourMode.colour) {
+      _showingImage = _deskewedColorfulImage;
+    } else if (mode == EnumImageColourMode.grayscale) {
+      _showingImage = (await ImageProcessor().convertToGray(_deskewedColorfulImage))!;
+    } else if (mode == EnumImageColourMode.binary) {
+      _showingImage = (await ImageProcessor().convertToBinaryLocal(_deskewedColorfulImage, compensation: 15))!;
     }
+    setState(() {}); // Update the UI to reflect the new colour mode
   }
 
   Future<void> _navigateToEdit() async {
     final result = await Navigator.push<Map<String, dynamic>>(
       context,
       MaterialPageRoute(
-        builder: (context) => EditPage(
-          originalImageData: widget.originalImage,
-          quad: _quad,
-        ),
+        builder: (context) => EditPage(originalImageData: widget.originalImage, quad: _quad),
       ),
     );
 
     if (result != null) {
       setState(() {
         if (result['croppedImageData'] != null) {
-          _deskewImage = result['croppedImageData'];
-          _showingImage = _deskewImage;
+          _deskewedColorfulImage = result['croppedImageData'];
+          _showingImage = _deskewedColorfulImage;
         }
         if (result['updatedQuad'] != null) {
           _quad = result['updatedQuad'];
@@ -112,23 +100,16 @@ class _ResultPageState extends State<ResultPage> {
       } else {
         directory = await getApplicationDocumentsDirectory();
       }
-      final filePath = "${directory.path}/dynamsoft_output.jpg";
+      final filePath = "${directory.path}/dynamsoft_output_${DateTime.now().millisecondsSinceEpoch}.png";
 
-      ImageManager().saveToFile(_deskewImage, filePath, true);
+      ImageIO().saveToFile(_showingImage, filePath, true);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Image saved as: $filePath'),
-            duration: const Duration(seconds: 5),
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Image saved as: $filePath'), duration: const Duration(seconds: 5)));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save image: $e')),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save image: $e')));
       }
     }
   }
@@ -143,18 +124,9 @@ class _ResultPageState extends State<ResultPage> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: FutureBuilder<Uint8List?>(
-                future: ImageDataUtils.imageDataToJpegBytes(_showingImage),
+                future: ImageIO().saveToMemory(_showingImage, EnumImageFileFormat.png),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasData && snapshot.data != null) {
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Image.memory(snapshot.data!),
-                    );
-                  } else {
-                    return const Text('No image data');
-                  }
+                  return snapshot.data != null ? Image.memory(snapshot.data!) : const SizedBox.shrink();
                 },
               ),
             ),
@@ -164,18 +136,9 @@ class _ResultPageState extends State<ResultPage> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.edit_outlined),
-            label: 'Back to Edit',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.color_lens_outlined),
-            label: 'Switch colour Mode',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.save_alt_outlined),
-            label: 'Export',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.edit_outlined), label: 'Back to Edit'),
+          BottomNavigationBarItem(icon: Icon(Icons.color_lens_outlined), label: 'Switch colour Mode'),
+          BottomNavigationBarItem(icon: Icon(Icons.save_alt_outlined), label: 'Export'),
         ],
         onTap: (index) {
           switch (index) {

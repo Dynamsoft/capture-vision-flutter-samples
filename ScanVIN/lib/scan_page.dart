@@ -13,8 +13,7 @@ class ScannerPage extends StatefulWidget {
 class _ScannerPageState extends State<ScannerPage> with RouteAware {
   final CaptureVisionRouter _cvr = CaptureVisionRouter.instance
     ..addResultFilter(
-      MultiFrameResultCrossFilter()
-        ..enableResultCrossVerification(EnumCapturedResultItemType.textLine.value | EnumCapturedResultItemType.barcode.value, true),
+      MultiFrameResultCrossFilter()..enableResultCrossVerification(EnumCapturedResultItemType.textLine.value | EnumCapturedResultItemType.barcode.value, true),
     );
   final CameraEnhancer _camera = CameraEnhancer.instance;
   final String _templateName = "ReadVIN";
@@ -28,8 +27,10 @@ class _ScannerPageState extends State<ScannerPage> with RouteAware {
         } else {
           // result.items!.length>1
           for (var item in result.items!) {
-            if (item.targetROIDefName == 'roi-vin-barcode') {
+            if (item.targetROIDefName.contains('vin-barcode')) {
+              //Means this item is pared from a barcode, which is more accurate than textLine.
               data = VINData.fromParsedResultItem(item);
+              break;
             }
           }
         }
@@ -63,7 +64,9 @@ class _ScannerPageState extends State<ScannerPage> with RouteAware {
     try {
       await _cvr.startCapturing(_templateName);
     } catch (e) {
-      Navigator.of(context).pop(VINScanResult(resultStatus: EnumResultStatus.error, errorString: e.toString()));
+      if (mounted) {
+        Navigator.of(context).pop(VINScanResult(resultStatus: EnumResultStatus.error, errorString: e.toString()));
+      }
     }
   }
 
@@ -73,6 +76,7 @@ class _ScannerPageState extends State<ScannerPage> with RouteAware {
     _cvr.stopCapturing();
     _camera.close();
     _cvr.removeResultReceiver(_receiver);
+    _cvr.removeAllResultFilters();
   }
 
   @override
