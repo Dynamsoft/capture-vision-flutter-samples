@@ -21,6 +21,11 @@ This repository contains multiple samples that show you how use the Dynamsoft Ca
 - [Document Scanner Integration Guide](./guide-scan-document.md)
 - [VIN Scanner Integration Guide](./guide-scan-vin.md)
 
+## API Reference
+
+- [MRZ Scanner API Reference](https://pub.dev/documentation/dynamsoft_mrz_scanner_bundle_flutter/latest/)
+- [Capture Vision API Reference](https://pub.dev/documentation/dynamsoft_capture_vision_flutter/latest/)
+
 ## Samples
 
 | Sample Name                  | Description                                                                                                                              |
