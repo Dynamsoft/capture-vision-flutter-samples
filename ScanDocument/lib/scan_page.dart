@@ -16,9 +16,9 @@ class _ScannerPageState extends State<ScannerPage> with RouteAware {
 
   //If used template is EnumPresetTemplate.detectDocumentBoundaries,
   //please add filter that is `MultiFrameResultCrossFilter()..enableResultCrossVerification(EnumCapturedResultItemType.detectedQuad.value, true)`.
-  final CaptureVisionRouter _cvr = CaptureVisionRouter.instance
+  final CaptureVisionRouter _cvr = CaptureVisionRouter()
     ..addResultFilter(MultiFrameResultCrossFilter()..enableResultCrossVerification(EnumCapturedResultItemType.deskewedImage.value, true));
-  final CameraEnhancer _camera = CameraEnhancer.instance;
+  final CameraEnhancer _camera = CameraEnhancer();
   final String _template = EnumPresetTemplate.detectAndNormalizeDocument;
   late final CapturedResultReceiver _receiver = CapturedResultReceiver()
     ..onProcessedDocumentResultReceived = (ProcessedDocumentResult result) async {
